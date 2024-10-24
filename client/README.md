@@ -20,21 +20,27 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Resources
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
+Next.js resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+React resources:
 
-## Deploy on Vercel
+- [React Tutorial](https://legacy.reactjs.org/tutorial/tutorial.html) - official React.js tutorial
+- [React Tutorial - w3schools](https://www.w3schools.com/react/) - React.js tutorial I used when learning
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Tailwind CSS resources:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Tailwind CSS Tutorial](https://www.youtube.com/watch?v=DenUCuq4G04&pp=ygUVdGFpbHdpbmQgY3NzIHR1dG9yaWFs) - video tutorial
+- [Tailwind CSS Cheat Sheet](https://nerdcave.com/tailwind-cheat-sheet) - easy way to find tailwind css classnames
+
+Material UI resources:
+
+- [Material UI Documentation](https://mui.com/material-ui/all-components/) - Documentation for all Material UI components
+
+TypeScript resources:
+
+- [TypeScript Tutorial](https://www.w3schools.com/typescript/) - TypeScript tutorial for if you're unfamiliar with it
