@@ -18,6 +18,11 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Branch Format
+
+Create branch with the following name format: "(your-name)-(task number)", no brackets
+When finished, create a Pull Request and describe the changes you have made
+
 ## Resources
 
 Next.js resources:
