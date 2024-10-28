@@ -10,6 +10,12 @@ npm i
 pnpm i
 ```
 
+Run the API Node Proxy Server
+```bash
+cd client\src\app\api>
+node server.js
+```
+
 Run the development server:
 
 ```bash
