@@ -12,6 +12,8 @@ pnpm i
 
 Run the API Node Proxy Server
 ```bash
+pnpm run server
+# or
 cd client\src\app\api>
 node server.js
 ```
