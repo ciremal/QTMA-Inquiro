@@ -241,14 +241,23 @@ function StockTable({ data, isLoading, error }) {
         />
         */}
         <div>
-          <p>
-            Sort By:
+          <p className='font-bold'>
+            Filter By:
           </p>
         </div>
         {/* Dropdown Filters */}
-        <Box className="flex gap-6">
+        <Box className="w-3/4 flex gap-6">
           <FormControl fullWidth>
-            <InputLabel>Industry</InputLabel>
+            <InputLabel sx={{ 
+              '&.MuiInputLabel-root': {
+                transform: 'translate(0.875rem, 0.75rem) scale(1)',
+              },
+              '&.MuiInputLabel-shrink': {
+                transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
+              }
+            }}>
+              Industry
+            </InputLabel>
             <Select
               
               value={industryFilter}
@@ -256,6 +265,17 @@ function StockTable({ data, isLoading, error }) {
               onChange={(e) => {
                 setIndustryFilter(e.target.value);
                 setPage(0);
+              }}
+              sx={{
+                height: '2.5rem',
+                borderRadius: '0.75rem',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '0.75rem',
+                },
+                '& .MuiSelect-select': {
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem',
+                }
               }}
             >
               <MenuItem value="">All Industries</MenuItem>
@@ -268,13 +288,31 @@ function StockTable({ data, isLoading, error }) {
           </FormControl>
             
           <FormControl fullWidth>
-            <InputLabel>Market Cap</InputLabel>
+            <InputLabel sx={{ 
+              '&.MuiInputLabel-root': {
+                transform: 'translate(0.875rem, 0.75rem) scale(1)',
+              },
+              '&.MuiInputLabel-shrink': {
+                transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
+              }
+            }}>Market Cap</InputLabel>
             <Select
               value={marketCapRange}
               label="Market Cap"
               onChange={(e) => {
                 setMarketCapRange(e.target.value);
                 setPage(0);
+              }}
+              sx={{
+                height: '2.5rem',
+                borderRadius: '0.75rem',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '0.75rem',
+                },
+                '& .MuiSelect-select': {
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem',
+                }
               }}
             >
               <MenuItem value="">All Market Caps</MenuItem>
@@ -286,13 +324,31 @@ function StockTable({ data, isLoading, error }) {
             </Select>
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel>Stock Price</InputLabel>
+            <InputLabel sx={{ 
+              '&.MuiInputLabel-root': {
+                transform: 'translate(0.875rem, 0.75rem) scale(1)',
+              },
+              '&.MuiInputLabel-shrink': {
+                transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
+              }
+            }}>Stock Price</InputLabel>
             <Select
               value={priceRange}
               label="Price Range"
               onChange={(e) => {
                 setPriceRange(e.target.value);
                 setPage(0);
+              }}
+              sx={{
+                height: '2.5rem',
+                borderRadius: '0.75rem',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderRadius: '0.75rem',
+                },
+                '& .MuiSelect-select': {
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem',
+                }
               }}
             >
               <MenuItem value="">All Prices</MenuItem>
@@ -307,12 +363,14 @@ function StockTable({ data, isLoading, error }) {
       <TableContainer 
         component={Paper}
         sx={{
+          borderRadius: '14px', // Increased border radius
+          overflow: 'hidden', // Ensures content doesn't overflow rounded corners
           '& .MuiTableRow-root:hover': {
             backgroundColor: 'rgba(0, 0, 0, 0.04)',
           },
         }}
       >
-        <Table aria-label="stock information table">
+        <Table qria-label="stock information table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
