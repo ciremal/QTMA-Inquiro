@@ -2,14 +2,12 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com",
   "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "server": "node server.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

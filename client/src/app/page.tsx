@@ -48,11 +48,11 @@ function Home () {
           header: logo,profile icon
           search bar
         */}
-        <Typography variant="h4">
+        <Typography className ="font-DM" variant="h4">
           Ask me about APPL's latest earnings call
         </Typography>
       </div>
-      <div className="bg-ingquiro-beige flex items-center justify-center" style={{ height: "60%" }}>
+      <div className="bg-ingquiro-beige flex items-center justify-center font-sans" style={{ height: "60%" }}>
         {/* 
           filters
           table

@@ -22,6 +22,25 @@ import {
   InputLabel
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward, Search } from 'lucide-react';
+// Industry color mapping
+const industryColors = {
+  'Auto Manufacturers': { bg: '#E3F2FD', color: '#1565C0' },
+  'Consumer Electronics': { bg: '#FFB2B2', color: '#FF6565' },
+  'Footwear & Accessories': { bg: '#E1F5FE', color: '#0288D1' },
+  'Internet Content & Information': { bg: '#E0F7FA', color: '#00838F' },
+  'Internet Retail': { bg: '#F3E5F5', color: '#7B1FA2' },
+  'Semiconductors': { bg: '#F1F8E9', color: '#558B2F' },
+  'Software - Infrastructure': { bg: '#E8F5E9', color: '#2E7D32' },
+  
+  // Default color for uncategorized industries
+  'default': { bg: '#F5F5F5', color: '#616161' }
+};
+
+// Helper function to get color for industry
+const getIndustryColor = (industry) => {
+  
+  return industryColors[industry] || industryColors.default;
+};
 
 // Sort function for different data types
 const sortData = (data, orderBy, order) => {
@@ -202,10 +221,10 @@ function StockTable({ data, isLoading, error }) {
   }
 
   return (
-    <Box className="w-full max-w-4xl">
+    <Box className="w-full max-w-4xl font-sans">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-        {/* Search Field */}
+        {/* Search Field 
         <TextField
           fullWidth
           variant="outlined"
@@ -220,12 +239,18 @@ function StockTable({ data, isLoading, error }) {
             ),
           }}
         />
-        
+        */}
+        <div>
+          <p>
+            Sort By:
+          </p>
+        </div>
         {/* Dropdown Filters */}
-        <Box className="flex gap-4">
+        <Box className="flex gap-6">
           <FormControl fullWidth>
             <InputLabel>Industry</InputLabel>
             <Select
+              
               value={industryFilter}
               label="Industry"
               onChange={(e) => {
@@ -241,7 +266,7 @@ function StockTable({ data, isLoading, error }) {
               ))}
             </Select>
           </FormControl>
-          
+            
           <FormControl fullWidth>
             <InputLabel>Market Cap</InputLabel>
             <Select
@@ -260,7 +285,6 @@ function StockTable({ data, isLoading, error }) {
               <MenuItem value="mega">Mega Cap (Over $200B)</MenuItem>
             </Select>
           </FormControl>
-
           <FormControl fullWidth>
             <InputLabel>Stock Price</InputLabel>
             <Select
@@ -277,7 +301,6 @@ function StockTable({ data, isLoading, error }) {
               <MenuItem value="over200">Over $200</MenuItem>
             </Select>
           </FormControl>
-          
         </Box>
       </Box>
 
@@ -299,12 +322,13 @@ function StockTable({ data, isLoading, error }) {
                   sortDirection={orderBy === column.id ? order : false}
                 >
                   <TableSortLabel
+                    className="font-bold"
                     active={orderBy === column.id}
                     direction={orderBy === column.id ? order : 'asc'}
                     onClick={() => handleSort(column.id)}
                     IconComponent={order === 'asc' ? ArrowUpward : ArrowDownward}
                   >
-                    <strong>{column.label}</strong>
+                    {column.label}
                   </TableSortLabel>
                 </TableCell>
               ))}
@@ -320,21 +344,22 @@ function StockTable({ data, isLoading, error }) {
                 <TableCell component="th" scope="row">
                   {item.symbol}
                 </TableCell>
-                <TableCell>{item.longName}</TableCell>
+                <TableCell >{item.longName}</TableCell>
                 <TableCell>
-                  <Box className="flex gap-2 flex-wrap">
+                  <Box className="flex gap-2 flex-wrap ">
                     <Chip
+                      className="font-bold"
                       key={item.industry}
                       label={item.industry}
                       sx={{
-                        backgroundColor: 'rgb(167, 215, 171)',
-                        color: 'rgb(0, 0, 0)',
+                        backgroundColor: getIndustryColor(item.industry).bg,
+                        color: getIndustryColor(item.industry).color,
                         '&:hover': {
-                          backgroundColor: 'rgb(167, 215, 171)',
+                          backgroundColor: getIndustryColor(item.industry).bg,
                           opacity: 0.8,
                         },
                         cursor: 'pointer',
-                        fontWeight: 400,
+                        fontWeight: 500,
                       }}
                     />
                   </Box>
