@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import { getTickerInfo } from "./api/fetchStockInfo";
 import Table from "./components/table";
 
-const tickers = ["nke", "msft", "goog", "aapl", "spot", "meta", "amzn", "tsla", "nvda", ];
+const tickers = ["nke", "eric", "msft", "goog", "aapl", "spot", "meta", "amzn", "tsla", "nvda", ];
 
 function Home () {
   //let data = await getTickerInfo("nke");
@@ -52,7 +52,7 @@ function Home () {
           Ask me about APPL's latest earnings call
         </Typography>
       </div>
-      <div className="bg-ingquiro-beige flex items-center justify-center font-sans" style={{ height: "60%" }}>
+      <div className="bg-ingquiro-beige flex items-center justify-center font-DM" style={{ height: "60%" }}>
         {/* 
           filters
           table

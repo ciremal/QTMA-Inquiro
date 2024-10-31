@@ -22,6 +22,41 @@ import {
   InputLabel
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward, Search } from 'lucide-react';
+
+// TO DO: bg color is broken and wont assign it properly. Please Fix.
+const generatePastelColorPair = () => {
+  // Generate a random base hue
+  const hue = Math.floor(Math.random() * 360);
+  
+  // Create a pastel background color
+  const bgLightness = 90 + Math.floor(Math.random() * 10); // Light background (90-100%)
+  const bgSaturation = 20 + Math.floor(Math.random() * 30); // Low saturation (20-50%)
+  const bgColor = `hsl(${hue}, ${bgSaturation}%, ${bgLightness}%)`;
+  
+  // Create a complementary text color
+  const textLightness = 40 + Math.floor(Math.random() * 20); // Dark text (40-60%)
+  const textSaturation = 30 + Math.floor(Math.random() * 40); // Moderate saturation (30-70%)
+  const textColor = `hsl(${(hue + 180) % 360}, ${textSaturation}%, ${textLightness}%)`;
+  
+  // Convert HSL to Hex
+  const hslToHex = (h, s, l) => {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+          const k = (n + h / 30) % 12;
+          const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+  };
+  console.log("Generated bg: " + hslToHex(hue, bgSaturation, bgLightness));
+  console.log("Generated color: " + hslToHex((hue + 180) % 360, textSaturation, textLightness));
+  return {
+      bg: hslToHex(hue, bgSaturation, bgLightness),
+      color: hslToHex((hue + 180) % 360, textSaturation, textLightness)
+  };
+};
+
 // Industry color mapping
 const industryColors = {
   'Auto Manufacturers': { bg: '#E3F2FD', color: '#1565C0' },
@@ -33,12 +68,11 @@ const industryColors = {
   'Software - Infrastructure': { bg: '#E8F5E9', color: '#2E7D32' },
   
   // Default color for uncategorized industries
-  'default': { bg: '#F5F5F5', color: '#616161' }
+  'default': generatePastelColorPair()
 };
 
 // Helper function to get color for industry
 const getIndustryColor = (industry) => {
-  
   return industryColors[industry] || industryColors.default;
 };
 
@@ -221,7 +255,7 @@ function StockTable({ data, isLoading, error }) {
   }
 
   return (
-    <Box className="w-full max-w-4xl font-sans">
+    <Box className="w-full max-w-4xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
         {/* Search Field 

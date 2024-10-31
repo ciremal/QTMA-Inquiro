@@ -14,7 +14,7 @@ const config: Config = {
         'inquiro-beige': '#F4F3EB',
       },
       fontFamily: {
-        DM: ["DM Sans", "sans-serif"]
+        DM: ["var(--font-dmsans)", "sans-serif"]
       }
     },
   },
