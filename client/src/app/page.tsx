@@ -1,13 +1,24 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { getTickerInfo } from "./api/fetchStockInfo";
 import Table from "./components/table";
 
-const tickers = ["nke", "eric", "msft", "goog", "aapl", "spot", "meta", "amzn", "tsla", "nvda", ];
+const tickers = [
+  "nke",
+  "eric",
+  "msft",
+  "goog",
+  "aapl",
+  "spot",
+  "meta",
+  "amzn",
+  "tsla",
+  "nvda",
+];
 
-function Home () {
+function Home() {
   //let data = await getTickerInfo("nke");
   //console.log(data["address1"]);
   // Fetch data for all tickers on the server-side
@@ -19,7 +30,7 @@ function Home () {
     const fetchData = async () => {
       const dataPromises = tickers.map(async (ticker) => {
         try {
-          let data = await getTickerInfo(ticker);
+          const data = await getTickerInfo(ticker);
           return data;
         } catch (err) {
           console.error(`Error fetching data for ${ticker}`, err);
@@ -32,7 +43,8 @@ function Home () {
       // Filter out any null values
       const filteredData = resolvedData.filter((item) => item !== null);
       // Update state with the filtered data
-      console.log(filteredData);
+      // console.log(filteredData);
+      // @ts-expect-error
       setData(filteredData);
     };
 
@@ -40,27 +52,22 @@ function Home () {
     fetchData();
   }, []); // Empty dependency array to run only once on component mount
 
-
   return (
     <main className="flex flex-col h-screen">
       <div className="bg-ingquiro-beige flex-1 flex items-center justify-center">
-        {/* 
-          header: logo,profile icon
-          search bar
-        */}
-        <Typography className ="font-DM" variant="h4">
-          Ask me about APPL's latest earnings call
+        <Typography className="font-DM" variant="h4">
+          {`Ask me about APPL's latest earnings call`}
         </Typography>
       </div>
-      <div className="bg-ingquiro-beige flex items-center justify-center font-DM" style={{ height: "60%" }}>
-        {/* 
-          filters
-          table
-        */}
+      <div
+        className="bg-ingquiro-beige flex items-center justify-center font-DM"
+        style={{ height: "60%" }}
+      >
+        {/* @ts-expect-error */}
         <Table data={data}></Table>
       </div>
     </main>
   );
-};
+}
 
 export default Home;
