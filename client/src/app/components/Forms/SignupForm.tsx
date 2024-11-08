@@ -91,7 +91,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
             transition: "all 0.3s ease",
           }}
         >
-          <Typography className={`text-xl ${inter.className}`}>
+          <Typography sx={{ fontSize: 20 }} className={`${inter.className}`}>
             {"Submit"}
           </Typography>
         </LoadingButton>
