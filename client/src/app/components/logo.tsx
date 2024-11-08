@@ -10,8 +10,8 @@ const Logo = () => {
     >
       <Image
         src={"/logo.svg"}
-        width={112}
-        height={66}
+        width={89}
+        height={54}
         alt="logo"
         style={{ verticalAlign: "bottom" }}
       />
