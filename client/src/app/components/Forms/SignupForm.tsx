@@ -1,5 +1,6 @@
 import { inter } from "@/app/ui/fonts";
-import { TextField, Typography, Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { CircularProgress, TextField, Typography } from "@mui/material";
 
 type SignupFormProps = {
   formik: any;
@@ -67,20 +68,39 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
         />
       </div>
       <div>
-        <Button style={{ backgroundColor: "blue" }}>Test</Button>
-        <button
+        <LoadingButton
           type="submit"
-          className={`w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3 flex justify-center
-          hover:bg-black hover:text-white transition duration-300 active:opacity-60 ${
-            isLoading ? "opacity-50" : ""
-          }
-          `}
-          disabled={isLoading}
+          loading={isLoading}
+          loadingPosition="end"
+          style={{
+            width: "25%",
+            borderRadius: 0,
+            borderStyle: "solid",
+            borderWidth: 1,
+            borderColor: "black",
+            color: "black",
+            textTransform: "none",
+            paddingLeft: "8rem",
+            paddingRight: "8rem",
+            paddingTop: "0.75rem",
+            paddingBottom: "0.75rem",
+          }}
         >
           <Typography className={`text-xl ${inter.className}`}>
             {"Submit"}
           </Typography>
-        </button>
+        </LoadingButton>
+
+        {/* <button
+          type="submit"
+          className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3 flex justify-center
+          hover:bg-black hover:text-white transition duration-300 active:opacity-60
+          "
+        >
+          <Typography className={`text-xl ${inter.className}`}>
+            {"Submit"}
+          </Typography>
+        </button> */}
       </div>
     </form>
   );
