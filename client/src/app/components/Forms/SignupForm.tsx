@@ -72,7 +72,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           type="submit"
           loading={isLoading}
           loadingPosition="end"
-          style={{
+          sx={{
             width: "25%",
             borderRadius: 0,
             borderStyle: "solid",
@@ -84,23 +84,17 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
             paddingRight: "8rem",
             paddingTop: "0.75rem",
             paddingBottom: "0.75rem",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+            },
+            transition: "all 0.3s ease",
           }}
         >
           <Typography className={`text-xl ${inter.className}`}>
             {"Submit"}
           </Typography>
         </LoadingButton>
-
-        {/* <button
-          type="submit"
-          className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3 flex justify-center
-          hover:bg-black hover:text-white transition duration-300 active:opacity-60
-          "
-        >
-          <Typography className={`text-xl ${inter.className}`}>
-            {"Submit"}
-          </Typography>
-        </button> */}
       </div>
     </form>
   );
