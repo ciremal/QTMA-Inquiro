@@ -9,14 +9,14 @@ const Logo = () => {
       style={{ height: "10%" }}
     >
       <Image
-        src={"/logo.png"}
-        width={89}
-        height={54}
+        src={"/logo.svg"}
+        width={112}
+        height={66}
         alt="logo"
         style={{ verticalAlign: "bottom" }}
       />
       <Typography
-        className={`font-normal pt-2 ${epilogue.className}`}
+        className={`font-normal pt-6 ${epilogue.className}`}
         style={{ fontSize: 43.45, lineHeight: 1 }}
       >
         {"inqurio"}

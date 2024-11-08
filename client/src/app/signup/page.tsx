@@ -79,7 +79,7 @@ function Signup() {
           </div>
         </div>
         <div className="div2 flex-1 flex justify-center items-center">
-          <Image src={"/signup-img.png"} height={1} width={635} alt="" />
+          <Image src={"/signup-img.svg"} height={1} width={635} alt="" />
         </div>
       </div>
     </main>
