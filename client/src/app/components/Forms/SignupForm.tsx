@@ -68,7 +68,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
         />
       </div>
       <div>
-        <Button
+        {/* <Button
           type="submit"
           className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
           sx={{
@@ -81,7 +81,16 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           <Typography className={`text-xl ${inter.className}`}>
             {"Submit"}
           </Typography>
-        </Button>
+        </Button> */}
+
+        <button
+          type="submit"
+          className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
+        >
+          <Typography className={`text-xl ${inter.className}`}>
+            {"Submit"}
+          </Typography>
+        </button>
       </div>
     </form>
   );
