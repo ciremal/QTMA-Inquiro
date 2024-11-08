@@ -72,7 +72,6 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           type="submit"
           loading={isLoading}
           loadingPosition="end"
-          d
           className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
           sx={{
             "&:hover": {
