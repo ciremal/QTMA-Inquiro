@@ -11,7 +11,7 @@ import SignupForm from "../components/Forms/SignupForm";
 import Logo from "../components/logo";
 
 function Signup() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
 

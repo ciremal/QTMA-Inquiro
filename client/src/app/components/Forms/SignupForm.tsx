@@ -1,6 +1,5 @@
 import { inter } from "@/app/ui/fonts";
-import { LoadingButton } from "@mui/lab";
-import { Button, styled, TextField, Typography } from "@mui/material";
+import { TextField, Typography, Button } from "@mui/material";
 
 type SignupFormProps = {
   formik: any;
@@ -68,18 +67,15 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
         />
       </div>
       <div>
-        <Button
-          type="submit"
-          className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
-        >
-          <Typography className={`text-xl ${inter.className}`}>
-            {"Submit"}
-          </Typography>
-        </Button>
-
+        <Button style={{ backgroundColor: "blue" }}>Test</Button>
         <button
           type="submit"
-          className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
+          className={`w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3 flex justify-center
+          hover:bg-black hover:text-white transition duration-300 active:opacity-60 ${
+            isLoading ? "opacity-50" : ""
+          }
+          `}
+          disabled={isLoading}
         >
           <Typography className={`text-xl ${inter.className}`}>
             {"Submit"}
