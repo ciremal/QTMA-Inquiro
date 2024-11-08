@@ -16,7 +16,7 @@ const Logo = () => {
         style={{ verticalAlign: "bottom" }}
       />
       <Typography
-        className={`font-normal pt-6 ${epilogue.className}`}
+        className={`font-normal pt-3 ${epilogue.className}`}
         style={{ fontSize: 43.45, lineHeight: 1 }}
       >
         {"inqurio"}
