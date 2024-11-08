@@ -8,13 +8,6 @@ type SignupFormProps = {
 };
 
 const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
-  const SubmitButton = styled(LoadingButton)({
-    "&:hover": {
-      backgroundColor: "#000000",
-      color: "#FFFFFF",
-    },
-  });
-
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-10">
       <div className="flex flex-col gap-y-5">
@@ -75,16 +68,23 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
         />
       </div>
       <div>
-        <SubmitButton
+        <LoadingButton
           type="submit"
           loading={isLoading}
           loadingPosition="end"
+          d
           className="w-1/4 rounded-none border-solid border border-black text-black normal-case px-32 py-3"
+          sx={{
+            "&:hover": {
+              backgroundColor: "#000000",
+              color: "#FFFFFF",
+            },
+          }}
         >
           <Typography className={`text-xl ${inter.className}`}>
             {"Submit"}
           </Typography>
-        </SubmitButton>
+        </LoadingButton>
       </div>
     </form>
   );
