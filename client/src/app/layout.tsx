@@ -13,14 +13,18 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+const bagnard = localFont({
+  src: "./fonts/Bagnard.woff",
+  variable: "--font-bagnard",
+  weight: "100 900",
+});
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
+  subsets: ["latin"],
+  display: "swap",
   //👇 Add variable to our object
-  variable: '--font-dmsans',
-})
-
+  variable: "--font-dmsans",
+});
 
 export const metadata: Metadata = {
   title: "Inquiro",
@@ -35,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} antialiased`}
       >
         {children}
       </body>

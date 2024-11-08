@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { getTickerInfo } from "./api/fetchStockInfo";
 import Table from "./components/table";
+import { redirect } from "next/navigation";
 
 const tickers = [
   "nke",
@@ -19,6 +20,10 @@ const tickers = [
 ];
 
 function Home() {
+  if (process.env.NODE_ENV !== "development") {
+    redirect("/signup");
+  }
+
   //let data = await getTickerInfo("nke");
   //console.log(data["address1"]);
   // Fetch data for all tickers on the server-side
