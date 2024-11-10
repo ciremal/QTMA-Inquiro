@@ -5,20 +5,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 Install dependencies:
 
 ```bash
-npm i
-# or
+npm install -g pnpm
+# then
 pnpm i
 ```
 
 Run the development server:
 
 ```bash
-npm run dev
-# or
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Branch Format
+
+Create branch with the following name format: "(your-name)-(task number)", no brackets
+When finished, create a Pull Request and describe the changes you have made
 
 ## Resources
 
