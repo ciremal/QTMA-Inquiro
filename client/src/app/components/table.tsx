@@ -295,25 +295,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-4xl font-DM">
+    <Box className="w-full max-w-7xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-        {/* Search Field 
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search by ticker, company name, or industry..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search className="w-5 h-5" />
-              </InputAdornment>
-            ),
-          }}
-        />
-        */}
         <div>
           <p className="font-bold">Filter By:</p>
         </div>
@@ -353,7 +337,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             >
               <MenuItem value="">All Industries</MenuItem>
               {industries.map((industry) => (
-                // @ts-expect-error
+                // @ts-ignore
                 <MenuItem key={industry} value={industry}>
                   {industry}
                 </MenuItem>
@@ -401,6 +385,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               <MenuItem value="mega">Mega Cap (Over $200B)</MenuItem>
             </Select>
           </FormControl>
+
           <FormControl fullWidth>
             <InputLabel
               sx={{
@@ -441,82 +426,128 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </FormControl>
         </Box>
       </Box>
-
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderRadius: "14px", // Increased border radius
-          overflow: "hidden", // Ensures content doesn't overflow rounded corners
-          "& .MuiTableRow-root:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.04)",
-          },
-        }}
-      >
-        <Table qria-label="stock information table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.numeric ? "right" : "left"}
-                  // @ts-expect-error
-                  sortDirection={orderBy === column.id ? order : false}
-                >
-                  <TableSortLabel
-                    className="font-bold"
-                    active={orderBy === column.id}
-                    // @ts-expect-error
-                    direction={orderBy === column.id ? order : "asc"}
-                    onClick={() => handleSort(column.id)}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedData.map((item, index) => (
+      {/* Container div with background and rounded corners */}
+      <div className="bg-gray-50 p-6 rounded-2xl">
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: "14px",
+            overflow: "hidden",
+            boxShadow: "none", // Remove default Paper shadow
+            backgroundColor: "transparent", // Make Paper background transparent
+            "& .MuiTableRow-root:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
+          }}
+        >
+          <Table aria-label="stock information table">
+            <TableHead>
               <TableRow
-                key={item.symbol || index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                hover
+                sx={{
+                  "& th": {
+                    borderBottom: "2px solid rgba(224, 224, 224, 1)", // Thicker border
+                    fontWeight: 800,
+                  },
+                }}
               >
-                <TableCell component="th" scope="row">
-                  {item.symbol}
-                </TableCell>
-                <TableCell>{item.longName}</TableCell>
-                <TableCell>
-                  <Box className="flex gap-2 flex-wrap ">
-                    <Chip
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.numeric ? "right" : "left"}
+                    sortDirection={
+                      orderBy === column.id &&
+                      (order === "asc" || order === "desc")
+                        ? order
+                        : undefined
+                    }
+                  >
+                    <TableSortLabel
                       className="font-bold"
-                      key={item.industry}
-                      label={item.industry}
-                      sx={{
-                        backgroundColor: getIndustryColor(item.industry).bg,
-                        color: getIndustryColor(item.industry).color,
-                        "&:hover": {
-                          backgroundColor: getIndustryColor(item.industry).bg,
-                          opacity: 0.8,
-                        },
-                        cursor: "pointer",
-                        fontWeight: 500,
-                      }}
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  {formatMarketCap(item.marketCap)}
-                </TableCell>
-                <TableCell align="right">
-                  {formatPrice(item.currentPrice)}
-                </TableCell>
+                      active={orderBy === column.id}
+                      direction={
+                        orderBy === column.id &&
+                        (order === "asc" || order === "desc")
+                          ? order
+                          : "asc"
+                      }
+                      onClick={() => handleSort(column.id)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((item, index) => (
+                <TableRow
+                  key={item.symbol || index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  hover
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ fontWeight: 600 }}
+                  >
+                    <Box className="flex items-center gap-2">
+                      <img
+                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=jpg`}
+                        alt={`${item.symbol} logo`}
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: "20%",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                        }}
+                        onError={(e) => {
+                          // @ts-ignore
+                          e.target.onerror = null;
+                          // @ts-ignore
+                          e.target.src = "https://via.placeholder.com/32";
+                        }}
+                      />
+                      {item.symbol}
+                    </Box>
+                  </TableCell>
+                  <TableCell style={{ fontWeight: 600 }}>
+                    {item.longName}
+                  </TableCell>
+                  <TableCell>
+                    <Box className="flex gap-2 flex-wrap">
+                      <Chip
+                        className="font-bold"
+                        key={item.industry}
+                        label={item.industry}
+                        sx={{
+                          backgroundColor: getIndustryColor(item.industry).bg,
+                          color: getIndustryColor(item.industry).color,
+                          "&:hover": {
+                            backgroundColor: getIndustryColor(item.industry).bg,
+                            opacity: 0.8,
+                          },
+                          cursor: "pointer",
+                          fontWeight: 500,
+                        }}
+                      />
+                    </Box>
+                  </TableCell>
+                  <TableCell align="right">
+                    {formatMarketCap(item.marketCap)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {formatPrice(item.currentPrice)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
+        <a className="my-5" href="https://parqet.com/api">
+          Logos provided by Parqet
+        </a>
+      </div>
       {/* Pagination */}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
