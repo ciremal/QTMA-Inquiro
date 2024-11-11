@@ -19,7 +19,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           onBlur={formik.handleBlur}
           error={formik.touched.name && Boolean(formik.errors.name)}
           variant="standard"
-          className="w-1/2"
+          className="md:w-1/2 w-3/4"
           placeholder="Your Name"
           helperText={
             formik.touched.name && formik.errors.name
@@ -47,7 +47,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           onBlur={formik.handleBlur}
           error={formik.touched.name && Boolean(formik.errors.name)}
           variant="standard"
-          className="w-1/2"
+          className="md:w-1/2 w-3/4"
           placeholder="email@domain.com"
           helperText={
             formik.touched.email && formik.errors.email
