@@ -1,6 +1,6 @@
 import { inter } from "@/app/ui/fonts";
 import { LoadingButton } from "@mui/lab";
-import { CircularProgress, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 
 type SignupFormProps = {
   formik: any;
@@ -10,7 +10,7 @@ type SignupFormProps = {
 const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-10">
-      <div className="flex flex-col gap-y-5">
+      <div className="flex flex-col gap-y-5 md:items-start items-center">
         <TextField
           id="name"
           name="name"
@@ -67,7 +67,7 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="flex md:justify-start justify-center">
         <LoadingButton
           type="submit"
           loading={isLoading}
