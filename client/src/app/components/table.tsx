@@ -298,136 +298,145 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     <Box className="w-full max-w-7xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-          <div>
-            <p className='font-bold'>
-              Filter By:
-            </p>
-          </div>
-          {/* Dropdown Filters */}
-          <Box className="w-3/4 flex gap-6">
-            <FormControl fullWidth>
-              <InputLabel sx={{ 
-                '&.MuiInputLabel-root': {
-                  transform: 'translate(0.875rem, 0.75rem) scale(1)',
+        <div>
+          <p className="font-bold">Filter By:</p>
+        </div>
+        {/* Dropdown Filters */}
+        <Box className="w-3/4 flex gap-6">
+          <FormControl fullWidth>
+            <InputLabel
+              sx={{
+                "&.MuiInputLabel-root": {
+                  transform: "translate(0.875rem, 0.75rem) scale(1)",
                 },
-                '&.MuiInputLabel-shrink': {
-                  transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
-                }
-              }}>
-                Industry
-              </InputLabel>
-              <Select
-                value={industryFilter}
-                label="Industry"
-                onChange={(e) => {
-                  setIndustryFilter(e.target.value);
-                  setPage(0);
-                }}
-                sx={{
-                  height: '2.5rem',
-                  borderRadius: '0.75rem',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderRadius: '0.75rem',
-                  },
-                  '& .MuiSelect-select': {
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                  }
-                }}
-              >
-                <MenuItem value="">All Industries</MenuItem>
-                {industries.map((industry) => (
-                  <MenuItem key={industry} value={industry}>
-                    {industry}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-              
-            <FormControl fullWidth>
-              <InputLabel sx={{ 
-                '&.MuiInputLabel-root': {
-                  transform: 'translate(0.875rem, 0.75rem) scale(1)',
+                "&.MuiInputLabel-shrink": {
+                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
                 },
-                '&.MuiInputLabel-shrink': {
-                  transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
-                }
-              }}>Market Cap</InputLabel>
-              <Select
-                value={marketCapRange}
-                label="Market Cap"
-                onChange={(e) => {
-                  setMarketCapRange(e.target.value);
-                  setPage(0);
-                }}
-                sx={{
-                  height: '2.5rem',
-                  borderRadius: '0.75rem',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderRadius: '0.75rem',
-                  },
-                  '& .MuiSelect-select': {
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                  }
-                }}
-              >
-                <MenuItem value="">All Market Caps</MenuItem>
-                <MenuItem value="micro">Micro Cap (Under $300M)</MenuItem>
-                <MenuItem value="small">Small Cap ($300M - $2B)</MenuItem>
-                <MenuItem value="mid">Mid Cap ($2B - $10B)</MenuItem>
-                <MenuItem value="large">Large Cap ($10B - $200B)</MenuItem>
-                <MenuItem value="mega">Mega Cap (Over $200B)</MenuItem>
-              </Select>
-            </FormControl>
+              }}
+            >
+              Industry
+            </InputLabel>
+            <Select
+              value={industryFilter}
+              label="Industry"
+              onChange={(e) => {
+                setIndustryFilter(e.target.value);
+                setPage(0);
+              }}
+              sx={{
+                height: "2.5rem",
+                borderRadius: "0.75rem",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.75rem",
+                },
+                "& .MuiSelect-select": {
+                  paddingTop: "0.5rem",
+                  paddingBottom: "0.5rem",
+                },
+              }}
+            >
+              <MenuItem value="">All Industries</MenuItem>
+              {industries.map((industry) => (
+                // @ts-ignore
+                <MenuItem key={industry} value={industry}>
+                  {industry}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-            <FormControl fullWidth>
-              <InputLabel sx={{ 
-                '&.MuiInputLabel-root': {
-                  transform: 'translate(0.875rem, 0.75rem) scale(1)',
+          <FormControl fullWidth>
+            <InputLabel
+              sx={{
+                "&.MuiInputLabel-root": {
+                  transform: "translate(0.875rem, 0.75rem) scale(1)",
                 },
-                '&.MuiInputLabel-shrink': {
-                  transform: 'translate(0.875rem, -0.375rem) scale(0.75)',
-                }
-              }}>Stock Price</InputLabel>
-              <Select
-                value={priceRange}
-                label="Price Range"
-                onChange={(e) => {
-                  setPriceRange(e.target.value);
-                  setPage(0);
-                }}
-                sx={{
-                  height: '2.5rem',
-                  borderRadius: '0.75rem',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderRadius: '0.75rem',
-                  },
-                  '& .MuiSelect-select': {
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                  }
-                }}
-              >
-                <MenuItem value="">All Prices</MenuItem>
-                <MenuItem value="under50">Under $50</MenuItem>
-                <MenuItem value="50to200">$50 - $200</MenuItem>
-                <MenuItem value="over200">Over $200</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+                "&.MuiInputLabel-shrink": {
+                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
+                },
+              }}
+            >
+              Market Cap
+            </InputLabel>
+            <Select
+              value={marketCapRange}
+              label="Market Cap"
+              onChange={(e) => {
+                setMarketCapRange(e.target.value);
+                setPage(0);
+              }}
+              sx={{
+                height: "2.5rem",
+                borderRadius: "0.75rem",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.75rem",
+                },
+                "& .MuiSelect-select": {
+                  paddingTop: "0.5rem",
+                  paddingBottom: "0.5rem",
+                },
+              }}
+            >
+              <MenuItem value="">All Market Caps</MenuItem>
+              <MenuItem value="micro">Micro Cap (Under $300M)</MenuItem>
+              <MenuItem value="small">Small Cap ($300M - $2B)</MenuItem>
+              <MenuItem value="mid">Mid Cap ($2B - $10B)</MenuItem>
+              <MenuItem value="large">Large Cap ($10B - $200B)</MenuItem>
+              <MenuItem value="mega">Mega Cap (Over $200B)</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel
+              sx={{
+                "&.MuiInputLabel-root": {
+                  transform: "translate(0.875rem, 0.75rem) scale(1)",
+                },
+                "&.MuiInputLabel-shrink": {
+                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
+                },
+              }}
+            >
+              Stock Price
+            </InputLabel>
+            <Select
+              value={priceRange}
+              label="Price Range"
+              onChange={(e) => {
+                setPriceRange(e.target.value);
+                setPage(0);
+              }}
+              sx={{
+                height: "2.5rem",
+                borderRadius: "0.75rem",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "0.75rem",
+                },
+                "& .MuiSelect-select": {
+                  paddingTop: "0.5rem",
+                  paddingBottom: "0.5rem",
+                },
+              }}
+            >
+              <MenuItem value="">All Prices</MenuItem>
+              <MenuItem value="under50">Under $50</MenuItem>
+              <MenuItem value="50to200">$50 - $200</MenuItem>
+              <MenuItem value="over200">Over $200</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
+      </Box>
       {/* Container div with background and rounded corners */}
       <div className="bg-gray-50 p-6 rounded-2xl">
-        <TableContainer 
+        <TableContainer
           component={Paper}
           sx={{
-            borderRadius: '14px',
-            overflow: 'hidden',
-            boxShadow: 'none', // Remove default Paper shadow
-            backgroundColor: 'transparent', // Make Paper background transparent
-            '& .MuiTableRow-root:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            borderRadius: "14px",
+            overflow: "hidden",
+            boxShadow: "none", // Remove default Paper shadow
+            backgroundColor: "transparent", // Make Paper background transparent
+            "& .MuiTableRow-root:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
             },
           }}
         >
@@ -435,24 +444,33 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             <TableHead>
               <TableRow
                 sx={{
-                  '& th': {
-                    borderBottom: '2px solid rgba(224, 224, 224, 1)', // Thicker border
-                    fontWeight: 800
-                  }
+                  "& th": {
+                    borderBottom: "2px solid rgba(224, 224, 224, 1)", // Thicker border
+                    fontWeight: 800,
+                  },
                 }}
               >
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
-                    align={column.numeric ? 'right' : 'left'}
-                    sortDirection={orderBy === column.id ? order : false}
+                    align={column.numeric ? "right" : "left"}
+                    sortDirection={
+                      orderBy === column.id &&
+                      (order === "asc" || order === "desc")
+                        ? order
+                        : undefined
+                    }
                   >
                     <TableSortLabel
                       className="font-bold"
                       active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : 'asc'}
+                      direction={
+                        orderBy === column.id &&
+                        (order === "asc" || order === "desc")
+                          ? order
+                          : "asc"
+                      }
                       onClick={() => handleSort(column.id)}
-                      IconComponent={order === 'asc' ? ArrowUpward : ArrowDownward}
                     >
                       {column.label}
                     </TableSortLabel>
@@ -462,26 +480,39 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             </TableHead>
             <TableBody>
               {paginatedData.map((item, index) => (
-                <TableRow 
+                <TableRow
                   key={item.symbol || index}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   hover
                 >
-                  <TableCell component="th" scope="row" style={{ fontWeight: 600 }}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ fontWeight: 600 }}
+                  >
                     <Box className="flex items-center gap-2">
-                    <img
-                      src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=jpg`}
-                      alt={`${item.symbol} logo`}
-                      style={{ width: 48, height: 48, borderRadius: '20%', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://via.placeholder.com/32';
-                      }}
-                    />
-                    {item.symbol}
+                      <img
+                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=jpg`}
+                        alt={`${item.symbol} logo`}
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: "20%",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                        }}
+                        onError={(e) => {
+                          // @ts-ignore
+                          e.target.onerror = null;
+                          // @ts-ignore
+                          e.target.src = "https://via.placeholder.com/32";
+                        }}
+                      />
+                      {item.symbol}
                     </Box>
                   </TableCell>
-                  <TableCell style={{ fontWeight: 600 }}>{item.longName}</TableCell>
+                  <TableCell style={{ fontWeight: 600 }}>
+                    {item.longName}
+                  </TableCell>
                   <TableCell>
                     <Box className="flex gap-2 flex-wrap">
                       <Chip
@@ -491,11 +522,11 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                         sx={{
                           backgroundColor: getIndustryColor(item.industry).bg,
                           color: getIndustryColor(item.industry).color,
-                          '&:hover': {
+                          "&:hover": {
                             backgroundColor: getIndustryColor(item.industry).bg,
                             opacity: 0.8,
                           },
-                          cursor: 'pointer',
+                          cursor: "pointer",
                           fontWeight: 500,
                         }}
                       />
@@ -513,21 +544,21 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </Table>
         </TableContainer>
 
-      
-        <a className="my-5" href="https://parqet.com/api">Logos provided by Parqet</a>
+        <a className="my-5" href="https://parqet.com/api">
+          Logos provided by Parqet
+        </a>
       </div>
       {/* Pagination */}
       <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={processedData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={processedData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
-    
   );
 }
 
