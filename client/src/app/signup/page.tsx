@@ -55,14 +55,17 @@ function Signup() {
           <div className="md:pl-36 px-8 flex flex-col gap-y-7">
             <div>
               <Typography
-                className={`font-normal leading-[58px] text-[58px] md:text-left text-center`}
-                style={{ fontFamily: "Bagnard" }}
+                className={`font-normal leading-[58px] md:text-left text-center`}
+                style={{ fontSize: 58, fontFamily: "Bagnard" }}
               >
                 {`Your home base for investment research.`}
               </Typography>
             </div>
             <div>
-              <Typography className="font-DM text-[#757575] leading-8 text-[24px] md:text-left text-center">
+              <Typography
+                className="font-DM text-[#757575] leading-8 md:text-left text-center"
+                style={{ fontSize: 24 }}
+              >
                 A simplified way to screen and retrieve information about your
                 investable universe. We’re looking to launch to the world this
                 winter.
