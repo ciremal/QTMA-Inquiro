@@ -10,11 +10,10 @@ export const getTickerInfo = async (ticker: string) => {
   }
 };
 
-export const getTickerInfoBulk = async (tickers: string[]) => {
+export const getTickerInfoBulk = async () => {
   try {
-    const tickersString = tickers.toString();
     const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-list-of-companies?tickers=${tickersString}`
+      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-list-of-companies`
     );
     return await res.json();
   } catch (error) {
