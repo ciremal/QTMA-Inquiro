@@ -11,6 +11,10 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "inquiro-beige": "#F4F3EB",
+      },
+      fontFamily: {
+        DM: ["var(--font-dmsans)", "sans-serif"],
       },
     },
   },

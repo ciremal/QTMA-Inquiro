@@ -1,30 +1,46 @@
 import React from "react";
-
+import { epilogue } from "../ui/fonts";
+import Image from "next/image";
 
 const Navbar = () => {
-    
-    return <nav className="w-full fixed top-0 flex justify-between items-center px-8 py-4 bg-white z-10">
+  return (
+    <nav className="w-full fixed flex justify-between items-center px-4 py-2 bg-transparent z-10 top-0">
+      {/* Left side: Original Logo */}
       <div className="flex items-center gap-2">
-        <img
-            src="/path/to/your-logo.png"  // Replace with your logo path
-            alt="Logo"
-            className="w-8 h-8"  // Adjust size as needed
-        />
-        <a href="/" className="site-title">inquiro</a>
-    </div>
-        <ul className="flex space-x-4">
-            <li>
-                <a href="/profile"> {/* Link to the user's profile page */}
-                    <img
-                        src="/path/to/profile-image.jpg"  // Replace with actual image path or URL
-                        alt="Profile"
-                        className="w-10 h-10  object-cover cursor-pointer"
-                    />
-                </a>
-            </li>
-        </ul>
-    </nav>
+        <div className="navbar px-2 py-2 flex flex-row justify-start items-center gap-x-3">
+          <a href="/profile">
+            <Image
+              src={"/logo.svg"}
+              width={44.5}
+              height={27}
+              alt="logo"
+              style={{ verticalAlign: "bottom" }}
+            />
+          </a>
+          <a href="/profile">
+            <span
+              className={`font-normal ${epilogue.className}`}
+              style={{ fontSize: 21.725, lineHeight: 1 }}
+            >
+              {"inqurio"}
+            </span>
+          </a>
+        </div>
+      </div>
 
-}   
+      <ul className="flex space-x-4 pr-8">
+        <li>
+          <a href="/profile">
+            <img
+              src="/profilepic.svg"
+              alt="Profile"
+              className="w-11 h-11 cursor-pointer rounded-full"
+            />
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
+};
 
 export default Navbar;
