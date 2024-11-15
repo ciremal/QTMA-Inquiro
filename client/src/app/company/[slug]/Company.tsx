@@ -33,15 +33,15 @@ export default function Company({company, logo}: CompanyProps) {
               </div>
             </div>
             <div className="flex flex-col gap-4">
-              <StatsCard title="EV" value={company.enterpriseValue} small/>
-              <StatsCard title="EBITDA" value={company.ebitda} small/>
+              <StatsCard title="EV" value={company.enterpriseValue} small status="down"/>
+              <StatsCard title="EBITDA" value={company.ebitda} small status="up"/>
             </div>
           </div>
             <div className="flex gap-4 justify-around">
-              <StatsCard title="Revenue" value={company.totalRevenue}/>
-              <StatsCard title="EPS" value={company.forwardEps}/>
-              <StatsCard title="Gross" value={company.grossMargins}/>
-              <StatsCard title="P/E" value={company.forwardPE}/>
+              <StatsCard title="Revenue" value={company.totalRevenue} status="neutral"/>
+              <StatsCard title="EPS" value={company.forwardEps} status="up"/>
+              <StatsCard title="Gross" value={company.grossMargins} status="neutral"/>
+              <StatsCard title="P/E" value={company.forwardPE} status="down"/>
             </div>
         </div>
     )
