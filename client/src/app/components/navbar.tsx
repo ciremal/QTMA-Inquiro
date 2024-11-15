@@ -1,6 +1,7 @@
 import React from "react";
 import { epilogue } from "../ui/fonts";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -8,7 +9,7 @@ const Navbar = () => {
       {/* Left side: Original Logo */}
       <div className="flex items-center gap-2">
         <div className="navbar px-2 py-2 flex flex-row justify-start items-center gap-x-3">
-          <a href="/profile">
+          <Link href="/">
             <Image
               src={"/logo.svg"}
               width={44.5}
@@ -16,27 +17,27 @@ const Navbar = () => {
               alt="logo"
               style={{ verticalAlign: "bottom" }}
             />
-          </a>
-          <a href="/profile">
+          </Link>
+          <Link href="/">
             <span
               className={`font-normal ${epilogue.className}`}
               style={{ fontSize: 21.725, lineHeight: 1 }}
             >
               {"inqurio"}
             </span>
-          </a>
+          </Link>
         </div>
       </div>
 
       <ul className="flex space-x-4 pr-8">
         <li>
-          <a href="/profile">
+          <Link href="/profile">
             <img
               src="/profilepic.svg"
               alt="Profile"
               className="w-11 h-11 cursor-pointer rounded-full"
             />
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
