@@ -15,7 +15,7 @@ export default function Company({company, logo}: CompanyProps) {
             <div className="flex gap-4">
               <img src={logo} alt={`${company} logo`} className="rounded"/>
               <div className="m-auto">
-                <h1 className="font-bold text-4xl mb-4">{company.shortName}</h1>
+                <h1 className="font-bold text-4xl mb-4 text-nowrap">{company.shortName}</h1>
                       <Chip
                         className="font-bold"
                         label={company.industry}
