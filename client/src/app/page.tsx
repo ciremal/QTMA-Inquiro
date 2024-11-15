@@ -6,6 +6,7 @@ import Table from "./components/table";
 import { redirect } from "next/navigation";
 import sp500Data from "../../public/sp500Data.json";
 import { getTickerInfoBulk } from "./api/fetchStockInfo";
+import Navbar from "./components/navbar";
 
 const tickers = sp500Data.map((ele) => ele.symbol).slice(0, 25);
 
@@ -39,14 +40,22 @@ function Home() {
   return (
     <main className="flex flex-col h-screen">
       <div className="bg-ingquiro-beige flex-1 flex items-center justify-center">
-        <Typography className="font-DM" variant="h4">
-          {`Ask me about APPL's latest earnings call`}
-        </Typography>
+        <Navbar />
       </div>
       <div
-        className="bg-ingquiro-beige flex items-center justify-center font-DM"
+        className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM"
         style={{ height: "60%" }}
       >
+        <Typography
+          className="font-DM mb-4"
+          variant="h4"
+          style={{ fontWeight: "bold" }}
+        >
+          <span style={{ color: "black" }}>Ask me about</span>
+          <span
+            style={{ color: "gray" }}
+          >{` APPL's latest earnings call`}</span>
+        </Typography>
         {/* @ts-expect-error */}
         <Table data={data}></Table>
       </div>

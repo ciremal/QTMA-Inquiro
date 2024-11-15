@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import Search from "@mui/icons-material/Search";
 import {
   Table,
   TableBody,
@@ -6,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Paper,
   TableSortLabel,
   TablePagination,
@@ -16,6 +18,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  InputAdornment,
 } from "@mui/material";
 
 // TO DO: bg color is broken and wont assign it properly. Please Fix.
@@ -196,7 +199,26 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
 
-  // Get unique industries for dropdown
+<Box className="mb-4 space-y-4">
+  <TextField
+    fullWidth
+    variant="outlined"
+    placeholder="Search by ticker, company name, or industry..."
+    value={searchTerm}
+    onChange={(event) => {
+      setSearchTerm(event.target.value);
+      setPage(0);
+    }}
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <Search className="w-5 h-5" />
+        </InputAdornment>
+      ),
+    }}
+  />
+</Box>
+
   const industries = useMemo(() => {
     if (!data) return [];
     return [...new Set(data.map((item: any) => item.industry))]
@@ -295,9 +317,33 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-7xl font-DM">
+    <Box className="w-full max-w-4xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Search by ticker, company name, or industry..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search className="w-5 h-5" />
+              </InputAdornment>
+            ),
+            sx: {
+              backgroundColor: "white",
+              borderRadius:"1rem",
+            },
+          }}
+        sx={{
+          padding:"0.5rem",
+          paddingLeft:"3rem",
+          paddingRight:"3rem",
+          
+        }}
+        />
         <div>
           <p className="font-bold">Filter By:</p>
         </div>
@@ -426,6 +472,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </FormControl>
         </Box>
       </Box>
+
       {/* Container div with background and rounded corners */}
       <div className="bg-gray-50 p-6 rounded-2xl">
         <TableContainer
@@ -548,6 +595,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           Logos provided by Parqet
         </a>
       </div>
+
       {/* Pagination */}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
