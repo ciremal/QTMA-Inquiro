@@ -1,4 +1,6 @@
-export const getTickerInfo = async (ticker: string) => {
+import { CompanyData } from "./models";
+
+export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
     const res = await fetch(
       `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev?ticker=${ticker}`
