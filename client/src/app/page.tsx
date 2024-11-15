@@ -2,56 +2,34 @@
 
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
-import { getTickerInfo } from "./api/fetchStockInfo";
-import Navbar from "./components/navbar";
 import Table from "./components/table";
 import { redirect } from "next/navigation";
+import sp500Data from "../../public/sp500Data.json";
+import { getTickerInfoBulk } from "./api/fetchStockInfo";
 
-const tickers = [
-  "nke",
-  "eric",
-  "msft",
-  "goog",
-  "aapl",
-  "spot",
-  "meta",
-  "amzn",
-  "tsla",
-  "nvda",
-];
+const tickers = sp500Data.map((ele) => ele.symbol).slice(0, 25);
 
 function Home() {
+  // Temporarily redirect users to signup page on production
   if (process.env.NODE_ENV !== "development") {
     redirect("/signup");
   }
 
-  //let data = await getTickerInfo("nke");
-  //console.log(data["address1"]);
-  // Fetch data for all tickers on the server-side
   // State to hold the fetched data
   const [data, setData] = useState([]);
 
   useEffect(() => {
     // Function to fetch data for all tickers
     const fetchData = async () => {
-      const dataPromises = tickers.map(async (ticker) => {
-        try {
-          const data = await getTickerInfo(ticker);
-          return data;
-        } catch (err) {
-          console.error(`Error fetching data for ${ticker}`, err);
-          return null;
-        }
-      });
-
-      // Wait for all promises to resolve
-      const resolvedData = await Promise.all(dataPromises);
-      // Filter out any null values
-      const filteredData = resolvedData.filter((item) => item !== null);
-      // Update state with the filtered data
-      // console.log(filteredData);
-      // @ts-expect-error
-      setData(filteredData);
+      try {
+        const data = await getTickerInfoBulk();
+        const filteredData = data.filter(
+          (item: any) => item !== null && item.longName !== undefined
+        );
+        setData(filteredData);
+      } catch (error) {
+        console.error(`Error fetching data for `, error);
+      }
     };
 
     // Call the fetchData function

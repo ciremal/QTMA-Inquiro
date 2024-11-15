@@ -29,12 +29,13 @@ function Signup() {
       email: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       setIsLoading(true);
       try {
-        const res = await postSignupInfo(values.name, values.email);
+        await postSignupInfo(values.name, values.email);
         setOpen(true);
         setMessage("Sign Up Successful!");
+        resetForm();
       } catch (error) {
         console.log(error);
         setMessage("An error occured during signup. Please try again later.");
@@ -51,10 +52,10 @@ function Signup() {
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
       <div className="flex w-full">
         <div className="div1 flex-1 flex flex-col">
-          <div className="pl-36 flex flex-col gap-y-7">
+          <div className="md:pl-36 px-8 flex flex-col gap-y-7">
             <div>
               <Typography
-                className={`font-normal leading-[58px]`}
+                className={`font-normal leading-[58px] md:text-left text-center`}
                 style={{ fontSize: 58, fontFamily: "Bagnard" }}
               >
                 {`Your home base for investment research.`}
@@ -62,7 +63,7 @@ function Signup() {
             </div>
             <div>
               <Typography
-                className="font-DM text-[#757575] leading-8"
+                className="font-DM text-[#757575] leading-8 md:text-left text-center"
                 style={{ fontSize: 24 }}
               >
                 A simplified way to screen and retrieve information about your
@@ -78,7 +79,7 @@ function Signup() {
             <SignupForm formik={formik} isLoading={isLoading} />
           </div>
         </div>
-        <div className="div2 flex-1 flex justify-center items-center">
+        <div className="div2 flex-1 md:flex justify-center items-center hidden">
           <Image src={"/signup-img.svg"} height={1} width={635} alt="" />
         </div>
       </div>

@@ -18,6 +18,14 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Build
+
+Before submitting a pull request, please run the following command and fix any errors that appear:
+
+```bash
+pnpm build
+```
+
 ## Branch Format
 
 Create branch with the following name format: "(your-name)-(task number)", no brackets
