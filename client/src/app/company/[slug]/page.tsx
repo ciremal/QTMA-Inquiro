@@ -14,7 +14,7 @@ export default async function Page({
     if (!company || !company.address1){
       notFound()
     }
-    const logo = `https://assets.parqet.com/logos/symbol/${slug}?format=jpg`
+    const logo = `https://assets.parqet.com/logos/symbol/${slug}?format=svg`
 
     return (
       <div className="flex flex-col gap-8 items-center">
