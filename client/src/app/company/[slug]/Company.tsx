@@ -16,20 +16,35 @@ export default async function Company({company, logo}: CompanyProps) {
               <img src={logo} alt={`${company} logo`} className="rounded"/>
               <div className="m-auto">
                 <h1 className="font-bold text-4xl mb-4 text-nowrap">{company.shortName}</h1>
-                      <Chip
-                        className="font-bold"
-                        label={company.industry}
-                        sx={{
-                          backgroundColor: getIndustryColor(company.industry).bg,
-                          color: getIndustryColor(company.industry).color,
-                          "&:hover": {
-                            backgroundColor: getIndustryColor(company.industry).bg,
-                            opacity: 0.8,
-                          },
-                          cursor: "pointer",
-                          fontWeight: 500,
-                        }}
-                      />
+                <div className="flex gap-4">
+                  <Chip
+                    className="font-bold"
+                    label={company.industry}
+                    sx={{
+                      backgroundColor: getIndustryColor(company.industry).bg,
+                      color: getIndustryColor(company.industry).color,
+                      "&:hover": {
+                        backgroundColor: getIndustryColor(company.industry).bg,
+                        opacity: 0.8,
+                      },
+                      cursor: "pointer",
+                      fontWeight: 500,
+                    }}
+                  />
+                  <Chip
+                    label={company.sector}
+                    sx={{
+                      backgroundColor: getIndustryColor(company.sector).bg,
+                      color: getIndustryColor(company.industry).color,
+                      "&:hover": {
+                        backgroundColor: getIndustryColor(company.sector).bg,
+                        opacity: 0.8,
+                      },
+                      cursor: "pointer",
+                      fontWeight: 500,
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">

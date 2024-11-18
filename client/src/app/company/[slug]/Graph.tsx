@@ -49,7 +49,7 @@ export default function Graph({company}: GraphProps) {
         labels: data?.map((d) => d.x),
         datasets: [
             {
-                label: 'AAPL Stock Price',
+                label: `${company.toUpperCase()} Stock Price`,
                 data: data?.map((d) => d.y),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
