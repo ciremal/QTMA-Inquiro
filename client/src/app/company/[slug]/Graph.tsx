@@ -2,20 +2,13 @@
 
 import { getTickerHistoricalData } from "@/app/api/fetchStockInfo"
 import { Line } from 'react-chartjs-2'
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions, plugins } from 'chart.js'
 import useSWR from 'swr';
 import 'chartjs-plugin-crosshair';
 import GraphButton from "./GraphButton";
 import { useState } from "react";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
-
-const options: ChartOptions<'line'> = {
-    interaction: {
-        mode: 'index',
-        intersect: false,
-    },
-}
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip)
 
 async function getData(company: string, period: string) {
     let interval = "1d"
@@ -49,13 +42,24 @@ export default function Graph({company}: GraphProps) {
         labels: data?.map((d) => d.x),
         datasets: [
             {
-                label: `${company.toUpperCase()} Stock Price`,
                 data: data?.map((d) => d.y),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true,
             },
         ],
+    }
+    const options: ChartOptions<'line'> = {
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: data ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}` : "Loading...",
+            }
+        }
     }
 
 
