@@ -141,3 +141,13 @@ export interface CompanyData {
   financialCurrency: string;
   trailingPegRatio: number;
 }
+export interface HistoricalData {
+  Date: string;
+  Open: number;
+  High: number;
+  Low: number;
+  Close: number;
+  Volume: number;
+  Dividends: number;
+  StockSplits: number;
+}

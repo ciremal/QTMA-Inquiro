@@ -8,7 +8,7 @@ interface CompanyProps {
     logo: string
 }
 
-export default function Company({company, logo}: CompanyProps) {
+export default async function Company({company, logo}: CompanyProps) {
     return (
         <div className="bg-white px-10 pt-16 pb-8 flex flex-col gap-12 w-4/5 m-auto rounded-md border-2 border-slate-300 mt-12">
           <div className="flex justify-between">

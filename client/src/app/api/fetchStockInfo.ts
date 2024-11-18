@@ -1,4 +1,4 @@
-import { CompanyData } from "./models";
+import { CompanyData, HistoricalData } from "./models";
 
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
@@ -28,7 +28,7 @@ export const getTickerHistoricalData = async (
   ticker: string,
   period: string,
   interval: string
-) => {
+): Promise<HistoricalData[]> => {
   // See possible periods and intervals in ./app/lib/constants
   try {
     const res = await fetch(
