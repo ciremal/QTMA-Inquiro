@@ -10,7 +10,7 @@ interface CompanyProps {
 
 export default async function Company({company, logo}: CompanyProps) {
     return (
-        <div className="bg-white px-10 pt-16 pb-8 flex flex-col gap-12 w-5/6 m-auto rounded-md border-2 border-slate-300 mt-12">
+        <div className="bg-white px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md border-2 border-slate-300 mt-12 w-full">
           <div className="flex justify-between">
             <div className="flex gap-4">
               <img src={logo} alt={`${company} logo`} className="rounded"/>
