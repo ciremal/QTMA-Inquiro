@@ -29,6 +29,9 @@ importers:
       chart.js:
         specifier: ^4.4.6
         version: 4.4.6
+      chartjs-plugin-crosshair:
+        specifier: ^2.0.0
+        version: 2.0.0(chart.js@4.4.6)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -66,6 +69,9 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
+      '@types/chartjs-plugin-crosshair':
+        specifier: ^1.1.4
+        version: 1.1.4
       '@types/node':
         specifier: ^20
         version: 20.17.0
@@ -640,6 +646,12 @@ packages:
   '@swc/helpers@0.5.13':
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
 
+  '@types/chart.js@2.9.41':
+    resolution: {integrity: sha512-3dvkDvueckY83UyUXtJMalYoH6faOLkWQoaTlJgB4Djde3oORmNP0Jw85HtzTuXyliUHcdp704s0mZFQKio/KQ==}
+
+  '@types/chartjs-plugin-crosshair@1.1.4':
+    resolution: {integrity: sha512-AvHMQMFh7aK+npOcyqezzaRpCgA5vqg3d885RD2xUyXULeUcgvxbLPf5v6yX5QqmbUZB3xRDOv52vCabBw+YKg==}
+
   '@types/hoist-non-react-statics@3.3.5':
     resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
 
@@ -902,6 +914,11 @@ packages:
   chart.js@4.4.6:
     resolution: {integrity: sha512-8Y406zevUPbbIBA/HRk33khEmQPk5+cxeflWE/2rx1NJsjVWMPw/9mSP9rxHP5eqi6LNoPBVMfZHxbwLSgldYA==}
     engines: {pnpm: '>=8'}
+
+  chartjs-plugin-crosshair@2.0.0:
+    resolution: {integrity: sha512-Vs6strRvYpzL92v40r/rAWhh+7au8VnfyC/m2ZHXcXeLEWeFjDgMvXjWdX+eARhbgHQo+uGIKyq9fmkS79GIyQ==}
+    peerDependencies:
+      chart.js: ^4.0.1
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -1756,6 +1773,9 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
   ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -2972,6 +2992,14 @@ snapshots:
     dependencies:
       tslib: 2.8.0
 
+  '@types/chart.js@2.9.41':
+    dependencies:
+      moment: 2.30.1
+
+  '@types/chartjs-plugin-crosshair@1.1.4':
+    dependencies:
+      '@types/chart.js': 2.9.41
+
   '@types/hoist-non-react-statics@3.3.5':
     dependencies:
       '@types/react': 18.3.12
@@ -3300,6 +3328,10 @@ snapshots:
   chart.js@4.4.6:
     dependencies:
       '@kurkle/color': 0.3.2
+
+  chartjs-plugin-crosshair@2.0.0(chart.js@4.4.6):
+    dependencies:
+      chart.js: 4.4.6
 
   chokidar@3.6.0:
     dependencies:
@@ -4308,6 +4340,8 @@ snapshots:
   minimist@1.2.8: {}
 
   minipass@7.1.2: {}
+
+  moment@2.30.1: {}
 
   ms@2.0.0: {}
 

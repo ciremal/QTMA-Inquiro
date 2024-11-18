@@ -21,7 +21,7 @@ export default async function Page({
         <Company company={company} logo={logo}/>
         <div className="flex w-5/6 gap-12">
           <Description description={company.longBusinessSummary}/>
-          <Graph/>
+          <Graph company={slug}/>
         </div>
       </div>
     )
