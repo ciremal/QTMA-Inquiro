@@ -44,25 +44,20 @@ export default function Graph({company}: GraphProps) {
     const {data, error} = useSWR(period, async ()=> getData(company, period))
 
     if (error) return <div>Failed to load</div>
-    if (!data){
-        return (
-            <div className="bg-white border-slate-300 rounded-md p-12 basis-0 grow-[4]">
-                Loading...
-            </div>
-        )
-    }
+
     const chartData = {
-        labels: data.map((d) => d.x),
+        labels: data?.map((d) => d.x),
         datasets: [
             {
                 label: 'AAPL Stock Price',
-                data: data.map((d) => d.y),
+                data: data?.map((d) => d.y),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true,
             },
         ],
     }
+
 
     return (
         <div className="bg-white border-slate-300 rounded-md p-8 basis-0 grow-[4]">
