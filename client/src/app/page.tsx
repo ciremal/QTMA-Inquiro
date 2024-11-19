@@ -39,12 +39,8 @@ function Home() {
 
   return (
     <main className="flex flex-col h-screen">
-      <div className="bg-ingquiro-beige flex-1 flex items-center justify-center">
-        <Navbar />
-      </div>
       <div
         className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM"
-        style={{ height: "60%" }}
       >
         <Typography
           className="font-DM mb-4"
