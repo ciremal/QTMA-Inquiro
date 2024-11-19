@@ -13,18 +13,23 @@ import {
   ChartOptions,
 } from "chart.js";
 import useSWR, { useSWRConfig } from "swr";
-import "chartjs-plugin-crosshair";
+import Crosshair from 'chartjs-plugin-crosshair';
 import GraphButton from "./GraphButton";
 import { useState, useEffect } from "react";
+import { Zoom } from "@mui/material";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip);
-
+ChartJS.register(
+    CategoryScale, 
+    LinearScale, 
+    PointElement, 
+    LineElement, 
+    Title, 
+    Tooltip,
+    Crosshair
+  );
 async function getData(company: string, period: string) {
-  let interval = "1d";
-  if (period === "2y" || period === "5y") {
-    interval = "1wk";
-  }
-  const data = await getTickerHistoricalData(company, period, interval);
+  const data = await getTickerHistoricalData(company, period, period === "5y" ? "5d" : "1d");
+
   return data.map((d) => ({
     x: new Date(d.Date).toLocaleDateString("en-US", {
       month: "short",
@@ -71,6 +76,7 @@ export default function Graph({ company }: GraphProps) {
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         fill: true,
+        pointRadius: 0,
       },
     ],
   };
@@ -85,8 +91,25 @@ export default function Graph({ company }: GraphProps) {
         display: true,
         text: data ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}` : "Loading...",
       },
-    },
+      tooltip: {
+        mode: 'index',
+        intersect: false
+      },
+      crosshair: {
+        line: {
+          color: '#4CC0C0',  // crosshair line color
+          width: 1        // crosshair line width
+        },
+        zoom: {
+            enabled: false
+        },
+        snap: {
+            enabled: true
+        },
+      }
+    }
   };
+  
 
   return (
     <div className="bg-white border-slate-300 rounded-md p-8 basis-0 grow-[4]">
