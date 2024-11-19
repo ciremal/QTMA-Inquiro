@@ -20,7 +20,7 @@ export default async function Page({
     return (
         <div className="flex flex-col gap-8 items-center w-11/12 m-auto">
           <Company company={company} logo={logo}/>
-          <div className="flex gap-12">
+          <div className="flex gap-12 max-h-[420px]">
             <Description description={company.longBusinessSummary}/>
             <Graph company={slug}/>
           </div>
