@@ -87,6 +87,20 @@ export default function Graph({ company }: GraphProps) {
       mode: "index",
       intersect: false,
     },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        ticks: {
+          callback: function(value) {
+            return `$${value}`
+          }
+        }
+      }
+    },
     plugins: {
       title: {
         display: true,
@@ -94,7 +108,22 @@ export default function Graph({ company }: GraphProps) {
       },
       tooltip: {
         mode: 'index',
-        intersect: false
+        intersect: false,
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+              }).format(context.parsed.y);
+            }
+            return label;
+          }
+        }
       },
       crosshair: {
         line: {
