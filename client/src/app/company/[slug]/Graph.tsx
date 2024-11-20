@@ -142,7 +142,7 @@ export default function Graph({ company }: GraphProps) {
   
 
   return (
-    <div className="bg-white border-slate-300 rounded-md p-8 basis-0 grow-[4]">
+    <div className="bg-white border-2 border-slate-300 rounded-md p-8 basis-0 grow-[4]">
       <Line data={chartData} options={options} />
       <div className="flex justify-center gap-4 mt-4">
         <GraphButton on={period === "1mo"} onClick={() => setPeriod("1mo")}>
