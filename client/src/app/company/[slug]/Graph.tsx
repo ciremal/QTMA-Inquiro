@@ -28,6 +28,10 @@ ChartJS.register(
   );
 async function getData(company: string, period: string) {
   const data = await getTickerHistoricalData(company, period, period === "5y" ? "5d" : "1d");
+  // Check if data is an array
+  if (!Array.isArray(data)){
+    throw new Error(`Unexpected data format: ${JSON.stringify(data)}`);
+  }
 
   return data.map((d) => ({
     x: new Date(d.Date).toLocaleDateString("en-US", {
@@ -65,8 +69,6 @@ export default function Graph({ company }: GraphProps) {
   // Pre-fetch other periods in the background
   usePrefetchPeriods(company, ["1mo", "2y", "5y", "ytd"]);
 
-  if (error) return <div>Failed to load</div>;
-
   const chartData = {
     labels: data?.map((d) => d.x),
     datasets: [
@@ -88,7 +90,7 @@ export default function Graph({ company }: GraphProps) {
     plugins: {
       title: {
         display: true,
-        text: data ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}` : "Loading...",
+        text: data ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}` : error ? "Failed to load, retrying..." : "Loading...",
       },
       tooltip: {
         mode: 'index',
