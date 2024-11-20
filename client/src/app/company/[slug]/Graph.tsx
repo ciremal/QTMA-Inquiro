@@ -16,7 +16,6 @@ import useSWR, { useSWRConfig } from "swr";
 import Crosshair from 'chartjs-plugin-crosshair';
 import GraphButton from "./GraphButton";
 import { useState, useEffect } from "react";
-import { Zoom } from "@mui/material";
 
 ChartJS.register(
     CategoryScale, 
