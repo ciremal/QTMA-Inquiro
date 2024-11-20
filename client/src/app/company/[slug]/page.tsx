@@ -18,7 +18,7 @@ export default async function Page({
     const logo = `https://assets.parqet.com/logos/symbol/${slug}?format=svg`
 
     return (
-        <div className="flex flex-col gap-8 items-center w-11/12 m-auto">
+        <div className="flex flex-col gap-8 items-center w-11/12 m-auto font-sans">
           <Company company={company} logo={logo}/>
           <div className="flex gap-12 max-h-[420px]">
             <Description description={company.longBusinessSummary}/>
