@@ -22,7 +22,6 @@ import {
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
 
-
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
   return [...data].sort((a, b) => {
@@ -141,25 +140,25 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
 
-<Box className="mb-4 space-y-4">
-  <TextField
-    fullWidth
-    variant="outlined"
-    placeholder="Search by ticker, company name, or industry..."
-    value={searchTerm}
-    onChange={(event) => {
-      setSearchTerm(event.target.value);
-      setPage(0);
-    }}
-    InputProps={{
-      startAdornment: (
-        <InputAdornment position="start">
-          <Search className="w-5 h-5" />
-        </InputAdornment>
-      ),
-    }}
-  />
-</Box>
+  <Box className="mb-4 space-y-4">
+    <TextField
+      fullWidth
+      variant="outlined"
+      placeholder="Search by ticker, company name, or industry..."
+      value={searchTerm}
+      onChange={(event) => {
+        setSearchTerm(event.target.value);
+        setPage(0);
+      }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <Search className="w-5 h-5" />
+          </InputAdornment>
+        ),
+      }}
+    />
+  </Box>;
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -259,33 +258,33 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-4xl font-DM">
+    <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search by ticker, company name, or industry..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search className="w-5 h-5" />
-              </InputAdornment>
-            ),
-            sx: {
-              backgroundColor: "white",
-              borderRadius:"1rem",
-            },
-          }}
-        sx={{
-          padding:"0.5rem",
-          paddingLeft:"3rem",
-          paddingRight:"3rem",
-          
-        }}
-        />
+        <Box className="flex justify-center items-center">
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search by ticker, company name, or industry..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search className="w-5 h-5" />
+                </InputAdornment>
+              ),
+              sx: {
+                backgroundColor: "white",
+                borderRadius: "3rem",
+              },
+            }}
+            sx={{
+              padding: "0.5rem",
+              maxWidth: "60%",
+            }}
+          />
+        </Box>
         <div>
           <p className="font-bold">Filter By:</p>
         </div>
