@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar";
 
@@ -28,9 +28,9 @@ const dmSans = DM_Sans({
   variable: "--font-dmsans",
 });
 const inter = Inter({
-    subsets: ['latin'],
-    variable: '--font-inter',
-})
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Inquiro",
@@ -47,7 +47,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} ${inter.variable} antialiased`}
       >
-      <Navbar/>
+        {/* <Navbar/> */}
         {children}
       </body>
     </html>
