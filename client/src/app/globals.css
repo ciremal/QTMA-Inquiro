@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #F4F3EB;
+  --background: #f4f3eb;
   --foreground: #171717;
 }
 
@@ -17,4 +17,19 @@
 body {
   color: var(--foreground);
   background: var(--background);
+}
+/*
+    https://github.com/tailwindlabs/tailwindcss/discussions/2394
+    https://github.com/tailwindlabs/tailwindcss/pull/5732
+*/
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }

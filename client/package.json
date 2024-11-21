@@ -16,6 +16,8 @@
     "@mui/lab": "6.0.0-beta.14",
     "@mui/material": "^6.1.7",
     "autoprefixer": "^10.4.20",
+    "chart.js": "^4.4.6",
+    "chartjs-plugin-crosshair": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "formik": "^2.4.6",
@@ -24,10 +26,13 @@
     "next": "15.0.1",
     "node-fetch": "^3.3.2",
     "react": "19.0.0-rc-69d4b800-20241021",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "swr": "^2.2.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/chartjs-plugin-crosshair": "^1.1.4",
     "@types/node": "^20",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
