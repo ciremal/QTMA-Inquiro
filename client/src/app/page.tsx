@@ -40,7 +40,7 @@ function Home() {
   return (
     <main className="flex flex-col h-screen">
       <div
-        className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM"
+        className="bg-ingquiro-beige flex items-center justify-center font-DM"
       >
         <Typography
           className="font-DM mb-4"
