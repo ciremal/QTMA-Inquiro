@@ -66,7 +66,6 @@ function Home() {
       </div>
       <div
         className="bg-ingquiro-beige flex items-center justify-center font-DM"
-        style={{ height: "60%" }}
       >
         {/* @ts-expect-error */}
         <Table data={data}></Table>

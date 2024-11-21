@@ -432,7 +432,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           component={Paper}
           sx={{
             borderRadius: "14px",
-            overflow: "hidden",
             boxShadow: "none", // Remove default Paper shadow
             backgroundColor: "transparent", // Make Paper background transparent
             "& .MuiTableRow-root:hover": {
