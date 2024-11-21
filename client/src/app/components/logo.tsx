@@ -5,7 +5,7 @@ import { epilogue } from "../ui/fonts";
 const Logo = () => {
   return (
     <div
-      className="navbar mx-[4.5rem] my-16 flex flex-row justify-left items-center gap-x-3"
+      className="navbar md:mx-[4.5rem] my-16 flex flex-row md:justify-start justify-center items-center gap-x-3"
       style={{ height: "10%" }}
     >
       <Image
