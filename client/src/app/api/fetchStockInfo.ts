@@ -1,4 +1,6 @@
 import { Article, CompanyData, HistoricalData } from "./models";
+const finnhub = require("finnhub");
+import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
 
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
@@ -41,14 +43,30 @@ export const getTickerHistoricalData = async (
   }
 };
 
-export const getTickerNews = async (ticker: string): Promise<Article[]> => {
-  try {
-    const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-stock-news?ticker=${ticker}`
+export const getTickerNews = async (ticker: string): Promise<any> => {
+  const api_key = finnhub.ApiClient.instance.authentications["api_key"];
+  api_key.apiKey = "crv02jhr01qpfkbunnjgcrv02jhr01qpfkbunnk0";
+  const finnhubClient = new finnhub.DefaultApi();
+
+  const dateToday = new Date();
+  const dateTo = formatDateToYYYYMMDD(dateToday);
+
+  dateToday.setDate(dateToday.getDate() - 5);
+  const dateFrom = formatDateToYYYYMMDD(dateToday);
+
+  return new Promise((resolve, reject) => {
+    finnhubClient.companyNews(
+      ticker,
+      dateFrom,
+      dateTo,
+      (error: any, data: any) => {
+        if (error) {
+          console.error(error);
+          reject(new Error("Failed to fetch stock news data."));
+        } else {
+          resolve(data.slice(0, 12));
+        }
+      }
     );
-    return await res.json();
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to fetch stock news data.");
-  }
+  });
 };

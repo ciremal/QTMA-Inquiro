@@ -151,23 +151,15 @@ export interface HistoricalData {
   Dividends: number;
   StockSplits: number;
 }
-interface ThumbnailResolution {
-  url: string;
-  width: number;
-  height: number;
-  tag: string;
-}
 
-interface Thumbnail {
-  resolutions: ThumbnailResolution[];
-}
 export interface Article {
-  uuid: string;
-  title: string;
-  publisher: string;
-  link: string;
-  providerPublishTime: number;
-  type: string;
-  thumbnail: Thumbnail;
-  relatedTickers: string[];
+  category: string;
+  datetime: number;
+  headline: string;
+  id: number;
+  image: string;
+  related: string;
+  source: string;
+  summary: string;
+  url: string;
 }
