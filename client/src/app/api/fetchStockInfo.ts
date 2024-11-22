@@ -49,7 +49,7 @@ export const getTickerNews = async (ticker: string): Promise<any> => {
   dateToday.setDate(dateToday.getDate() - 5);
   const dateFrom = formatDateToYYYYMMDD(dateToday);
 
-  const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.FINNHUB_API_KEY}`;
+  const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
   try {
     const res = await fetch(url);
     return await res.json();
