@@ -6,6 +6,7 @@ import Table from "./components/table";
 import { redirect } from "next/navigation";
 import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import useSWR from "swr";
+import Navbar from "./components/navbar";
 
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
@@ -28,22 +29,25 @@ function Home() {
     return <div>{`Something went wrong. Please try again later :(`}</div>;
   } else {
     return (
-      <main className="flex flex-col h-screen">
-        <div className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM mt-8">
-          <Typography
-            className="font-DM mb-4"
-            variant="h4"
-            style={{ fontWeight: "bold" }}
-          >
-            <span style={{ color: "black" }}>Ask me about</span>
-            <span
-              style={{ color: "gray" }}
-            >{` APPL's latest earnings call`}</span>
-          </Typography>
-          {/* @ts-expect-error */}
-          <Table data={data}></Table>
-        </div>
-      </main>
+      <>
+        <Navbar />
+        <main className="flex flex-col h-screen">
+          <div className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM mt-8">
+            <Typography
+              className="font-DM mb-4"
+              variant="h4"
+              style={{ fontWeight: "bold" }}
+            >
+              <span style={{ color: "black" }}>Ask me about</span>
+              <span
+                style={{ color: "gray" }}
+              >{` APPL's latest earnings call`}</span>
+            </Typography>
+            {/* @ts-expect-error */}
+            <Table data={data}></Table>
+          </div>
+        </main>
+      </>
     );
   }
 }
