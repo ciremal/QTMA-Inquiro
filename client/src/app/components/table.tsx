@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import { redirect } from "next/navigation";
 import Search from "@mui/icons-material/Search";
 import {
   Table,
@@ -22,7 +21,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
-
+import { redirect, useRouter } from "next/navigation";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -141,26 +140,28 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
-  
-<Box className="mb-4 space-y-4">
-  <TextField
-    fullWidth
-    variant="outlined"
-    placeholder="Search by ticker, company name, or industry..."
-    value={searchTerm}
-    onChange={(event) => {
-      setSearchTerm(event.target.value);
-      setPage(0);
-    }}
-    InputProps={{
-      startAdornment: (
-        <InputAdornment position="start">
-          <Search className="w-5 h-5" />
-        </InputAdornment>
-      ),
-    }}
-  />
-</Box>
+
+  const router = useRouter();
+
+  <Box className="mb-4 space-y-4">
+    <TextField
+      fullWidth
+      variant="outlined"
+      placeholder="Search by ticker, company name, or industry..."
+      value={searchTerm}
+      onChange={(event) => {
+        setSearchTerm(event.target.value);
+        setPage(0);
+      }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <Search className="w-5 h-5" />
+          </InputAdornment>
+        ),
+      }}
+    />
+  </Box>;
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -260,33 +261,34 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-7xl font-DM">
+
+    <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search by ticker, company name, or industry..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search className="w-5 h-5" />
-              </InputAdornment>
-            ),
-            sx: {
-              backgroundColor: "white",
-              borderRadius:"3rem",
-            },
-          }}
-        sx={{
-          padding:"0.5rem",
-          paddingLeft:"3rem",
-          paddingRight:"3rem",
-          
-        }}
-        />
+        <Box className="flex justify-center items-center">
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search by ticker, company name, or industry..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search className="w-5 h-5" />
+                </InputAdornment>
+              ),
+              sx: {
+                backgroundColor: "white",
+                borderRadius: "3rem",
+              },
+            }}
+            sx={{
+              padding: "0.5rem",
+              maxWidth: "60%",
+            }}
+          />
+        </Box>
         <div>
           <p className="pt-12 font-bold">Filter By:</p>
         </div>
@@ -471,8 +473,17 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               {paginatedData.map((item, index) => (
                 <TableRow
                   key={item.symbol || index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    cursor: "pointer",
+                    "&:active": {
+                      opacity: 0.7,
+                      transform: "scale(0.98)",
+                      transition: "transform 0.1s ease-in-out",
+                    },
+                  }}
                   hover
+                  onClick={() => router.push(`/company/${item.symbol}`)}
                 >
                   <TableCell
                     component="th"
@@ -481,7 +492,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                   >
                     <Box className="flex items-center gap-2">
                       <img
-                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=jpg`}
+                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
                         alt={`${item.symbol} logo`}
                         style={{
                           width: 48,

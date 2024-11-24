@@ -2,20 +2,20 @@ import { Metadata } from "next";
 import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import Navbar from "../../components/navbar";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
 const bagnard = localFont({
-  src: "./fonts/Bagnard.woff",
+  src: "../../fonts/Bagnard.woff",
   variable: "--font-bagnard",
   weight: "100 900",
 });
@@ -46,7 +46,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} ${inter.variable} antialiased`}
       >
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
       </body>
     </html>

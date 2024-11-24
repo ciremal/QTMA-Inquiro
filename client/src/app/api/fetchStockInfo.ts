@@ -1,4 +1,5 @@
-import { Article, CompanyData, HistoricalData } from "./models";
+import { CompanyData, HistoricalData } from "./models";
+import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
 
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
@@ -41,14 +42,19 @@ export const getTickerHistoricalData = async (
   }
 };
 
-export const getTickerNews = async (ticker: string): Promise<Article[]> => {
+export const getTickerNews = async (ticker: string): Promise<any> => {
+  const dateToday = new Date();
+  const dateTo = formatDateToYYYYMMDD(dateToday);
+
+  dateToday.setDate(dateToday.getDate() - 5);
+  const dateFrom = formatDateToYYYYMMDD(dateToday);
+
+  const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
   try {
-    const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-stock-news?ticker=${ticker}`
-    );
+    const res = await fetch(url);
     return await res.json();
   } catch (error) {
     console.error(error);
-    throw new Error("Failed to fetch stock news data.");
+    throw new Error("Failed to fetch historical data.");
   }
 };
