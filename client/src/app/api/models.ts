@@ -140,6 +140,7 @@ export interface CompanyData {
   operatingMargins: number;
   financialCurrency: string;
   trailingPegRatio: number;
+  CIK: number;
 }
 export interface HistoricalData {
   Date: string;

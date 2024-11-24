@@ -58,3 +58,15 @@ export const getTickerNews = async (ticker: string): Promise<any> => {
     throw new Error("Failed to fetch historical data.");
   }
 };
+
+export const getReports = async (cik: string) => {
+  try {
+    const res = await fetch(
+      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-reports?cik=${cik}`
+    );
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error("Field to fetch reports");
+  }
+};
