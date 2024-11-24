@@ -8,6 +8,7 @@ import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import useSWR from "swr";
 import Navbar from "./components/navbar";
 
+
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
   return data.filter(
@@ -20,6 +21,7 @@ function Home() {
   if (process.env.NODE_ENV !== "development") {
     redirect("/signup");
   }
+
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,

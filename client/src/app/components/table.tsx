@@ -230,7 +230,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   // If no data
   if (!data || data.length === 0) {
     return (
-      <Box className="w-full max-w-4xl">
+      <Box className="w-full max-w-7xl">
         <Skeleton height={56} />
         <TableContainer component={Paper}>
           <Table>
@@ -261,6 +261,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
+
     <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
@@ -289,7 +290,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           />
         </Box>
         <div>
-          <p className="font-bold">Filter By:</p>
+          <p className="pt-12 font-bold">Filter By:</p>
         </div>
         {/* Dropdown Filters */}
         <Box className="w-3/4 flex gap-6">
@@ -509,7 +510,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                       {item.symbol}
                     </Box>
                   </TableCell>
-                  <TableCell style={{ fontWeight: 600 }}>
+                  <TableCell 
+                    style={{ fontWeight: 600, cursor: "pointer"}}
+                    onClick={() => redirect(`/company/${item.symbol}`)} // Navigate on click
+                  >
                     {item.longName}
                   </TableCell>
                   <TableCell>
