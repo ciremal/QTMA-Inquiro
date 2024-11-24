@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { redirect } from "next/navigation";
 import Search from "@mui/icons-material/Search";
 import {
   Table,
@@ -140,7 +141,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
-
+  
 <Box className="mb-4 space-y-4">
   <TextField
     fullWidth
@@ -287,7 +288,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         }}
         />
         <div>
-          <p className="font-bold">Filter By:</p>
+          <p className="pt-12 font-bold">Filter By:</p>
         </div>
         {/* Dropdown Filters */}
         <Box className="w-3/4 flex gap-6">
@@ -498,7 +499,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                       {item.symbol}
                     </Box>
                   </TableCell>
-                  <TableCell style={{ fontWeight: 600 }}>
+                  <TableCell 
+                    style={{ fontWeight: 600, cursor: "pointer"}}
+                    onClick={() => redirect(`/company/${item.symbol}`)} // Navigate on click
+                  >
                     {item.longName}
                   </TableCell>
                   <TableCell>

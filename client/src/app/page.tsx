@@ -9,6 +9,7 @@ import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import Navbar from "./components/navbar";
 
 const tickers = sp500Data.map((ele) => ele.symbol).slice(0, 25);
+console.log(tickers);
 
 function Home() {
   // Temporarily redirect users to signup page on production
@@ -40,11 +41,11 @@ function Home() {
   return (
     <main className="flex flex-col h-screen">
       <div
-        className="bg-ingquiro-beige flex items-center justify-center font-DM"
+        className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM"
       >
         <Typography
-          className="font-DM mb-4"
-          variant="h4"
+          className="font-DM mb-4 pt-24"
+          variant="h3"
           style={{ fontWeight: "bold" }}
         >
           <span style={{ color: "black" }}>Ask me about</span>
@@ -53,7 +54,7 @@ function Home() {
           >{` APPL's latest earnings call`}</span>
         </Typography>
         {/* @ts-expect-error */}
-        <Table data={data}></Table>
+        <Table className ="" data={data}></Table>
       </div>
     </main>
   );
