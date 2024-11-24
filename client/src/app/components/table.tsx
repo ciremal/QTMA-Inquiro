@@ -229,7 +229,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   // If no data
   if (!data || data.length === 0) {
     return (
-      <Box className="w-full max-w-4xl">
+      <Box className="w-full max-w-7xl">
         <Skeleton height={56} />
         <TableContainer component={Paper}>
           <Table>
@@ -260,7 +260,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-4xl font-DM">
+    <Box className="w-full max-w-7xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
         <TextField
@@ -277,7 +277,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             ),
             sx: {
               backgroundColor: "white",
-              borderRadius:"1rem",
+              borderRadius:"3rem",
             },
           }}
         sx={{
