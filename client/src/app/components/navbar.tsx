@@ -31,13 +31,13 @@ const Navbar = () => {
 
       <ul className="flex space-x-4 pr-8">
         <li>
-          <Link href="/profile">
-            <img
-              src="/profilepic.svg"
-              alt="Profile"
-              className="w-14 h-14 cursor-pointer rounded-full"
-            />
-          </Link>
+          {/* <Link href="/profile"> */}
+          <img
+            src="/ProfilePic.svg"
+            alt="Profile"
+            className="w-14 h-14 cursor-pointer rounded-full"
+          />
+          {/* </Link> */}
         </li>
       </ul>
     </nav>

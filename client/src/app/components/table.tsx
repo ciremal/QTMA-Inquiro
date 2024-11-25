@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useTransition } from "react";
 import Search from "@mui/icons-material/Search";
 import {
   Table,
@@ -21,7 +21,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -141,27 +141,28 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
 
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  <Box className="mb-4 space-y-4">
-    <TextField
-      fullWidth
-      variant="outlined"
-      placeholder="Search by ticker, company name, or industry..."
-      value={searchTerm}
-      onChange={(event) => {
-        setSearchTerm(event.target.value);
-        setPage(0);
-      }}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <Search className="w-5 h-5" />
-          </InputAdornment>
-        ),
-      }}
-    />
-  </Box>;
+  // <Box className="mb-4 space-y-4">
+  //   <TextField
+  //     fullWidth
+  //     variant="outlined"
+  //     placeholder="Search by ticker, company name, or industry..."
+  //     value={searchTerm}
+  //     onChange={(event) => {
+  //       setSearchTerm(event.target.value);
+  //       setPage(0);
+  //     }}
+  //     InputProps={{
+  //       startAdornment: (
+  //         <InputAdornment position="start">
+  //           <Search className="w-5 h-5" />
+  //         </InputAdornment>
+  //       ),
+  //     }}
+  //   />
+  // </Box>;
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -261,7 +262,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-
     <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
@@ -475,7 +475,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                   key={item.symbol || index}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
+                    cursor: isPending ? "wait" : "pointer",
                     "&:active": {
                       opacity: 0.7,
                       transform: "scale(0.98)",
@@ -483,7 +483,11 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                     },
                   }}
                   hover
-                  onClick={() => router.push(`/company/${item.symbol}`)}
+                  onClick={() =>
+                    startTransition(() => {
+                      router.push(`/company/${item.symbol}`);
+                    })
+                  }
                 >
                   <TableCell
                     component="th"
@@ -510,10 +514,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                       {item.symbol}
                     </Box>
                   </TableCell>
-                  <TableCell 
-                    style={{ fontWeight: 600, cursor: "pointer"}}
-                    onClick={() => redirect(`/company/${item.symbol}`)} // Navigate on click
-                  >
+                  <TableCell style={{ fontWeight: 600 }}>
                     {item.longName}
                   </TableCell>
                   <TableCell>
