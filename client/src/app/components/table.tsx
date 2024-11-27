@@ -54,10 +54,10 @@ const filterData = (
 
   if (blurbResult) {
     // AI search case
-    const matchesArray = 
-      companyResult?.companies.map((company) => company.symbol) || [];
-    return matchesArray
-      
+    const matches = data.filter((item: any) =>
+      companyResult?.companies.includes(item.symbol)
+    );
+    return matches;
   } else {
     // Normal search, filter, etc.
     return data.filter((item: any) => {
@@ -162,7 +162,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const industries = useMemo(() => {
     if (!data) return [];
     return [...new Set(data.map((item: any) => item.industry))]
-      .filter(Boolean)  
+      .filter(Boolean)
       .sort();
   }, [data]);
 
@@ -200,32 +200,32 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   };
 
   // Process data with sort, filter, and pagination
-    const processedData = useMemo(() => {
-      if (!data) return [];
-      return sortData(
-        filterData(
-          data,
-          searchTerm,
-          industryFilter,
-          priceRange,
-          marketCapRange,
-          blurb,
-          companies, // Added for ai search
-        ),
-        orderBy, 
-        order
-      );
-    }, [
-      data,
-      searchTerm,
+  const processedData = useMemo(() => {
+    if (!data) return [];
+    return sortData(
+      filterData(
+        data,
+        searchTerm,
+        industryFilter,
+        priceRange,
+        marketCapRange,
+        blurb,
+        companies // Added for ai search
+      ),
       orderBy,
-      order,
-      industryFilter,
-      priceRange,
-      marketCapRange,
-      blurb,
-      companies, // Added for ai search
-    ]);
+      order
+    );
+  }, [
+    data,
+    searchTerm,
+    orderBy,
+    order,
+    industryFilter,
+    priceRange,
+    marketCapRange,
+    blurb,
+    companies, // Added for ai search
+  ]);
 
   // Calculate paginated data
   const paginatedData = processedData.slice(
@@ -270,28 +270,26 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     <Box className="w-full max-w-4xl font-DM">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-      <SearchBar 
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        setPage={setPage}
-        setBlurb={setBlurb}
-        setCompanies={setCompanies}
-      />
-      {blurb && (
-        <div className="results mt-8">
-          {/* Display the blurb */}
-          <p className="blurb text-lg font-semibold">{blurb.blurb}</p>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          setPage={setPage}
+          setBlurb={setBlurb}
+          setCompanies={setCompanies}
+        />
+        {blurb && (
+          <div className="results mt-8">
+            {/* Display the blurb */}
+            <p className="blurb text-lg font-semibold">{blurb.blurb}</p>
 
-          <div>
-            <p className="font-bold">Filter By:</p>
+            <div>
+              <p className="font-bold">Filter By:</p>
+            </div>
+
+            {/* Dropdown Filters */}
+            <Box className="w-3/4 flex gap-6">{/* Dropdowns go here */}</Box>
           </div>
-
-          {/* Dropdown Filters */}
-          <Box className="w-3/4 flex gap-6">
-            {/* Dropdowns go here */}
-          </Box>
-        </div>
-      )}
+        )}
         {/* Dropdown Filters */}
         <Box className="w-3/4 flex gap-6">
           <FormControl fullWidth>

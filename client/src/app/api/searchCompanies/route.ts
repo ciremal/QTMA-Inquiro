@@ -3,13 +3,13 @@ import OpenAI from "openai";
 import sp500Data from "../../../../public/sp500Data.json";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
 });
 
 export async function POST(req: NextRequest) {
   try {
     const { query } = await req.json();
-    
+
     // Validate the query
     if (!query || typeof query !== "string") {
       return NextResponse.json(
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
- 
+
     const systemPrompt = `
       You are an AI financial assistant. I will provide a query: ${query} and a list of S&P 500 company symbols.
       Your task is to evaluate the query and return the top 10 most relevant companies based off all the sp500 companies, based on how they relate to the query.
@@ -27,9 +27,7 @@ export async function POST(req: NextRequest) {
     // OpenAI API call with a system prompt
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: systemPrompt },
-      ],
+      messages: [{ role: "system", content: systemPrompt }],
       max_tokens: 500, // Increased max_tokens to allow for longer responses
       temperature: 0.7,
     });
@@ -40,7 +38,7 @@ export async function POST(req: NextRequest) {
     // Parse the response text
     const topCompanies = responseText
       .split("\n")
-      .filter((line) => line.trim())  // Ensure non-empty lines
+      .filter((line) => line.trim()) // Ensure non-empty lines
       .slice(0, 10) // Get the first 10 companies
       .map((line) => line.trim()); // Clean up any extra spaces
 
@@ -51,8 +49,6 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
     }
-    
-    console.log("Top Companies:", topCompanies);
 
     return NextResponse.json({
       companies: topCompanies,

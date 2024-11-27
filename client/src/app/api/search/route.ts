@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
 });
 
 export async function POST(req: NextRequest) {
   try {
     // Check if the API key is present
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.NEXT_PUBLIC_OPENAI_API_KEY) {
       return NextResponse.json(
         { error: "Missing OpenAI API key" },
         { status: 500 }
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { query } = await req.json();
-    
+
     // Validate the query
     if (!query || typeof query !== "string") {
       return NextResponse.json(
