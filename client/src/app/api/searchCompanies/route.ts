@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import sp500Data from "../../../../public/sp500Data.json";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY

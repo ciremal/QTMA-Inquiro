@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useTransition } from "react";
 import Search from "@mui/icons-material/Search";
 import {
   Table,
@@ -21,6 +21,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
+import { useRouter } from "next/navigation";
 import SearchBar from "./searchbar";
 
 // Sort function for different data types
@@ -156,8 +157,11 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
+
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
   const [companies, setCompanies] = useState<{ companies: any[] } | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -236,7 +240,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   // If no data
   if (!data || data.length === 0) {
     return (
-      <Box className="w-full max-w-4xl">
+      <Box className="w-full max-w-7xl">
         <Skeleton height={56} />
         <TableContainer component={Paper}>
           <Table>
@@ -267,7 +271,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full max-w-4xl font-DM">
+    <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
         <SearchBar
@@ -290,6 +294,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             <Box className="w-3/4 flex gap-6">{/* Dropdowns go here */}</Box>
           </div>
         )}
+        <div>
+          <p className="pt-12 font-bold">Filter By:</p>
+        </div>
         {/* Dropdown Filters */}
         <Box className="w-3/4 flex gap-6">
           <FormControl fullWidth>
@@ -422,7 +429,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           component={Paper}
           sx={{
             borderRadius: "14px",
-            overflow: "hidden",
             boxShadow: "none", // Remove default Paper shadow
             backgroundColor: "transparent", // Make Paper background transparent
             "& .MuiTableRow-root:hover": {
@@ -472,8 +478,21 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               {paginatedData.map((item, index) => (
                 <TableRow
                   key={item.symbol || index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    cursor: isPending ? "wait" : "pointer",
+                    "&:active": {
+                      opacity: 0.7,
+                      transform: "scale(0.98)",
+                      transition: "transform 0.1s ease-in-out",
+                    },
+                  }}
                   hover
+                  onClick={() =>
+                    startTransition(() => {
+                      router.push(`/company/${item.symbol}`);
+                    })
+                  }
                 >
                   <TableCell
                     component="th"
@@ -482,7 +501,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                   >
                     <Box className="flex items-center gap-2">
                       <img
-                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=jpg`}
+                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
                         alt={`${item.symbol} logo`}
                         style={{
                           width: 48,

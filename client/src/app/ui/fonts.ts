@@ -5,6 +5,11 @@ export const inter = Inter({
   subsets: ["latin"],
 });
 
+export const interBold = Inter({
+  weight: "700",
+  subsets: ["latin"],
+});
+
 export const epilogue = Epilogue({
   weight: "400",
   subsets: ["latin"],
