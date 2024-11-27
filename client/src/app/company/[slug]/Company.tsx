@@ -38,10 +38,11 @@ export default async function Company({ company, logo }: CompanyProps) {
                 }}
               />
               <Chip
+                className="font-bold"
                 label={company.sector}
                 sx={{
                   backgroundColor: getIndustryColor(company.sector).bg,
-                  color: getIndustryColor(company.industry).color,
+                  color: getIndustryColor(company.sector).color,
                   "&:hover": {
                     backgroundColor: getIndustryColor(company.sector).bg,
                     opacity: 0.8,
