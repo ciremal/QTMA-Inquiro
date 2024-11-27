@@ -26,7 +26,7 @@ export default function PressCard({ article }: PressCardProps) {
         <h1 className="font-bold overflow-ellipsis line-clamp-2 break-words">
           {headline}
         </h1>
-        <p className="text-xs text-slate-500 overflow-ellipsis line-clamp-4 break-words">
+        <p className="text-xs text-slate-500 overflow-ellipsis line-clamp-4 break-words h-16">
           {summary}
         </p>
         <Link
