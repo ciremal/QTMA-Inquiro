@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
 import { useRouter } from "next/navigation";
+import SearchBar from "./searchbar";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -46,59 +47,75 @@ const filterData = (
   searchTerm: any,
   industryFilter: any,
   priceRange: any,
-  marketCapRange: any
+  marketCapRange: any,
+  blurbResult: { blurb: string } | null,
+  companyResult: { companies: any[] } | null
 ) => {
   if (!data) return [];
 
-  return data.filter((item: any) => {
-    const matchesSearch =
-      !searchTerm ||
-      item.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesIndustry = !industryFilter || item.industry === industryFilter;
-
-    const matchesPriceRange =
-      !priceRange ||
-      (() => {
-        const price = Number(item.currentPrice);
-        switch (priceRange) {
-          case "under50":
-            return price < 50;
-          case "50to200":
-            return price >= 50 && price <= 200;
-          case "over200":
-            return price > 200;
-          default:
-            return true;
-        }
-      })();
-
-    const matchesMarketCap =
-      !marketCapRange ||
-      (() => {
-        const marketCap = Number(item.marketCap);
-        switch (marketCapRange) {
-          case "micro":
-            return marketCap < 300000000; // Under 300M
-          case "small":
-            return marketCap >= 300000000 && marketCap < 2000000000; // 300M - 2B
-          case "mid":
-            return marketCap >= 2000000000 && marketCap < 10000000000; // 2B - 10B
-          case "large":
-            return marketCap >= 10000000000 && marketCap < 200000000000; // 10B - 200B
-          case "mega":
-            return marketCap >= 200000000000; // Over 200B
-          default:
-            return true;
-        }
-      })();
-
-    return (
-      matchesSearch && matchesIndustry && matchesPriceRange && matchesMarketCap
+  if (blurbResult) {
+    // AI search case
+    const matches = data.filter((item: any) =>
+      companyResult?.companies.includes(item.symbol)
     );
-  });
+    return matches;
+  } else {
+    // Normal search, filter, etc.
+    return data.filter((item: any) => {
+      // checks if the strings match the symbol, the long name, or the industry
+      const matchesSearch =
+        !searchTerm ||
+        item.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesIndustry =
+        !industryFilter || item.industry === industryFilter;
+
+      const matchesPriceRange =
+        !priceRange ||
+        (() => {
+          const price = Number(item.currentPrice);
+          switch (priceRange) {
+            case "under50":
+              return price < 50;
+            case "50to200":
+              return price >= 50 && price <= 200;
+            case "over200":
+              return price > 200;
+            default:
+              return true;
+          }
+        })();
+
+      const matchesMarketCap =
+        !marketCapRange ||
+        (() => {
+          const marketCap = Number(item.marketCap);
+          switch (marketCapRange) {
+            case "micro":
+              return marketCap < 300000000; // Under 300M
+            case "small":
+              return marketCap >= 300000000 && marketCap < 2000000000; // 300M - 2B
+            case "mid":
+              return marketCap >= 2000000000 && marketCap < 10000000000; // 2B - 10B
+            case "large":
+              return marketCap >= 10000000000 && marketCap < 200000000000; // 10B - 200B
+            case "mega":
+              return marketCap >= 200000000000; // Over 200B
+            default:
+              return true;
+          }
+        })();
+
+      return (
+        matchesSearch &&
+        matchesIndustry &&
+        matchesPriceRange &&
+        matchesMarketCap
+      );
+    });
+  }
 };
 
 // Price formatter
@@ -141,28 +158,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
 
+  const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
+  const [companies, setCompanies] = useState<{ companies: any[] } | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-
-  // <Box className="mb-4 space-y-4">
-  //   <TextField
-  //     fullWidth
-  //     variant="outlined"
-  //     placeholder="Search by ticker, company name, or industry..."
-  //     value={searchTerm}
-  //     onChange={(event) => {
-  //       setSearchTerm(event.target.value);
-  //       setPage(0);
-  //     }}
-  //     InputProps={{
-  //       startAdornment: (
-  //         <InputAdornment position="start">
-  //           <Search className="w-5 h-5" />
-  //         </InputAdornment>
-  //       ),
-  //     }}
-  //   />
-  // </Box>;
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -208,7 +207,15 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const processedData = useMemo(() => {
     if (!data) return [];
     return sortData(
-      filterData(data, searchTerm, industryFilter, priceRange, marketCapRange),
+      filterData(
+        data,
+        searchTerm,
+        industryFilter,
+        priceRange,
+        marketCapRange,
+        blurb,
+        companies // Added for ai search
+      ),
       orderBy,
       order
     );
@@ -220,6 +227,8 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     industryFilter,
     priceRange,
     marketCapRange,
+    blurb,
+    companies, // Added for ai search
   ]);
 
   // Calculate paginated data
@@ -265,30 +274,26 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     <Box className="w-full font-DM px-36">
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
-        <Box className="flex justify-center items-center">
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search by ticker, company name, or industry..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search className="w-5 h-5" />
-                </InputAdornment>
-              ),
-              sx: {
-                backgroundColor: "white",
-                borderRadius: "3rem",
-              },
-            }}
-            sx={{
-              padding: "0.5rem",
-              maxWidth: "60%",
-            }}
-          />
-        </Box>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          setPage={setPage}
+          setBlurb={setBlurb}
+          setCompanies={setCompanies}
+        />
+        {blurb && (
+          <div className="results mt-8">
+            {/* Display the blurb */}
+            <p className="blurb text-lg font-semibold">{blurb.blurb}</p>
+
+            <div>
+              <p className="font-bold">Filter By:</p>
+            </div>
+
+            {/* Dropdown Filters */}
+            <Box className="w-3/4 flex gap-6">{/* Dropdowns go here */}</Box>
+          </div>
+        )}
         <div>
           <p className="pt-12 font-bold">Filter By:</p>
         </div>
