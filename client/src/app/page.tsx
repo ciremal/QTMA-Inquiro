@@ -8,9 +8,9 @@ import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import useSWR from "swr";
 import Navbar from "./components/navbar";
 
-
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
+  // log all unique industries
   return data.filter(
     (item: any) => item !== null && item.longName !== undefined
   );
@@ -21,7 +21,6 @@ function Home() {
   if (process.env.NODE_ENV !== "development") {
     redirect("/signup");
   }
-
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,
