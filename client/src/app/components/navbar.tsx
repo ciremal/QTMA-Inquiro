@@ -23,7 +23,7 @@ const Navbar = () => {
               className={`font-normal ${epilogue.className}`}
               style={{ fontSize: 21.725, lineHeight: 1 }}
             >
-              {"inqurio"}
+              {"inquiro"}
             </span>
           </Link>
         </div>
