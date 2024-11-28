@@ -1,5 +1,7 @@
 import React from "react";
 import axios from "axios";
+import { InputAdornment, TextField } from "@mui/material";
+import Search from "@mui/icons-material/Search";
 
 type SearchBarProps = {
   searchTerm: string;
@@ -7,6 +9,7 @@ type SearchBarProps = {
   setPage: (page: number) => void;
   setBlurb: (blurbResult: { blurb: string }) => void;
   setCompanies: (companiesResult: { companies: any[] }) => void;
+  setIsLoadingAISearch: (loading: boolean) => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -15,6 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setPage,
   setBlurb,
   setCompanies,
+  setIsLoadingAISearch,
 }) => {
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
     if (searchTerm.trim()) {
       setPage(0); // Reset to the first page
-
+      setIsLoadingAISearch(true);
       try {
         // Make API requests to the backend
         const blurbResponse = await axios.post("/api/search", {
@@ -53,32 +57,41 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }
       }
     }
+    setIsLoadingAISearch(false);
   };
 
   return (
-    <div className="w-full bg-none py-3 mt-16">
+    <div className="w-full bg-none py-3 mt-3">
       <div className="max-w-7xl mx-auto px-4">
         <form
           onSubmit={handleSearch}
           className="flex items-center w-full max-w-3xl mx-auto"
         >
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search for a company or filter by asking a question"
             value={searchTerm}
             onChange={handleInputChange}
-            placeholder="Search for a company or filter by asking a question"
-            className="flex-1 border border-gray-300 rounded-l-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition-colors"
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <button type="submit" className="flex items-center">
+                      <Search className="w-5 h-5 cursor-pointer" />
+                    </button>
+                  </InputAdornment>
+                ),
+                sx: {
+                  backgroundColor: "white",
+                  borderRadius: "3rem",
+                },
+              },
+            }}
+            sx={{
+              padding: "0.5rem",
+            }}
           />
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg p-3 transition-colors"
-          >
-            <img
-              src="/path/to/profile-image.jpg"
-              alt="Search"
-              className="w-6 h-6 rounded-full object-cover cursor-pointer"
-            />
-          </button>
         </form>
       </div>
     </div>

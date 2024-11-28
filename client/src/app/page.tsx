@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Typography } from "@mui/material";
 import Table from "./components/table";
 import { redirect } from "next/navigation";
@@ -18,9 +18,9 @@ const fetcher = async () => {
 
 function Home() {
   // Temporarily redirect users to signup page on production
-  if (process.env.NODE_ENV !== "development") {
-    redirect("/signup");
-  }
+  // if (process.env.NODE_ENV !== "development") {
+  //   redirect("/signup");
+  // }
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,

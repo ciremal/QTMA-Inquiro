@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useTransition } from "react";
-import Search from "@mui/icons-material/Search";
 import {
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
 import { useRouter } from "next/navigation";
@@ -160,6 +160,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
   const [companies, setCompanies] = useState<{ companies: any[] } | null>(null);
+  const [isLoadingAISearch, setIsLoadingAISearch] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -273,21 +274,26 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   return (
     <Box className="w-full font-DM px-36">
       {/* Filters Section */}
-      <Box className="mb-4 space-y-4">
+      <Box className="mb-4 space-y-4 flex flex-col justify-center items-center">
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           setPage={setPage}
           setBlurb={setBlurb}
           setCompanies={setCompanies}
+          setIsLoadingAISearch={setIsLoadingAISearch}
         />
+
+        {isLoadingAISearch && <CircularProgress />}
         {blurb && (
           <div className="results mt-8">
             {/* Display the blurb */}
             <p className="blurb text-lg font-semibold">{blurb.blurb}</p>
-
+            <br></br>
             <div>
-              <p className="font-bold">Filter By:</p>
+              <p className="font-bold">
+                Related companies are listed below in the table.
+              </p>
             </div>
 
             {/* Dropdown Filters */}
