@@ -25,19 +25,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
   // Handle search action on form submission
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (searchTerm.trim()) {
       setPage(0); // Reset to the first page
-  
+
       try {
         // Make API requests to the backend
-        const blurbResponse = await axios.post("/api/search", { query: searchTerm });
+        const blurbResponse = await axios.post("/api/search", {
+          query: searchTerm,
+        });
         console.log("Route Response:", blurbResponse.data);
-    
+
         // Second API call to get relevant companies
-        const companiesResponse = await axios.post("/api/searchCompanies", { query: searchTerm });
+        const companiesResponse = await axios.post("/api/searchCompanies", {
+          query: searchTerm,
+        });
         console.log("Relevant Response:", companiesResponse.data);
-  
+
         // Update blurb and companies once both responses are received
         setBlurb({ blurb: blurbResponse.data.blurb || "No blurb available" });
         setCompanies({ companies: companiesResponse.data.companies || [] });

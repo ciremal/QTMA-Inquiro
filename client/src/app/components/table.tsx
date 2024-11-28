@@ -7,7 +7,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Paper,
   TableSortLabel,
   TablePagination,
@@ -18,7 +17,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  InputAdornment,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
 import { useRouter } from "next/navigation";
@@ -55,6 +53,8 @@ const filterData = (
 
   if (blurbResult) {
     // AI search case
+    console.log(data);
+    console.log(companyResult);
     const matches = data.filter((item: any) =>
       companyResult?.companies.includes(item.symbol)
     );
@@ -152,7 +152,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [orderBy, setOrderBy] = useState("symbol");
   const [order, setOrder] = useState("asc");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [searchTerm, setSearchTerm] = useState("");
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
@@ -560,7 +560,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
       {/* Pagination */}
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[25, 50, 100]}
         component="div"
         count={processedData.length}
         rowsPerPage={rowsPerPage}
