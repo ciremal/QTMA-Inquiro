@@ -274,7 +274,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   return (
     <Box className="w-full font-DM px-36">
       {/* Filters Section */}
-      <Box className="mb-4 space-y-4 flex flex-col justify-center items-center">
+      <Box className="mb-4 space-y-4">
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -284,7 +284,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           setIsLoadingAISearch={setIsLoadingAISearch}
         />
 
-        {isLoadingAISearch && <CircularProgress />}
+        <Box className="flex w-full flex-col justify-center items-center">
+          {isLoadingAISearch && <CircularProgress />}
+        </Box>
         {blurb && (
           <div className="results mt-8">
             {/* Display the blurb */}
