@@ -33,3 +33,7 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
+
+.font-DM  {
+  font-family: 'DM Sans', sans-serif;
+}

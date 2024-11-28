@@ -12,15 +12,14 @@ import {
   Box,
   Skeleton,
   Chip,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   CircularProgress,
 } from "@mui/material";
 import getIndustryColor from "../lib/industryColors";
 import { useRouter } from "next/navigation";
 import SearchBar from "./searchbar";
+import { interBold, robotoSemibold } from "../ui/fonts";
+import { formatMarketCap, formatPrice } from "../lib/formattingFunctions";
+import TableFilters from "./tableFilters";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -118,30 +117,6 @@ const filterData = (
   }
 };
 
-// Price formatter
-const formatPrice = (price: number) => {
-  if (typeof price !== "number") return price;
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-};
-
-// Market cap formatter
-const formatMarketCap = (marketCap: number) => {
-  if (typeof marketCap !== "number") return marketCap;
-
-  if (marketCap >= 1e12) {
-    return `$${(marketCap / 1e12).toFixed(2)}T`;
-  } else if (marketCap >= 1e9) {
-    return `$${(marketCap / 1e9).toFixed(2)}B`;
-  } else if (marketCap >= 1e6) {
-    return `$${(marketCap / 1e6).toFixed(2)}M`;
-  } else {
-    return `$${marketCap.toLocaleString()}`;
-  }
-};
-
 type StockTableProps = {
   data: any;
   isLoading: boolean;
@@ -198,10 +173,13 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     setPage(0);
   };
 
-  // Handle search change
-  const handleSearchChange = (event: any) => {
-    setSearchTerm(event.target.value);
-    setPage(0);
+  const handleReset = () => {
+    setIndustryFilter("");
+    setMarketCapRange("");
+    setPriceRange("");
+    setSearchTerm("");
+    setBlurb(null);
+    setCompanies(null);
   };
 
   // Process data with sort, filter, and pagination
@@ -272,7 +250,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full font-DM px-36">
+    <Box className={`w-full font-DM px-36`}>
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
         <SearchBar
@@ -290,10 +268,12 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         {blurb && (
           <div className="results mt-8">
             {/* Display the blurb */}
-            <p className="blurb text-lg font-semibold">{blurb.blurb}</p>
+            <p className={`blurb text-lg ${robotoSemibold.className}`}>
+              {blurb.blurb}
+            </p>
             <br></br>
             <div>
-              <p className="font-bold">
+              <p className={`${robotoSemibold.className}`}>
                 Related companies are listed below in the table.
               </p>
             </div>
@@ -303,132 +283,20 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </div>
         )}
         <div>
-          <p className="pt-12 font-bold">Filter By:</p>
+          <p className={`pt-12 ${interBold.className}`}>Filter By:</p>
         </div>
         {/* Dropdown Filters */}
-        <Box className="w-3/4 flex gap-6">
-          <FormControl fullWidth>
-            <InputLabel
-              sx={{
-                "&.MuiInputLabel-root": {
-                  transform: "translate(0.875rem, 0.75rem) scale(1)",
-                },
-                "&.MuiInputLabel-shrink": {
-                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-                },
-              }}
-            >
-              Industry
-            </InputLabel>
-            <Select
-              value={industryFilter}
-              label="Industry"
-              onChange={(e) => {
-                setIndustryFilter(e.target.value);
-                setPage(0);
-              }}
-              sx={{
-                height: "2.5rem",
-                borderRadius: "0.75rem",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderRadius: "0.75rem",
-                },
-                "& .MuiSelect-select": {
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
-                },
-              }}
-            >
-              <MenuItem value="">All Industries</MenuItem>
-              {industries.map((industry) => (
-                // @ts-ignore
-                <MenuItem key={industry} value={industry}>
-                  {industry}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel
-              sx={{
-                "&.MuiInputLabel-root": {
-                  transform: "translate(0.875rem, 0.75rem) scale(1)",
-                },
-                "&.MuiInputLabel-shrink": {
-                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-                },
-              }}
-            >
-              Market Cap
-            </InputLabel>
-            <Select
-              value={marketCapRange}
-              label="Market Cap"
-              onChange={(e) => {
-                setMarketCapRange(e.target.value);
-                setPage(0);
-              }}
-              sx={{
-                height: "2.5rem",
-                borderRadius: "0.75rem",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderRadius: "0.75rem",
-                },
-                "& .MuiSelect-select": {
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
-                },
-              }}
-            >
-              <MenuItem value="">All Market Caps</MenuItem>
-              <MenuItem value="micro">Micro Cap (Under $300M)</MenuItem>
-              <MenuItem value="small">Small Cap ($300M - $2B)</MenuItem>
-              <MenuItem value="mid">Mid Cap ($2B - $10B)</MenuItem>
-              <MenuItem value="large">Large Cap ($10B - $200B)</MenuItem>
-              <MenuItem value="mega">Mega Cap (Over $200B)</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel
-              sx={{
-                "&.MuiInputLabel-root": {
-                  transform: "translate(0.875rem, 0.75rem) scale(1)",
-                },
-                "&.MuiInputLabel-shrink": {
-                  transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-                },
-              }}
-            >
-              Stock Price
-            </InputLabel>
-            <Select
-              value={priceRange}
-              label="Price Range"
-              onChange={(e) => {
-                setPriceRange(e.target.value);
-                setPage(0);
-              }}
-              sx={{
-                height: "2.5rem",
-                borderRadius: "0.75rem",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderRadius: "0.75rem",
-                },
-                "& .MuiSelect-select": {
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
-                },
-              }}
-            >
-              <MenuItem value="">All Prices</MenuItem>
-              <MenuItem value="under50">Under $50</MenuItem>
-              <MenuItem value="50to200">$50 - $200</MenuItem>
-              <MenuItem value="over200">Over $200</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+        <TableFilters
+          industryFilter={industryFilter}
+          setIndustryFilter={setIndustryFilter}
+          setPage={setPage}
+          industries={industries}
+          marketCapRange={marketCapRange}
+          setMarketCapRange={setMarketCapRange}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          handleReset={handleReset}
+        />
       </Box>
 
       {/* Container div with background and rounded corners */}
@@ -498,7 +366,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                   hover
                   onClick={() =>
                     startTransition(() => {
-                      router.push(`/company/${item.symbol}`);
+                      if (!isPending) {
+                        router.push(`/company/${item.symbol}`);
+                      }
                     })
                   }
                 >

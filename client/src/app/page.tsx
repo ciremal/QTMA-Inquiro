@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Table from "./components/table";
 import { redirect } from "next/navigation";
@@ -21,6 +21,19 @@ function Home() {
   // if (process.env.NODE_ENV !== "development") {
   //   redirect("/signup");
   // }
+  const [prompt, setPrompt] = useState("");
+
+  useEffect(() => {
+    const prompts = [
+      "which companies produce semiconductors",
+      "the biggest music software companies",
+      "companies in the oil pipeline industry",
+      "LULU's change in stock price",
+      "AAPL's most recent 10-K",
+    ];
+    const rand = Math.floor(Math.random() * prompts.length);
+    setPrompt(prompts[rand]);
+  }, []);
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,
@@ -40,9 +53,7 @@ function Home() {
               style={{ fontWeight: "bold" }}
             >
               <span style={{ color: "black" }}>Ask me about</span>
-              <span
-                style={{ color: "gray" }}
-              >{` APPL's latest earnings call`}</span>
+              <span style={{ color: "gray" }}>{` ${prompt}`}</span>
             </Typography>
             {/* @ts-expect-error */}
             <Table data={data}></Table>

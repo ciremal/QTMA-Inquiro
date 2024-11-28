@@ -26,6 +26,7 @@ const dmSans = DM_Sans({
   //👇 Add variable to our object
   variable: "--font-dmsans",
 });
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
