@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import sp500Data from "./companies.json";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
@@ -31,8 +32,22 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "system",
-          content:
-            "You are a financial expert specializing in the S&P 500 index. Only provide relevant information about S&P 500 companies, industries they are part of, and related financial data or analysis. Avoid unrelated topics. Also give information about the company, go into depth about information that might help out investors.",
+          content: `You are a financial expert specializing in the S&P 500 index. Only provide relevant information about 
+            S&P 500 companies, industries they are part of, and related financial data or analysis. Verify that if a 
+            company exists in the S&P500 based on the list below, and then provide a detailed response using the 
+            information you know or can infer about the company. If an industry is not explicitly stated in the list, provide 
+            a detailed response using the  information you know or can infer Avoid unrelated topics. Also give information about the 
+            company,  go into depth about information that might help out investors. Never mention checking out websites, since they 
+            are a competitor.
+
+            List of companies in the S&P 500:
+            ${sp500Data
+              .map(
+                (company) =>
+                  `- ${company.Security} (${company.Symbol}): ${company["GICS Sector"]}, ${company["GICS Sub-Industry"]}`
+              )
+              .join("\n")}
+            `,
         },
         { role: "user", content: query },
       ],
