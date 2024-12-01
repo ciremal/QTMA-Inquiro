@@ -43,15 +43,14 @@ export async function POST(req: NextRequest) {
             ${data.map(
               (company: any) => `${company.longName}: ${company.symbol}: 
               Industry - ${company.industry}: Sector - ${company.sector}: 
-              Stock Price - ${company.currentPrice}: EBITDA - ${company.ebitda}: 
-              Total Revenue - ${company.totalRevenue}: 
+              Stock Price - ${company.currentPrice}: Total Revenue - ${company.totalRevenue}: 
               `
             )}
             `,
         },
         { role: "user", content: query },
       ],
-      max_tokens: 300,
+      max_tokens: 400,
       temperature: 0.4,
     });
 
