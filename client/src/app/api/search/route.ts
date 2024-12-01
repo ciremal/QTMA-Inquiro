@@ -42,8 +42,7 @@ export async function POST(req: NextRequest) {
             List of companies in the S&P500: 
             ${data.map(
               (company: any) => `${company.longName}: ${company.symbol}: 
-              Industry - ${company.industry}: Sector - ${company.sector}: 
-              Stock Price - ${company.currentPrice}: Total Revenue - ${company.totalRevenue}: 
+              Industry - ${company.industry}: Total Revenue - ${company.totalRevenue}: 
               `
             )}
             `,
