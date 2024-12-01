@@ -115,6 +115,36 @@ const filterData = (
   }
 };
 
+// Function to assign color based on the first letter of the ticker symbol
+const letterColorMap = {
+  A: "#FFD700", // Gold
+  B: "#FF6347", // Tomato
+  C: "#4682B4", // Steel Blue
+  D: "#32CD32", // Lime Green
+  E: "#FF69B4", // Hot Pink
+  F: "#8A2BE2", // Blue Violet
+  G: "#FF4500", // Orange Red
+  H: "#20B2AA", // Light Sea Green
+  I: "#FFB6C1", // Light Pink
+  J: "#7B68EE", // Medium Slate Blue
+  K: "#FF8C00", // Dark Orange
+  L: "#DA70D6", // Orchid
+  M: "#2E8B57", // Sea Green
+  N: "#6A5ACD", // Slate Blue
+  O: "#DB7093", // Pale Violet Red
+  P: "#FF6347", // Tomato
+  Q: "#5F9EA0", // Cadet Blue
+  R: "#D2691E", // Chocolate
+  S: "#9ACD32", // Yellow Green
+  T: "#40E0D0", // Turquoise
+  U: "#EE82EE", // Violet
+  V: "#8B0000", // Dark Red
+  W: "#00CED1", // Dark Turquoise
+  X: "#B22222", // Fire Brick
+  Y: "#228B22", // Forest Green
+  Z: "#FF00FF", // Magenta
+};
+
 type StockTableProps = {
   data: any;
   isLoading: boolean;
@@ -377,23 +407,33 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                     style={{ fontWeight: 600 }}
                   >
                     <Box className="flex items-center gap-2">
-                      <img
-                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
-                        alt={`${item.symbol} logo`}
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: "20%",
-                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                        }}
-                        onError={(e) => {
-                          // @ts-ignore
-                          e.target.onerror = null;
-                          // @ts-ignore
-                          e.target.src = "https://via.placeholder.com/32";
-                        }}
-                      />
-                      {item.symbol}
+                    <img
+                      src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
+                      alt={`${item.symbol} logo`}
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: "20%",
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                      }}
+                      onError={(e) => {
+                        // @ts-ignore
+                        e.target.onerror = null;
+                        // Creating an inline SVG to display the fallback
+                        const firstLetter = item.symbol.charAt(0).toUpperCase();
+                        // Get color from the map, default to black if no match
+                        const fallbackColor = letterColorMap[firstLetter as keyof typeof letterColorMap] || "#000000";
+                        const svg = `
+                          <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" fill="${fallbackColor}" />
+                            <text x="50%" y="50%" dy=".1em" alignment-baseline="middle" text-anchor="middle" font-size="24" fill="#fff" font-family="Helvetica, Arial, sans-serif">${firstLetter}</text>
+                          </svg>`;
+                        const encodedSVG = `data:image/svg+xml;base64,${btoa(svg)}`;
+                        // @ts-ignore
+                        e.target.src = encodedSVG;
+                      }}
+                    />
+                    {item.symbol}
                     </Box>
                   </TableCell>
                   <TableCell style={{ fontWeight: 600 }}>
