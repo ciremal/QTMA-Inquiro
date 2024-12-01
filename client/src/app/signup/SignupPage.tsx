@@ -37,7 +37,7 @@ function SignupPage() {
         setMessage("Sign Up Successful!");
         resetForm();
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setMessage("An error occured during signup. Please try again later.");
       }
       setIsLoading(false);

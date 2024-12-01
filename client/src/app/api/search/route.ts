@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import sp500Data from "./companies.json";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY!, // Ensure .env.local contains OPENAI_API_KEY
@@ -16,7 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { query } = await req.json();
+    const { query, data } = await req.json();
 
     // Validate the query
     if (!query || typeof query !== "string") {
@@ -28,31 +27,32 @@ export async function POST(req: NextRequest) {
 
     // OpenAI API call with a system prompt
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
           content: `You are a financial expert specializing in the S&P 500 index. Only provide relevant information about 
             S&P 500 companies, industries they are part of, and related financial data or analysis. Verify that if a 
             company exists in the S&P500 based on the list below, and then provide a detailed response using the 
-            information you know or can infer about the company. If an industry is not explicitly stated in the list, provide 
-            a detailed response using the  information you know or can infer Avoid unrelated topics. Also give information about the 
-            company,  go into depth about information that might help out investors. Never mention checking out websites, since they 
-            are a competitor.
+            information you know, the information from the list, or can infer about the company. If an industry is not explicitly 
+            stated in the list, provide a detailed response using the information you know or can infer. Always discuss companies 
+            in the S&P500 before one's that are not. Avoid unrelated topics. Give information about the company that might help out 
+            investors. Never mention checking out websites, since they are a competitor. Keep responses under 200 words.
 
-            List of companies in the S&P 500:
-            ${sp500Data
-              .map(
-                (company) =>
-                  `- ${company.Security} (${company.Symbol}): ${company["GICS Sector"]}, ${company["GICS Sub-Industry"]}`
-              )
-              .join("\n")}
+            List of companies in the S&P500 and important information: 
+            ${data.map(
+              (company: any) => `${company.longName}: ${company.symbol}: 
+              Industry - ${company.industry}: Sector - ${company.sector}: 
+              Stock Price - ${company.currentPrice}: EBITDA - ${company.ebitda}: 
+              Total Revenue - ${company.totalRevenue}: 
+              `
+            )}
             `,
         },
         { role: "user", content: query },
       ],
       max_tokens: 300,
-      temperature: 0.7,
+      temperature: 0.4,
     });
 
     const responseText = completion.choices[0]?.message?.content?.trim();

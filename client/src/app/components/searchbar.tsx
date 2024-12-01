@@ -10,6 +10,7 @@ type SearchBarProps = {
   setBlurb: (blurbResult: { blurb: string }) => void;
   setCompanies: (companiesResult: { companies: any[] }) => void;
   setIsLoadingAISearch: (loading: boolean) => void;
+  data: any[];
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -19,6 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setBlurb,
   setCompanies,
   setIsLoadingAISearch,
+  data,
 }) => {
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,14 +39,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         // Make API requests to the backend
         const blurbResponse = await axios.post("/api/search", {
           query: searchTerm,
+          data: data,
         });
-        console.log("Route Response:", blurbResponse.data);
+        // console.log("Route Response:", blurbResponse.data);
 
         // Second API call to get relevant companies
         const companiesResponse = await axios.post("/api/searchCompanies", {
           query: searchTerm,
         });
-        console.log("Relevant Response:", companiesResponse.data);
+        // console.log("Relevant Response:", companiesResponse.data);
 
         // Update blurb and companies once both responses are received
         setBlurb({ blurb: blurbResponse.data.blurb || "No blurb available" });

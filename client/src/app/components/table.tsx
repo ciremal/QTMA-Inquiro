@@ -52,8 +52,6 @@ const filterData = (
 
   if (blurbResult) {
     // AI search case
-    console.log(data);
-    console.log(companyResult);
     const matches = data.filter((item: any) =>
       companyResult?.companies.includes(item.symbol)
     );
@@ -260,6 +258,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           setBlurb={setBlurb}
           setCompanies={setCompanies}
           setIsLoadingAISearch={setIsLoadingAISearch}
+          data={data}
         />
 
         <Box className="flex w-full flex-col justify-center items-center">
