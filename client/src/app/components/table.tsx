@@ -423,7 +423,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                         // Creating an inline SVG to display the fallback
                         const firstLetter = item.symbol.charAt(0).toUpperCase();
                         // Get color from the map, default to black if no match
-                        const fallbackColor = letterColorMap[firstLetter] || "#000000";
+                        const fallbackColor = letterColorMap[firstLetter as keyof typeof letterColorMap] || "#000000";
                         const svg = `
                           <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100%" height="100%" fill="${fallbackColor}" />
