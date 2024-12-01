@@ -36,10 +36,10 @@ export async function POST(req: NextRequest) {
             company exists in the S&P500 based on the list below, and then provide a detailed response using the 
             information you know, the information from the list, or can infer about the company. If an industry is not explicitly 
             stated in the list, provide a detailed response using the information you know or can infer. Always discuss companies 
-            in the S&P500 before one's that are not. Avoid unrelated topics. Give information about the company that might help out 
-            investors. Never mention checking out websites, since they are a competitor. Keep responses under 200 words.
+            in the S&P500 before one's that are not. Avoid unrelated topics. Never mention checking out websites.
+            Keep responses under 200 words.
 
-            List of companies in the S&P500 and important information: 
+            List of companies in the S&P500: 
             ${data.map(
               (company: any) => `${company.longName}: ${company.symbol}: 
               Industry - ${company.industry}: Sector - ${company.sector}: 

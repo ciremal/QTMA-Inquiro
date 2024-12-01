@@ -298,7 +298,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           <div className="results mt-8">
             {/* Display the blurb */}
             <p className={`blurb text-lg ${robotoSemibold.className}`}>
-              {blurb.blurb}
+              {blurb.blurb.replaceAll("*", "")}
             </p>
             <br></br>
             <div>
@@ -407,33 +407,40 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
                     style={{ fontWeight: 600 }}
                   >
                     <Box className="flex items-center gap-2">
-                    <img
-                      src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
-                      alt={`${item.symbol} logo`}
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: "20%",
-                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                      }}
-                      onError={(e) => {
-                        // @ts-ignore
-                        e.target.onerror = null;
-                        // Creating an inline SVG to display the fallback
-                        const firstLetter = item.symbol.charAt(0).toUpperCase();
-                        // Get color from the map, default to black if no match
-                        const fallbackColor = letterColorMap[firstLetter as keyof typeof letterColorMap] || "#000000";
-                        const svg = `
+                      <img
+                        src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
+                        alt={`${item.symbol} logo`}
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: "20%",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                        }}
+                        onError={(e) => {
+                          // @ts-ignore
+                          e.target.onerror = null;
+                          // Creating an inline SVG to display the fallback
+                          const firstLetter = item.symbol
+                            .charAt(0)
+                            .toUpperCase();
+                          // Get color from the map, default to black if no match
+                          const fallbackColor =
+                            letterColorMap[
+                              firstLetter as keyof typeof letterColorMap
+                            ] || "#000000";
+                          const svg = `
                           <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100%" height="100%" fill="${fallbackColor}" />
                             <text x="50%" y="50%" dy=".1em" alignment-baseline="middle" text-anchor="middle" font-size="24" fill="#fff" font-family="Helvetica, Arial, sans-serif">${firstLetter}</text>
                           </svg>`;
-                        const encodedSVG = `data:image/svg+xml;base64,${btoa(svg)}`;
-                        // @ts-ignore
-                        e.target.src = encodedSVG;
-                      }}
-                    />
-                    {item.symbol}
+                          const encodedSVG = `data:image/svg+xml;base64,${btoa(
+                            svg
+                          )}`;
+                          // @ts-ignore
+                          e.target.src = encodedSVG;
+                        }}
+                      />
+                      {item.symbol}
                     </Box>
                   </TableCell>
                   <TableCell style={{ fontWeight: 600 }}>

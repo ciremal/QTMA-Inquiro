@@ -29,7 +29,7 @@ function Home() {
       "the biggest music software companies",
       "companies in the oil pipeline industry",
       "LULU's change in stock price",
-      "AAPL's most recent 10-K",
+      // "AAPL's most recent 10-K",
     ];
     const rand = Math.floor(Math.random() * prompts.length);
     setPrompt(prompts[rand]);
