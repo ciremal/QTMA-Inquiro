@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { postSignupInfo } from "../api/uploadSignupInfo";
 import SnackbarResponse from "../components/snackbar";
 import SignupForm from "../components/Forms/SignupForm";
-import Logo from "../components/logo";
+import Logo from "../components/inquiroLogo";
 
 function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);

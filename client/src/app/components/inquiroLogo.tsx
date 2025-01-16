@@ -19,7 +19,7 @@ const Logo = () => {
         className={`font-normal pt-3 ${epilogue.className}`}
         style={{ fontSize: 43.45, lineHeight: 1 }}
       >
-        {"inqurio"}
+        {"inquiro"}
       </Typography>
     </div>
   );

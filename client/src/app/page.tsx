@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
-import Table from "./components/table";
+import Table from "./components/Table/TableTemplate";
 import { redirect } from "next/navigation";
 import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import useSWR from "swr";

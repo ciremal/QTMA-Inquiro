@@ -1,12 +1,5 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
-import { inter } from "../ui/fonts";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { inter } from "../../ui/fonts";
 
 type TableFiltersProps = {
   industryFilter: any;
@@ -38,11 +31,14 @@ const TableFilters = ({
           <InputLabel
             sx={{
               "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.75rem) scale(1)",
+                transform: "translate(0.875rem, 0.5em) scale(1)",
               },
               "&.MuiInputLabel-shrink": {
                 transform: "translate(0.875rem, -0.375rem) scale(0.75)",
               },
+              textAlign: "center",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             Industry
@@ -80,7 +76,7 @@ const TableFilters = ({
           <InputLabel
             sx={{
               "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.75rem) scale(1)",
+                transform: "translate(0.875rem, 0.5em) scale(1)",
               },
               "&.MuiInputLabel-shrink": {
                 transform: "translate(0.875rem, -0.375rem) scale(0.75)",
@@ -121,7 +117,7 @@ const TableFilters = ({
           <InputLabel
             sx={{
               "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.75rem) scale(1)",
+                transform: "translate(0.875rem, 0.5em) scale(1)",
               },
               "&.MuiInputLabel-shrink": {
                 transform: "translate(0.875rem, -0.375rem) scale(0.75)",

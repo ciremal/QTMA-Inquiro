@@ -27,3 +27,32 @@ export const TIME_SERIES_INTERVAL = {
   "1mo": "1mo",
   "3mo": "3mo",
 };
+
+export const letterColorMap = {
+  A: "#FFD700", // Gold
+  B: "#FF6347", // Tomato
+  C: "#4682B4", // Steel Blue
+  D: "#32CD32", // Lime Green
+  E: "#FF69B4", // Hot Pink
+  F: "#8A2BE2", // Blue Violet
+  G: "#FF4500", // Orange Red
+  H: "#20B2AA", // Light Sea Green
+  I: "#FFB6C1", // Light Pink
+  J: "#7B68EE", // Medium Slate Blue
+  K: "#FF8C00", // Dark Orange
+  L: "#DA70D6", // Orchid
+  M: "#2E8B57", // Sea Green
+  N: "#6A5ACD", // Slate Blue
+  O: "#DB7093", // Pale Violet Red
+  P: "#FF6347", // Tomato
+  Q: "#5F9EA0", // Cadet Blue
+  R: "#D2691E", // Chocolate
+  S: "#9ACD32", // Yellow Green
+  T: "#40E0D0", // Turquoise
+  U: "#EE82EE", // Violet
+  V: "#8B0000", // Dark Red
+  W: "#00CED1", // Dark Turquoise
+  X: "#B22222", // Fire Brick
+  Y: "#228B22", // Forest Green
+  Z: "#FF00FF", // Magenta
+};

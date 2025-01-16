@@ -37,10 +37,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
       setIsLoadingAISearch(true);
       try {
         // Make API requests to the backend
-        const blurbResponse = await axios.post("/api/search", {
-          query: searchTerm,
-          data: data,
-        });
+        // const blurbResponse = await axios.post("/api/search", {
+        //   query: searchTerm,
+        //   data: data,
+        // });
         // console.log("Route Response:", blurbResponse.data);
 
         // Second API call to get relevant companies
@@ -50,7 +50,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         // console.log("Relevant Response:", companiesResponse.data);
 
         // Update blurb and companies once both responses are received
-        setBlurb({ blurb: blurbResponse.data.blurb || "No blurb available" });
+        // setBlurb({ blurb: blurbResponse.data.blurb || "No blurb available" });
+
         setCompanies({ companies: companiesResponse.data.companies || [] });
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {

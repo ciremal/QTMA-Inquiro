@@ -5,7 +5,7 @@ export const ReportsCard = ({ reports }: any) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <p className={`text-[29px] ${interBold.className} mb-3`}>
-        Annual Reports
+        Financial Reports
       </p>
       {reports.map((item: any, index: number) => {
         return (
