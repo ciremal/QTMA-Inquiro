@@ -1,5 +1,6 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { inter } from "../../ui/fonts";
+import { useTheme } from "next-themes";
 
 type TableFiltersProps = {
   industryFilter: any;
@@ -24,22 +25,49 @@ const TableFilters = ({
   setPriceRange,
   handleReset,
 }: TableFiltersProps) => {
+  const { theme } = useTheme();
+
+  const filterInputLabelStyles = () => ({
+    "&.MuiInputLabel-root": {
+      transform: "translate(0.875rem, 0.5em) scale(1)",
+    },
+    "&.MuiInputLabel-shrink": {
+      transform: "translate(0.875rem, -0.375rem) scale(0.75)",
+    },
+  });
+
+  const filterInputSelectStyles = (theme: string | undefined) => ({
+    height: "2.5rem",
+    // Styling the border
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderRadius: "0.75rem",
+      borderColor:
+        theme === "dark" ? "var(--primaryGray)" : "var(--primaryLightGray)",
+    },
+    // Styling the border on hover
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme === "dark" ? "white" : "#1976D2",
+    },
+    // Styling the inside of the component
+    "& .MuiSelect-select": {
+      paddingTop: "0.5rem",
+      paddingBottom: "0.5rem",
+      color: theme === "dark" ? "white" : "black",
+    },
+    // Styling the dropdown icon
+    "& .MuiSelect-icon": {
+      color:
+        theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
+    },
+  });
+
   return (
     <Box className="w-full flex justify-between items-center">
       <Box className="w-2/3 flex flex-row gap-6">
         <FormControl fullWidth>
           <InputLabel
-            sx={{
-              "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.5em) scale(1)",
-              },
-              "&.MuiInputLabel-shrink": {
-                transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-              },
-              textAlign: "center",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            className="dark:text-primaryWhite"
+            sx={filterInputLabelStyles()}
           >
             Industry
           </InputLabel>
@@ -50,17 +78,7 @@ const TableFilters = ({
               setIndustryFilter(e.target.value);
               setPage(0);
             }}
-            sx={{
-              height: "2.5rem",
-              borderRadius: "0.75rem",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderRadius: "0.75rem",
-              },
-              "& .MuiSelect-select": {
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-              },
-            }}
+            sx={filterInputSelectStyles(theme)}
           >
             <MenuItem value="">All Industries</MenuItem>
             {industries.map((industry: any) => (
@@ -74,14 +92,8 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            sx={{
-              "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.5em) scale(1)",
-              },
-              "&.MuiInputLabel-shrink": {
-                transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-              },
-            }}
+            className="dark:text-primaryWhite"
+            sx={filterInputLabelStyles()}
           >
             Market Cap
           </InputLabel>
@@ -92,17 +104,7 @@ const TableFilters = ({
               setMarketCapRange(e.target.value);
               setPage(0);
             }}
-            sx={{
-              height: "2.5rem",
-              borderRadius: "0.75rem",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderRadius: "0.75rem",
-              },
-              "& .MuiSelect-select": {
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-              },
-            }}
+            sx={filterInputSelectStyles(theme)}
           >
             <MenuItem value="">All Market Caps</MenuItem>
             <MenuItem value="micro">Micro Cap (Under $300M)</MenuItem>
@@ -115,14 +117,8 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            sx={{
-              "&.MuiInputLabel-root": {
-                transform: "translate(0.875rem, 0.5em) scale(1)",
-              },
-              "&.MuiInputLabel-shrink": {
-                transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-              },
-            }}
+            className="dark:text-primaryWhite"
+            sx={filterInputLabelStyles()}
           >
             Stock Price
           </InputLabel>
@@ -133,17 +129,7 @@ const TableFilters = ({
               setPriceRange(e.target.value);
               setPage(0);
             }}
-            sx={{
-              height: "2.5rem",
-              borderRadius: "0.75rem",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderRadius: "0.75rem",
-              },
-              "& .MuiSelect-select": {
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-              },
-            }}
+            sx={filterInputSelectStyles(theme)}
           >
             <MenuItem value="">All Prices</MenuItem>
             <MenuItem value="under50">Under $50</MenuItem>
@@ -157,7 +143,7 @@ const TableFilters = ({
         <FormControl fullWidth>
           <button
             onClick={() => handleReset()}
-            className={`text-black ${inter.className} hover:text-gray-600`}
+            className={`text-black dark:text-primaryWhite ${inter.className} hover:text-gray-600`}
           >
             Clear
           </button>

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/navbar";
+import { Providers } from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,12 +44,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} ${inter.variable} antialiased`}
+        className={`${geistSans.variable} 
+        ${geistMono.variable} 
+        ${bagnard.variable} 
+        ${dmSans.variable} 
+        ${inter.variable} 
+        antialiased 
+        bg-background
+        dark:bg-foreground
+        `}
       >
-        {/* <Navbar /> */}
-        {children}
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

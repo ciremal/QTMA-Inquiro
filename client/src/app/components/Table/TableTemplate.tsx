@@ -6,6 +6,7 @@ import { interBold, robotoSemibold } from "../../ui/fonts";
 import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
+import { useTheme } from "next-themes";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -122,6 +123,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [isLoadingAISearch, setIsLoadingAISearch] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { theme } = useTheme();
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -270,6 +272,15 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
       {/* Pagination */}
       <TablePagination
+        className="dark:text-primaryWhite"
+        sx={{
+          "& .MuiTablePagination-selectIcon": {
+            color: theme === "dark" ? "var(--primaryWhite)" : "black",
+          },
+          "& .MuiTablePagination-actions button.Mui-disabled": {
+            color: theme === "dark" ? "gray" : "black",
+          },
+        }}
         rowsPerPageOptions={[25, 50, 100, 200]}
         component="div"
         count={processedData.length}

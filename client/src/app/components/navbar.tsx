@@ -1,32 +1,12 @@
 import React from "react";
-import { epilogue } from "../ui/fonts";
-import Image from "next/image";
-import Link from "next/link";
+import Logo from "./Logo";
 
 const Navbar = () => {
   return (
-    <nav className="w-full flex justify-between items-center p-6 z-10 bg-[#F4F3EB] px-20 py-12">
+    <nav className="w-full flex justify-between items-center p-6 z-10 px-20 py-12">
       {/* Left side: Original Logo */}
       <div className="flex items-center gap-2">
-        <div className="navbar px-2 py-2 flex flex-row justify-start items-baseline gap-x-3">
-          <Link href="/">
-            <Image
-              src={"/logo.svg"}
-              width={65}
-              height={27}
-              alt="logo"
-              style={{ verticalAlign: "bottom" }}
-            />
-          </Link>
-          <Link href="/">
-            <span
-              className={`font-normal ${epilogue.className}`}
-              style={{ fontSize: 35, lineHeight: 1 }}
-            >
-              {"inquiro"}
-            </span>
-          </Link>
-        </div>
+        <Logo />
       </div>
 
       <ul className="flex space-x-4 pr-8">

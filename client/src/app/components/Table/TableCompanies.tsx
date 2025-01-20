@@ -13,6 +13,7 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
+import { useTheme } from "next-themes";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type TableCompaniesProps = {
@@ -36,8 +37,10 @@ const TableCompanies = ({
   startTransition,
   router,
 }: TableCompaniesProps) => {
+  const { theme } = useTheme();
+
   return (
-    <div className="bg-gray-50 p-6 rounded-2xl">
+    <div className="bg-white dark:bg-[var(--secondaryBlack)] p-6 rounded-2xl border border-[#00000033] ">
       <TableContainer
         component={Paper}
         sx={{
@@ -71,7 +74,7 @@ const TableCompanies = ({
                   }
                 >
                   <TableSortLabel
-                    className="font-bold"
+                    className="dark:text-primaryWhite"
                     active={orderBy === column.id}
                     direction={
                       orderBy === column.id &&
@@ -80,6 +83,20 @@ const TableCompanies = ({
                         : "asc"
                     }
                     onClick={() => handleSort(column.id)}
+                    sx={{
+                      "&.Mui-active": {
+                        color:
+                          theme === "dark"
+                            ? "var(--primaryWhite)"
+                            : "var(--primaryBlack)",
+                      },
+                      "&.Mui-active .MuiTableSortLabel-icon": {
+                        color:
+                          theme === "dark"
+                            ? "var(--primaryWhite)"
+                            : "var(--primaryBlack)",
+                      },
+                    }}
                   >
                     {column.label}
                   </TableSortLabel>
@@ -114,7 +131,7 @@ const TableCompanies = ({
                   scope="row"
                   style={{ fontWeight: 600 }}
                 >
-                  <Box className="flex items-center gap-2">
+                  <Box className="flex items-center gap-2 dark:text-primaryWhite font-[500]">
                     <img
                       src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
                       alt={`${item.symbol} logo`}
@@ -149,13 +166,13 @@ const TableCompanies = ({
                     {item.symbol}
                   </Box>
                 </TableCell>
-                <TableCell style={{ fontWeight: 600 }}>
+                <TableCell className="font-[500] dark:text-primaryWhite">
                   {item.longName}
                 </TableCell>
                 <TableCell>
                   <Box className="flex gap-2 flex-wrap">
                     <Chip
-                      className="font-bold"
+                      className="dark:text-primaryWhite font-[500]"
                       key={item.industry}
                       label={item.industry}
                       sx={{
@@ -171,10 +188,10 @@ const TableCompanies = ({
                     />
                   </Box>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" className="dark:text-primaryWhite">
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" className="dark:text-primaryWhite">
                   {formatPrice(item.currentPrice)}
                 </TableCell>
               </TableRow>
