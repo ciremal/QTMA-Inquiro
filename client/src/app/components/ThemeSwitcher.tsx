@@ -25,7 +25,7 @@ export function ThemeSwitcher() {
 
   return (
     <div
-      className={`flex w-16 rounded-r-full rounded-l-full h-auto items-center px-1 py-1 ${
+      className={`flex w-16 rounded-r-full rounded-l-full items-center px-1 py-1 ${
         theme === "dark" ? "bg-[#183771] border border-[#183771]" : "bg-white"
       }`}
       style={{
@@ -34,17 +34,18 @@ export function ThemeSwitcher() {
       }}
     >
       <button
-        className="flex items-center justify-center"
+        className="flex items-center justify-center w-7 h-7 "
         onClick={() => handleThemeChange()}
         style={{
-          transform: theme === "dark" ? "translateX(0)" : "translateX(100%)",
+          transform:
+            theme === "dark" ? "translateX(0)" : "translateX(calc(100%))",
           transition: "transform 0.3s ease",
         }}
       >
         {theme === "dark" ? (
-          <DarkModeIcon className="bg-blue-300 w-7 h-7 rounded-full p-0.5 text-white" />
+          <DarkModeIcon className="bg-blue-300 rounded-full p-0.5 text-white" />
         ) : (
-          <WbSunnyIcon className="bg-yellow-500 w-7 h-7 rounded-full p-0.5 text-white" />
+          <WbSunnyIcon className="bg-yellow-500 rounded-full p-0.5 text-white" />
         )}
       </button>
     </div>

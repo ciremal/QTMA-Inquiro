@@ -23,6 +23,11 @@ const config: Config = {
     },
   },
   plugins: [],
-  darkMode: "selector",
+  darkMode: "class",
+  purge: {
+    options: {
+      safelist: ["dark:text-primaryWhite"],
+    },
+  },
 };
 export default config;
