@@ -66,7 +66,12 @@ const TableFilters = ({
       <Box className="w-2/3 flex flex-row gap-6">
         <FormControl fullWidth>
           <InputLabel
-            className="text-primaryBlack dark:text-primaryWhite"
+            style={{
+              color:
+                theme === "dark"
+                  ? "var(--primaryWhite)"
+                  : "var(--primaryBlack)",
+            }}
             sx={filterInputLabelStyles()}
           >
             Industry
@@ -92,7 +97,12 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            style={{
+              color:
+                theme === "dark"
+                  ? "var(--primaryWhite)"
+                  : "var(--primaryBlack)",
+            }}
             sx={filterInputLabelStyles()}
           >
             Market Cap
@@ -117,7 +127,12 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            style={{
+              color:
+                theme === "dark"
+                  ? "var(--primaryWhite)"
+                  : "var(--primaryBlack)",
+            }}
             sx={filterInputLabelStyles()}
           >
             Stock Price

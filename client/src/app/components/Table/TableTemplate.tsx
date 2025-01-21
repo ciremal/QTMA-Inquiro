@@ -272,7 +272,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
       {/* Pagination */}
       <TablePagination
-        className="dark:text-primaryWhite"
+        style={{
+          color:
+            theme === "dark" ? "var(--primaryWhite)" : "var(--primaryBlack)",
+        }}
         sx={{
           "& .MuiTablePagination-selectIcon": {
             color: theme === "dark" ? "var(--primaryWhite)" : "black",
