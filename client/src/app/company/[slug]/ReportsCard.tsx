@@ -11,13 +11,15 @@ export const ReportsCard = ({ reports }: any) => {
         return (
           <div
             key={item.date || index}
-            className="flex justify-between items-center w-full py-3 border-t-[1px] border-solid border-black last:border-b-[1px]"
+            className="flex justify-between items-center w-full py-3 border-t-[1px] border-solid border-black dark:border-primaryWhite last:border-b-[1px]"
           >
             <p className={`text-[15px] ${inter.className}`}>{`${item.date}, ${
               item.form === "10-Q" ? "Quarterly Report" : "Annual Report"
             }`}</p>
             <Link href={item.source} target="_blank">
-              <p className={`text-[12px] ${inter.className} text-[#108AB2]`}>
+              <p
+                className={`text-[12px] ${inter.className} text-[#108AB2] dark:text-cyan-400`}
+              >
                 Download
               </p>
             </Link>

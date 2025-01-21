@@ -13,23 +13,28 @@ import {
   ChartOptions,
 } from "chart.js";
 import useSWR, { useSWRConfig } from "swr";
-import Crosshair from 'chartjs-plugin-crosshair';
+import Crosshair from "chartjs-plugin-crosshair";
 import GraphButton from "./GraphButton";
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 ChartJS.register(
-    CategoryScale, 
-    LinearScale, 
-    PointElement, 
-    LineElement, 
-    Title, 
-    Tooltip,
-    Crosshair
-  );
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Crosshair
+);
 async function getData(company: string, period: string) {
-  const data = await getTickerHistoricalData(company, period, period === "5y" ? "5d" : "1d");
+  const data = await getTickerHistoricalData(
+    company,
+    period,
+    period === "5y" ? "5d" : "1d"
+  );
   // Check if data is an array
-  if (!Array.isArray(data)){
+  if (!Array.isArray(data)) {
     throw new Error(`Unexpected data format: ${JSON.stringify(data)}`);
   }
 
@@ -59,6 +64,7 @@ function usePrefetchPeriods(company: string, periods: string[]) {
 }
 
 export default function Graph({ company }: GraphProps) {
+  const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
 
   // Fetch data for the currently selected period
@@ -92,58 +98,72 @@ export default function Graph({ company }: GraphProps) {
         grid: {
           display: false,
         },
+        ticks: {
+          color: theme === "dark" ? "white" : "black",
+        },
       },
       y: {
         ticks: {
-          callback: function(value) {
-            return `$${value}`
-          }
-        }
-      }
+          callback: function (value) {
+            return `$${value}`;
+          },
+          color: theme === "dark" ? "white" : "black",
+        },
+        grid: {
+          color: theme === "dark" ? "#757575" : "#a6a6a6",
+        },
+        border: {
+          color: theme === "dark" ? "#757575" : "#a6a6a6",
+        },
+      },
     },
     plugins: {
       title: {
         display: true,
-        text: data ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}` : error ? "Failed to load, retrying..." : "Loading...",
+        color: theme === "dark" ? "white" : "black",
+        text: data
+          ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}`
+          : error
+          ? "Failed to load, retrying..."
+          : "Loading...",
       },
       tooltip: {
-        mode: 'index',
+        mode: "index",
         intersect: false,
         callbacks: {
-          label: function(context) {
-            let label = context.dataset.label || '';
+          label: function (context) {
+            let label = context.dataset.label || "";
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             if (context.parsed.y !== null) {
-              label += new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD'
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
               }).format(context.parsed.y);
             }
             return label;
-          }
-        }
+          },
+        },
       },
       crosshair: {
         line: {
-          color: '#4CC0C0',  // crosshair line color
-          width: 1        // crosshair line width
+          color: "#4CC0C0", // crosshair line color
+          width: 1, // crosshair line width
         },
         zoom: {
-            enabled: false
+          enabled: false,
         },
         snap: {
-            enabled: true
+          enabled: true,
         },
-      }
-    }
+      },
+    },
   };
-  
 
   return (
-<div className="bg-white border-2 border-slate-300 rounded-md px-4 py-10 basis-0 grow-[4] flex flex-col justify-center items-center">
-  <Line data={chartData} options={options} />
+    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md px-4 py-10 basis-0 grow-[4] flex flex-col justify-center items-center">
+      <Line data={chartData} options={options} />
       <div className="flex justify-center gap-4 mt-4">
         <GraphButton on={period === "1mo"} onClick={() => setPeriod("1mo")}>
           1 Month

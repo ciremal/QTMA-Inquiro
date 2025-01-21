@@ -10,8 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
-        "inquiro-beige": "#F4F3EB",
+        foreground: "#000000",
+        primaryWhite: "var(--primaryWhite)",
+        primaryBlack: "var(--primaryBlack)",
+        secondaryBlack: "var(--secondaryBlack)",
+        primaryGray: "var(--primaryGray)",
       },
       fontFamily: {
         DM: ["var(--font-dmsans)", "sans-serif"],
@@ -20,5 +23,6 @@ const config: Config = {
     },
   },
   plugins: [],
+  darkMode: "selector",
 };
 export default config;

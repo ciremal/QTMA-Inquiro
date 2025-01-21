@@ -12,7 +12,7 @@ export default function PressCard({ article }: PressCardProps) {
     ? image
     : "https://upload.wikimedia.org/wikipedia/commons/8/8f/Yahoo%21_Finance_logo_2021.png";
   return (
-    <div className="flex-shrink-0 basis-[calc(33.333%-1rem)] border rounded-lg shadow-lg">
+    <div className="flex-shrink-0 basis-[calc(33.333%-1rem)] border dark:border-primaryGray rounded-lg shadow-lg">
       <img
         src={thumbnail}
         alt="thumbnail"
@@ -31,7 +31,7 @@ export default function PressCard({ article }: PressCardProps) {
         </p>
         <Link
           href={url}
-          className="block text-right text-cyan-600 mt-8 hover:underline"
+          className="block text-right text-cyan-600 dark:text-cyan-400 mt-8 hover:underline"
           target="_blank"
         >
           Read More

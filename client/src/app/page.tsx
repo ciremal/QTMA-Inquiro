@@ -6,7 +6,7 @@ import Table from "./components/Table/TableTemplate";
 import { redirect } from "next/navigation";
 import { getTickerInfoBulk } from "./api/fetchStockInfo";
 import useSWR from "swr";
-import Navbar from "./components/navbar";
+import { ThemeSwitcher } from "./components/ThemeSwitcher";
 
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
@@ -29,7 +29,6 @@ function Home() {
       "the biggest music software companies",
       "companies in the oil pipeline industry",
       "LULU's change in stock price",
-      // "AAPL's most recent 10-K",
     ];
     const rand = Math.floor(Math.random() * prompts.length);
     setPrompt(prompts[rand]);
@@ -44,16 +43,17 @@ function Home() {
   } else {
     return (
       <>
-        <Navbar />
         <main className="flex flex-col h-screen">
-          <div className="bg-ingquiro-beige flex flex-col items-center justify-center font-DM mt-8">
+          <div className="flex flex-col items-center justify-center font-DM mt-8">
             <Typography
               className="font-DM mb-4"
-              variant="h4"
+              variant="h3"
               style={{ fontWeight: "bold" }}
             >
-              <span style={{ color: "black" }}>Ask me about</span>
-              <span style={{ color: "gray" }}>{` ${prompt}`}</span>
+              <span className="text-black dark:text-primaryWhite">
+                Ask me about
+              </span>
+              <span className="text-[#00000066] dark:text-primaryWhite">{` ${prompt}`}</span>
             </Typography>
             {/* @ts-expect-error */}
             <Table data={data}></Table>
