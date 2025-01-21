@@ -108,6 +108,7 @@ const TableCompanies = ({
             {paginatedData.map((item, index) => (
               <TableRow
                 key={item.symbol || index}
+                hover
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: isPending ? "wait" : "pointer",
@@ -116,8 +117,11 @@ const TableCompanies = ({
                     transform: "scale(0.98)",
                     transition: "transform 0.1s ease-in-out",
                   },
+                  "&:hover": {
+                    opacity: 0.7,
+                    transition: "transform 0.1s ease-in-out",
+                  },
                 }}
-                hover
                 onClick={() =>
                   startTransition(() => {
                     if (!isPending) {
