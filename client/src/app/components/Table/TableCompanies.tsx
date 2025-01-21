@@ -170,26 +170,13 @@ const TableCompanies = ({
                     {item.symbol}
                   </Box>
                 </TableCell>
-                <TableCell
-                  className="font-[500]"
-                  style={{
-                    color:
-                      theme === "dark"
-                        ? "var(--primaryWhite)"
-                        : "var(--primaryBlack)",
-                  }}
-                >
+                <TableCell className="font-[500] dark:text-primaryWhite">
                   {item.longName}
                 </TableCell>
                 <TableCell>
                   <Box className="flex gap-2 flex-wrap">
                     <Chip
-                      style={{
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
-                      }}
+                      className="dark:text-primaryWhite"
                       key={item.industry}
                       label={item.industry}
                       sx={{
@@ -205,26 +192,10 @@ const TableCompanies = ({
                     />
                   </Box>
                 </TableCell>
-                <TableCell
-                  align="right"
-                  style={{
-                    color:
-                      theme === "dark"
-                        ? "var(--primaryWhite)"
-                        : "var(--primaryBlack)",
-                  }}
-                >
+                <TableCell align="right" className="dark:text-primaryWhite">
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  style={{
-                    color:
-                      theme === "dark"
-                        ? "var(--primaryWhite)"
-                        : "var(--primaryBlack)",
-                  }}
-                >
+                <TableCell align="right" className="dark:text-primaryWhite">
                   {formatPrice(item.currentPrice)}
                 </TableCell>
               </TableRow>
