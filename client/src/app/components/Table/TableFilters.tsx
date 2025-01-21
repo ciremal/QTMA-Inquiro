@@ -66,7 +66,7 @@ const TableFilters = ({
       <Box className="w-2/3 flex flex-row gap-6">
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            className="text-primaryBlack dark:text-primaryWhite"
             sx={filterInputLabelStyles()}
           >
             Industry

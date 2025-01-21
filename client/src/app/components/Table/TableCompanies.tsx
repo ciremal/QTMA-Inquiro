@@ -170,7 +170,7 @@ const TableCompanies = ({
                     {item.symbol}
                   </Box>
                 </TableCell>
-                <TableCell className="font-[500] dark:text-primaryWhite">
+                <TableCell className="font-[500] text-primaryBlack dark:text-primaryWhite">
                   {item.longName}
                 </TableCell>
                 <TableCell>
