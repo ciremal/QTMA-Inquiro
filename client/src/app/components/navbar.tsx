@@ -1,5 +1,6 @@
 import React from "react";
 import Logo from "./Logo";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const Navbar = () => {
   return (
@@ -9,7 +10,8 @@ const Navbar = () => {
         <Logo />
       </div>
 
-      <ul className="flex space-x-4 pr-8">
+      <ul className="flex items-center space-x-4 pr-8">
+        <ThemeSwitcher />
         <li>
           {/* <Link href="/profile"> */}
           <img

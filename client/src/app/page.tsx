@@ -45,7 +45,6 @@ function Home() {
       <>
         <main className="flex flex-col h-screen">
           <div className="flex flex-col items-center justify-center font-DM mt-8">
-            <ThemeSwitcher />
             <Typography
               className="font-DM mb-4"
               variant="h3"

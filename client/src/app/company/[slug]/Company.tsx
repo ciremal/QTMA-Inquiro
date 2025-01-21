@@ -11,7 +11,7 @@ interface CompanyProps {
 
 export default async function Company({ company, logo }: CompanyProps) {
   return (
-    <div className="bg-white px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md border-2 border-slate-300 w-full">
+    <div className="bg-white dark:bg-secondaryBlack px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md border-2 border-slate-300 dark:border-primaryGray w-full">
       <div className="flex justify-between">
         <div className="flex gap-4">
           <CompanyLogo company={company.symbol} logoUrl={logo} />
@@ -24,7 +24,7 @@ export default async function Company({ company, logo }: CompanyProps) {
             </h1>
             <div className="flex gap-4">
               <Chip
-                className="font-bold"
+                className="font-[500] dark:text-primaryWhite"
                 label={company.industry}
                 sx={{
                   backgroundColor: getIndustryColor(company.industry).bg,
@@ -38,7 +38,7 @@ export default async function Company({ company, logo }: CompanyProps) {
                 }}
               />
               <Chip
-                className="font-bold"
+                className="font-[500] dark:text-primaryWhite"
                 label={company.sector}
                 sx={{
                   backgroundColor: getIndustryColor(company.sector).bg,

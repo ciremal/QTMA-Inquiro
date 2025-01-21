@@ -12,8 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "#000000",
         primaryWhite: "var(--primaryWhite)",
-        tableBackground: "#FFFFFF",
-        tableBackgroundDark: "var(--secondaryBlack)",
+        primaryBlack: "var(--primaryBlack)",
+        secondaryBlack: "var(--secondaryBlack)",
+        primaryGray: "var(--primaryGray)",
       },
       fontFamily: {
         DM: ["var(--font-dmsans)", "sans-serif"],
