@@ -1,6 +1,5 @@
-import { inter } from "@/app/ui/fonts";
-import { LoadingButton } from "@mui/lab";
-import { TextField, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
+import LoadingButton from "../LoadingButton";
 
 type SignupFormProps = {
   formik: any;
@@ -11,33 +10,65 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-10">
       <div className="flex flex-col gap-y-5 md:items-start items-center">
-        <TextField
-          id="name"
-          name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          variant="standard"
-          className="md:w-1/2 w-3/4"
-          placeholder="Your Name"
-          helperText={
-            formik.touched.name && formik.errors.name
-              ? formik.errors.name
-              : "Name *"
-          }
-          sx={{
-            ".MuiInputBase-input": { fontSize: "1.25rem" },
-          }}
-          slotProps={{
-            formHelperText: {
-              sx: {
-                color:
-                  formik.touched.name && formik.errors.name ? "red" : "black",
+        <div className="flex gap-x-16 justify-between items-center">
+          <TextField
+            id="firstName"
+            name="firstName"
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            variant="standard"
+            placeholder="First Name"
+            helperText={
+              formik.touched.firstName && formik.errors.firstName
+                ? formik.errors.firstName
+                : "First Name"
+            }
+            sx={{
+              ".MuiInputBase-input": { fontSize: "1.25rem" },
+            }}
+            slotProps={{
+              formHelperText: {
+                sx: {
+                  color:
+                    formik.touched.firstName && formik.errors.firstName
+                      ? "red"
+                      : "black",
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+
+          <TextField
+            id="lastName"
+            name="lastName"
+            value={formik.values.lastName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            variant="standard"
+            placeholder="Last Name"
+            helperText={
+              formik.touched.lastName && formik.errors.lastName
+                ? formik.errors.lastName
+                : "Last Name"
+            }
+            sx={{
+              ".MuiInputBase-input": { fontSize: "1.25rem" },
+            }}
+            slotProps={{
+              formHelperText: {
+                sx: {
+                  color:
+                    formik.touched.lastName && formik.errors.lastName
+                      ? "red"
+                      : "black",
+                },
+              },
+            }}
+          />
+        </div>
 
         <TextField
           id="email"
@@ -47,12 +78,12 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
           onBlur={formik.handleBlur}
           error={formik.touched.name && Boolean(formik.errors.name)}
           variant="standard"
-          className="md:w-1/2 w-3/4"
+          className="w-full"
           placeholder="email@domain.com"
           helperText={
             formik.touched.email && formik.errors.email
               ? formik.errors.email
-              : "Email *"
+              : "Email"
           }
           sx={{
             ".MuiInputBase-input": { fontSize: "1.25rem" },
@@ -66,35 +97,75 @@ const SignupForm = ({ formik, isLoading }: SignupFormProps) => {
             },
           }}
         />
+
+        <TextField
+          id="password"
+          name="password"
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          variant="standard"
+          className="w-full"
+          placeholder="Password"
+          helperText={
+            formik.touched.password && formik.errors.password
+              ? formik.errors.password
+              : "Password"
+          }
+          sx={{
+            ".MuiInputBase-input": { fontSize: "1.25rem" },
+          }}
+          slotProps={{
+            formHelperText: {
+              sx: {
+                color:
+                  formik.touched.password && formik.errors.password
+                    ? "red"
+                    : "black",
+              },
+            },
+          }}
+        />
+
+        <TextField
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            formik.touched.confirmPassword &&
+            Boolean(formik.errors.confirmPassword)
+          }
+          variant="standard"
+          className="w-full"
+          placeholder="Confirm Password"
+          helperText={
+            formik.touched.confirmPassword && formik.errors.confirmPassword
+              ? formik.errors.confirmPassword
+              : "Confirm Password"
+          }
+          sx={{
+            ".MuiInputBase-input": { fontSize: "1.25rem" },
+          }}
+          slotProps={{
+            formHelperText: {
+              sx: {
+                color:
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? "red"
+                    : "black",
+              },
+            },
+          }}
+        />
       </div>
       <div className="flex md:justify-start justify-center">
-        <LoadingButton
-          type="submit"
-          loading={isLoading}
-          loadingPosition="end"
-          sx={{
-            width: "25%",
-            borderRadius: 0,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: "black",
-            color: "black",
-            textTransform: "none",
-            paddingLeft: "8rem",
-            paddingRight: "8rem",
-            paddingTop: "0.75rem",
-            paddingBottom: "0.75rem",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-            },
-            transition: "all 0.3s ease",
-          }}
-        >
-          <Typography sx={{ fontSize: 20 }} className={`${inter.className}`}>
-            {"Submit"}
-          </Typography>
-        </LoadingButton>
+        <LoadingButton message="Create Account" isLoading={isLoading} />
       </div>
     </form>
   );

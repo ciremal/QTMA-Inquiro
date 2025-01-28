@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "./Logo";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import ProfilePic from "./ProfilePic";
 
 const Navbar = () => {
   return (
@@ -12,15 +13,7 @@ const Navbar = () => {
 
       <ul className="flex items-center space-x-4 pr-8">
         <ThemeSwitcher />
-        <li>
-          {/* <Link href="/profile"> */}
-          <img
-            src="/ProfilePic.svg"
-            alt="Profile"
-            className="w-14 h-14 cursor-pointer rounded-full"
-          />
-          {/* </Link> */}
-        </li>
+        <ProfilePic />
       </ul>
     </nav>
   );
