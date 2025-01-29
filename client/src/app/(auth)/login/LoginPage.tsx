@@ -8,17 +8,25 @@ import * as Yup from "yup";
 import SnackbarResponse from "@/app/components/snackbar";
 import LoginForm from "@/app/components/Forms/LoginForm";
 import Link from "next/link";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useSignInWithEmailAndPassword,
+  useAuthState,
+} from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-  const router = useRouter();
   const [incorrectCred, setIncorrectCred] = useState(false);
+  const router = useRouter();
+  const [user] = useAuthState(auth);
+
+  if (user || sessionStorage.getItem("user")) {
+    redirect("/");
+  }
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email Required"),
@@ -42,7 +50,7 @@ function LoginPage() {
           setIncorrectCred(true);
         } else {
           setIncorrectCred(false);
-          console.log(res);
+          sessionStorage.setItem("user", res.user.uid);
           router.push("/");
         }
       } catch (error) {

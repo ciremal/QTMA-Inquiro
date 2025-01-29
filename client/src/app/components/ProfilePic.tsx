@@ -55,6 +55,7 @@ const ProfilePic = () => {
           onClick={() => {
             handleMenuClose();
             signOut(auth);
+            sessionStorage.removeItem("user");
           }}
         >
           Logout

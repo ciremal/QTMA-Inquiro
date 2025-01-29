@@ -24,12 +24,11 @@ function Home() {
   // }
   const [prompt, setPrompt] = useState("");
   const [user] = useAuthState(auth);
+  const userSession = sessionStorage.getItem("user");
 
-  if (!user) {
+  if (!user && !userSession) {
     redirect("/login");
   }
-
-  console.log(user);
 
   useEffect(() => {
     const prompts = [
