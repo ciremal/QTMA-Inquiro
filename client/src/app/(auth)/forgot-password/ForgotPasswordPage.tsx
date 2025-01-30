@@ -10,6 +10,7 @@ import Link from "next/link";
 import { auth } from "@/app/firebase/config";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import ForgotPasswordForm from "@/app/components/Forms/ForgotPasswordForm";
+import SideImage from "../components/SideImage";
 
 function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,22 +57,22 @@ function ForgotPasswordPage() {
     <main className="flex flex-col min-h-screen">
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
       <div className="flex w-full h-screen">
-        <div className="div1 flex-1 flex flex-col bg-white">
+        <div className="div1 flex-1 flex flex-col bg-white dark:bg-background">
           <div className="md:pl-36 px-8 flex flex-col gap-y-7">
             <div className="flex flex-col gap-y-4">
               <Typography
-                className={`font-normal leading-[58px] md:text-left text-center`}
+                className={`font-normal leading-[58px] md:text-left text-center text-black`}
                 style={{ fontSize: 58, fontFamily: "Bagnard" }}
               >
                 {`Forgot Password`}
               </Typography>
-              <Typography>
+              <Typography className="text-black">
                 {`Enter the email associated with your Inquiro account to receive a password reset link`}
               </Typography>
             </div>
             <div className="w-[60%] flex flex-col gap-y-12">
               <ForgotPasswordForm formik={formik} isLoading={isLoading} />
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center text-black">
                 <Typography>
                   Remember your password?{" "}
                   <Link className="font-bold" href={"/login"}>
@@ -83,7 +84,7 @@ function ForgotPasswordPage() {
           </div>
         </div>
         <div className="div2 flex-1 flex-col md:flex items-center hidden">
-          <Image src={"/signup-img.svg"} height={1} width={635} alt="" />
+          <SideImage />
         </div>
       </div>
     </main>

@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import ResetPasswordForm from "@/app/components/Forms/ResetPasswordForm";
 import Navbar from "../components/Navbar";
+import SideImage from "../components/SideImage";
 
 function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,12 +43,8 @@ function ResetPasswordPage() {
       setIsLoading(true);
       try {
         if (oobCode) {
-          const res = await confirmPasswordReset(
-            auth,
-            oobCode,
-            values.password
-          );
-          console.log(res);
+          await confirmPasswordReset(auth, oobCode, values.password);
+          router.push("/login");
         } else {
           setOpen(true);
           setMessage(
@@ -75,17 +72,17 @@ function ResetPasswordPage() {
             <Navbar />
             <SnackbarResponse open={open} setOpen={setOpen} message={message} />
             <div className="flex w-full h-screen">
-              <div className="div1 flex-1 flex flex-col bg-white">
+              <div className="div1 flex-1 flex flex-col bg-white dark:bg-background">
                 <div className="md:pl-36 px-8 flex flex-col gap-y-7">
                   <div className="flex flex-col gap-y-4">
                     <Typography
-                      className={`font-normal leading-[58px] md:text-left text-center`}
+                      className={`font-normal leading-[58px] md:text-left text-center text-black`}
                       style={{ fontSize: 58, fontFamily: "Bagnard" }}
                     >
                       {`Set new password`}
                     </Typography>
                   </div>
-                  <div className="w-[60%] flex flex-col gap-y-12">
+                  <div className="w-[60%] flex flex-col gap-y-12 text-black">
                     <ResetPasswordForm formik={formik} isLoading={isLoading} />
                     <div className="flex justify-center items-center">
                       <Typography>
@@ -99,13 +96,13 @@ function ResetPasswordPage() {
                 </div>
               </div>
               <div className="div2 flex-1 flex-col md:flex items-center hidden">
-                <Image src={"/signup-img.svg"} height={1} width={635} alt="" />
+                <SideImage />
               </div>
             </div>
           </>
         ) : (
           <div className="flex-1 flex justify-center items-center">
-            <Box className="shadow-lg p-11 flex flex-col gap-y-7">
+            <Box className="shadow-lg p-11 flex flex-col gap-y-7 dark:border dark:border-white">
               <Typography variant="h5">
                 Password Reset Request Expired or Invalid
               </Typography>
@@ -115,7 +112,7 @@ function ResetPasswordPage() {
               </Typography>
               <div className="flex justify-center">
                 <Link href={"/forgot-password"}>
-                  <Typography className="underline text-blue-600">
+                  <Typography className="underline text-blue-600 dark:text-blue-300">
                     Reset your password
                   </Typography>
                 </Link>

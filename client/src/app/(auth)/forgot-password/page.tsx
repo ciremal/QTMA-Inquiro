@@ -5,7 +5,7 @@ function ForgotPassword() {
   return (
     <>
       <Navbar />
-      <ForgotPasswordPage />;
+      <ForgotPasswordPage />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { auth } from "@/app/firebase/config";
 import { letterColorMap } from "@/app/lib/constants";
 import { formatMarketCap, formatPrice } from "@/app/lib/formattingFunctions";
 import getIndustryColor from "@/app/lib/industryColors";
@@ -15,6 +16,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "next-themes";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type TableCompaniesProps = {
   columns: any[];
@@ -38,6 +40,7 @@ const TableCompanies = ({
   router,
 }: TableCompaniesProps) => {
   const { theme } = useTheme();
+  const [user] = useAuthState(auth);
 
   return (
     <div className="bg-white dark:bg-[var(--secondaryBlack)] p-6 rounded-2xl border border-[#00000033] ">

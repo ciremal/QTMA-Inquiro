@@ -3,12 +3,20 @@
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
+import { redirect } from "next/navigation";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
+  const userSession = sessionStorage.getItem("user");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    if (!user && !userSession) {
+      redirect("/login");
+    }
+  }, [user]);
 
   const getProfileDisplay = (name: string | null | undefined) => {
     const splitName = name?.split(" ");
@@ -29,7 +37,8 @@ const ProfilePic = () => {
   return (
     <div>
       <Avatar
-        className="bg-primaryBlack dark:bg-white dark:text-primaryBlack cursor-pointer"
+        className="dark:bg-white dark:text-primaryBlack cursor-pointer"
+        sx={{ backgroundColor: "black" }}
         onClick={handleMenuOpen}
       >
         {getProfileDisplay(user?.displayName)}
@@ -56,6 +65,7 @@ const ProfilePic = () => {
             handleMenuClose();
             signOut(auth);
             sessionStorage.removeItem("user");
+            redirect("/login");
           }}
         >
           Logout

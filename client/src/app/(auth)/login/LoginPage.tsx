@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import { useFormik } from "formik";
@@ -14,6 +14,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { redirect, useRouter } from "next/navigation";
+import SideImage from "../components/SideImage";
 
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,9 +25,11 @@ function LoginPage() {
   const router = useRouter();
   const [user] = useAuthState(auth);
 
-  if (user || sessionStorage.getItem("user")) {
-    redirect("/");
-  }
+  useEffect(() => {
+    if (user) {
+      redirect("/");
+    }
+  }, [user]);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email Required"),
@@ -67,11 +70,11 @@ function LoginPage() {
     <main className="flex flex-col min-h-screen">
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
       <div className="flex w-full h-screen">
-        <div className="div1 flex-1 flex flex-col bg-white">
+        <div className="div1 flex-1 flex flex-col bg-white dark:bg-background">
           <div className="md:pl-36 px-8 flex flex-col gap-y-7">
             <div>
               <Typography
-                className={`font-normal leading-[58px] md:text-left text-center`}
+                className={`font-normal leading-[58px] md:text-left text-center text-black`}
                 style={{ fontSize: 58, fontFamily: "Bagnard" }}
               >
                 {`Log in to your account`}
@@ -83,7 +86,7 @@ function LoginPage() {
                 isLoading={isLoading}
                 incorrectCred={incorrectCred}
               />
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center text-black">
                 <Typography>
                   New to inquiro?{" "}
                   <Link className="font-bold" href={"/signup"}>
@@ -95,7 +98,7 @@ function LoginPage() {
           </div>
         </div>
         <div className="div2 flex-1 flex-col md:flex items-center hidden">
-          <Image src={"/signup-img.svg"} height={1} width={635} alt="" />
+          <SideImage />
         </div>
       </div>
     </main>

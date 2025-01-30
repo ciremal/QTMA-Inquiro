@@ -5,7 +5,7 @@ function Login() {
   return (
     <>
       <Navbar />
-      <LoginPage />;
+      <LoginPage />
     </>
   );
 }

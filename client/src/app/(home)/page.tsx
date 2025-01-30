@@ -3,11 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Table from "../components/Table/TableTemplate";
-import { redirect } from "next/navigation";
 import { getTickerInfoBulk } from "../api/fetchStockInfo";
 import useSWR from "swr";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase/config";
 
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
@@ -18,17 +15,7 @@ const fetcher = async () => {
 };
 
 function Home() {
-  // Temporarily redirect users to signup page on production
-  // if (process.env.NODE_ENV !== "development") {
-  //   redirect("/signup");
-  // }
   const [prompt, setPrompt] = useState("");
-  const [user] = useAuthState(auth);
-  const userSession = sessionStorage.getItem("user");
-
-  if (!user && !userSession) {
-    redirect("/login");
-  }
 
   useEffect(() => {
     const prompts = [

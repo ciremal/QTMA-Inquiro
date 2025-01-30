@@ -5,7 +5,7 @@ function Signup() {
   return (
     <>
       <Navbar />
-      <SignupPage />;
+      <SignupPage />
     </>
   );
 }

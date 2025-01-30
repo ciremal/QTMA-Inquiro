@@ -21,14 +21,14 @@ const Logo = () => {
     <div className="navbar">
       <div className="px-2 py-2 flex flex-row justify-start items-baseline gap-x-3">
         <Image
-          src={theme === "dark" ? "/darkLogo.svg" : "/logo.svg"}
+          src={"/logo.svg"}
           width={65}
           height={27}
           alt="logo"
           style={{ verticalAlign: "bottom" }}
         />
         <span
-          className={`font-normal ${epilogue.className}`}
+          className={`font-normal ${epilogue.className} text-black`}
           style={{ fontSize: 35, lineHeight: 1 }}
         >
           {"inquiro"}
