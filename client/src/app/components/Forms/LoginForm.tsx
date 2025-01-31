@@ -1,5 +1,5 @@
 import { inter } from "@/app/ui/fonts";
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import LoadingButton from "../LoadingButton";
 
@@ -77,8 +77,9 @@ const LoginForm = ({ formik, isLoading, incorrectCred }: LoginFormProps) => {
           className={`flex md:justify-start justify-center w-full flex-col bg-red-200 p-7 rounded-md ${inter.className} text-red-800`}
         >
           <div>
-            Your email or password is incorrect, or this account doesn't exist.
-            Please try again.
+            {
+              "Your email or password is incorrect, or this account doesn't exist. Please try again."
+            }
           </div>
           <br></br>
           <div>

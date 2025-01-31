@@ -61,6 +61,7 @@ function SignupPage() {
           await updateProfile(user, {
             displayName: `${values.firstName} ${values.lastName}`,
           });
+          sessionStorage.setItem("user", user.uid);
           setOpen(true);
           setMessage("Sign Up Successful!");
           router.push("/");

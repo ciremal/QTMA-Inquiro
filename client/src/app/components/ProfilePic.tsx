@@ -9,14 +9,18 @@ import { redirect } from "next/navigation";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
-  const userSession = sessionStorage.getItem("user");
+  const [mounted, setMounted] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
-    if (!user && !userSession) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!user && mounted && !sessionStorage.getItem("user")) {
       redirect("/login");
     }
-  }, [user]);
+  }, [user, mounted]);
 
   const getProfileDisplay = (name: string | null | undefined) => {
     const splitName = name?.split(" ");
