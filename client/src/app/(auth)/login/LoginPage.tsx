@@ -26,7 +26,7 @@ function LoginPage() {
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    if (user) {
+    if (user && sessionStorage.getItem("user")) {
       redirect("/");
     }
   }, [user]);
