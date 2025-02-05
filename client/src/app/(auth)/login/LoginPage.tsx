@@ -1,19 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Typography } from "@mui/material";
-import Image from "next/image";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SnackbarResponse from "@/app/components/snackbar";
 import LoginForm from "@/app/components/Forms/LoginForm";
 import Link from "next/link";
-import {
-  useSignInWithEmailAndPassword,
-  useAuthState,
-} from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import SideImage from "../components/SideImage";
 
 function LoginPage() {
@@ -23,13 +19,6 @@ function LoginPage() {
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const [incorrectCred, setIncorrectCred] = useState(false);
   const router = useRouter();
-  const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    if (user && sessionStorage.getItem("user")) {
-      redirect("/");
-    }
-  }, [user]);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email Required"),
@@ -53,6 +42,8 @@ function LoginPage() {
           setIncorrectCred(true);
         } else {
           setIncorrectCred(false);
+          const token = await res.user.getIdToken();
+          document.cookie = `firebase-auth=${token}; path=/`;
           sessionStorage.setItem("user", res.user.uid);
           router.push("/");
         }

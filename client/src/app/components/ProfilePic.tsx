@@ -3,24 +3,13 @@
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signOut } from "firebase/auth";
 import { redirect } from "next/navigation";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
-  const [mounted, setMounted] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!user && mounted && !sessionStorage.getItem("user")) {
-      redirect("/login");
-    }
-  }, [user, mounted]);
 
   const getProfileDisplay = (name: string | null | undefined) => {
     const splitName = name?.split(" ");
@@ -36,6 +25,15 @@ const ProfilePic = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignOut = async () => {
+    handleMenuClose();
+    signOut(auth);
+    document.cookie =
+      "firebase-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    sessionStorage.removeItem("user");
+    redirect("/login");
   };
 
   return (
@@ -64,16 +62,7 @@ const ProfilePic = () => {
       >
         {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         <MenuItem onClick={handleMenuClose}>Settings</MenuItem> */}
-        <MenuItem
-          onClick={() => {
-            handleMenuClose();
-            signOut(auth);
-            sessionStorage.removeItem("user");
-            redirect("/login");
-          }}
-        >
-          Logout
-        </MenuItem>
+        <MenuItem onClick={() => handleSignOut()}>Logout</MenuItem>
       </Menu>
     </div>
   );
