@@ -9,7 +9,7 @@ const Navbar = () => {
         <Logo />
       </div>
 
-      <div className="flex flex-col items-end w-full pr-16 pt-10 pb-20">
+      <div className="md:flex flex-col items-end w-full pr-16 pt-10 pb-20 hidden">
         <ThemeSwitcher />
       </div>
     </nav>

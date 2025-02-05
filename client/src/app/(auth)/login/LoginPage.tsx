@@ -71,7 +71,7 @@ function LoginPage() {
                 {`Log in to your account`}
               </Typography>
             </div>
-            <div className="w-[60%] flex flex-col gap-y-12">
+            <div className="md:w-[60%] w-full flex flex-col gap-y-12">
               <LoginForm
                 formik={formik}
                 isLoading={isLoading}

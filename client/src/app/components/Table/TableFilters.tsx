@@ -63,7 +63,7 @@ const TableFilters = ({
 
   return (
     <Box className="w-full flex justify-between items-center">
-      <Box className="w-2/3 flex flex-row gap-6">
+      <Box className="md:w-2/3 w-full flex flex-row gap-6">
         <FormControl fullWidth>
           <InputLabel
             className="dark:text-primaryWhite"

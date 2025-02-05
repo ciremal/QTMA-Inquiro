@@ -66,11 +66,11 @@ function ForgotPasswordPage() {
               >
                 {`Forgot Password`}
               </Typography>
-              <Typography className="text-black">
+              <Typography className="text-black text-center md:text-start">
                 {`Enter the email associated with your Inquiro account to receive a password reset link`}
               </Typography>
             </div>
-            <div className="w-[60%] flex flex-col gap-y-12">
+            <div className="md:w-[60%] w-full flex flex-col gap-y-12">
               <ForgotPasswordForm formik={formik} isLoading={isLoading} />
               <div className="flex justify-center items-center text-black">
                 <Typography>

@@ -77,7 +77,6 @@ function SignupPage() {
 
   return (
     <main className="flex flex-col min-h-screen">
-      {/* <Logo /> */}
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
       <div className="flex w-full h-screen">
         <div className="div1 flex-1 flex flex-col bg-white dark:bg-background">
@@ -90,7 +89,7 @@ function SignupPage() {
                 {`Create your account`}
               </Typography>
             </div>
-            <div className="w-[60%] flex flex-col gap-y-12">
+            <div className="md:w-[60%] w-full flex flex-col gap-y-12">
               <SignupForm formik={formik} isLoading={isLoading} />
               <div className="flex justify-center items-center text-black">
                 <Typography>
