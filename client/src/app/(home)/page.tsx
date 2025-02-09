@@ -39,7 +39,7 @@ function Home() {
       <>
         <main className="flex flex-col h-screen">
           <div className="flex flex-col items-center justify-center font-DM mt-8">
-            <Typography
+            <p
               className="font-DM mb-4 md:text-5xl text-2xl text-center"
               style={{ fontWeight: "bold" }}
             >
@@ -47,7 +47,7 @@ function Home() {
                 Ask me about
               </span>
               <span className="text-[#00000066] dark:text-primaryWhite">{` ${prompt}`}</span>
-            </Typography>
+            </p>
             {/* @ts-expect-error */}
             <Table data={data}></Table>
           </div>
