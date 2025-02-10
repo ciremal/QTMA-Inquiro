@@ -44,7 +44,6 @@ function LoginPage() {
           setIncorrectCred(false);
           const token = await res.user.getIdToken();
           document.cookie = `firebase-auth=${token}; path=/`;
-          sessionStorage.setItem("user", res.user.uid);
           router.push("/");
         }
       } catch (error) {
@@ -61,7 +60,7 @@ function LoginPage() {
     <main className="flex flex-col min-h-screen">
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
       <div className="flex w-full h-screen">
-        <div className="div1 flex-1 flex flex-col bg-white dark:bg-background">
+        <div className="div1 flex-1 flex flex-col bg-white dark:bg-background h-max">
           <div className="md:pl-36 px-8 flex flex-col gap-y-7">
             <div>
               <Typography
@@ -77,7 +76,7 @@ function LoginPage() {
                 isLoading={isLoading}
                 incorrectCred={incorrectCred}
               />
-              <div className="flex justify-center items-center text-black">
+              <div className="flex justify-center items-center text-black pb-16">
                 <Typography>
                   New to inquiro?{" "}
                   <Link className="font-bold" href={"/signup"}>

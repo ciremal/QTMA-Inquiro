@@ -60,7 +60,8 @@ function SignupPage() {
           await updateProfile(user, {
             displayName: `${values.firstName} ${values.lastName}`,
           });
-          sessionStorage.setItem("user", user.uid);
+          const token = await res.user.getIdToken();
+          document.cookie = `firebase-auth=${token}; path=/`;
           setOpen(true);
           setMessage("Sign Up Successful!");
           router.push("/");
