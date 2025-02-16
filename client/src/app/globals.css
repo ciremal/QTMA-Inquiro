@@ -31,13 +31,13 @@
                 radial-gradient(circle at 30% 80%, rgba(77, 150, 255, 0.4) 0%, transparent 40%),
                 radial-gradient(circle at 70% 70%, rgba(255, 204, 112, 0.4) 0%, transparent 40%);  opacity: 0.3;
   z-index: -1;
-  animation: moveRadials 6s ease-in-out infinite;
+  animation: moveRadials 4s ease-in-out infinite;
   background-size: 150% 150%;
 }
 
 @keyframes moveRadials {
   0% {
-    background-position: 20% 30%, 80% 20%, 30% 80%, 70% 70%;
+    background-position: 20% 30%, 90% 20%, 30% 80%, 70% 70%;
   }
   25% {
     background-position: 30% 40%, 70% 30%, 40% 70%, 60% 60%;

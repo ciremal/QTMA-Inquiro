@@ -26,7 +26,7 @@ export const formatMarketCap = (marketCap: number) => {
 export const calculatePriceDifference = (currentPrice: number, previousClose: number) => {
   const difference = currentPrice - previousClose;
   const percentage = ((difference / previousClose) * 100).toFixed(2);
-  const color = difference >= 0 ? 'green' : 'red';
+  const color = difference >= 0 ? '#16A34A' : '#EF4444';
   const formattedDifference = `${difference >= 0 ? '+' : ''}${difference.toFixed(2)} (${difference >= 0 ? '+' : ''}${percentage}%)`;
 
   return { formattedDifference, color };
