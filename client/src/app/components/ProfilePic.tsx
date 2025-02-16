@@ -51,7 +51,7 @@ const ProfilePic = () => {
   const isMenuOpen = Boolean(anchorEl);
 
   return (
-    <div className="relative w-56">
+    <div className="relative w-sm">
       {/* Main Profile Section */}
       <div
         className={`flex items-center justify-between backdrop-blur-md bg-white dark:bg-secondaryBlack p-2 rounded-3xl border border-[#00000033] cursor-pointer transition-all duration-300 ${
@@ -66,7 +66,7 @@ const ProfilePic = () => {
           >
             {getProfileDisplay(user?.displayName)}
           </Avatar>
-          <p className="ml-4 font-DM dark:text-white text-center my-auto">
+          <p className="ml-4 font-DM dark:text-white text-center my-auto max-w-[75px] truncate">
             {shortenName(user?.displayName)}
           </p>
         </div>
