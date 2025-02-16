@@ -1,6 +1,6 @@
 import { auth } from "@/app/firebase/config";
 import { letterColorMap } from "@/app/lib/constants";
-import { formatMarketCap, formatPrice } from "@/app/lib/formattingFunctions";
+import { formatMarketCap, formatPrice, calculatePriceDifference } from "@/app/lib/formattingFunctions";
 import getIndustryColor from "@/app/lib/industryColors";
 import {
   Box,
@@ -191,8 +191,13 @@ const TableCompanies = ({
                 <TableCell sx={{ textAlign: "center", verticalAlign: "middle" }} className="dark:text-primaryWhite">
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", verticalAlign: "middle" }} className="dark:text-primaryWhite">
+                <TableCell sx={{ textAlign: "center", verticalAlign: "middle" }} className="dark:text-primaryWhite flex-col">
+                  <div>
                   {formatPrice(item.currentPrice)}
+                  </div>
+                  <div style={{ color: calculatePriceDifference(item.currentPrice, item.previousClose).color }}>
+                    {calculatePriceDifference(item.currentPrice, item.previousClose).formattedDifference}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
