@@ -54,6 +54,7 @@ export default function RootLayout({
         antialiased 
         bg-background
         dark:bg-foreground
+        bg-radial-gradient
         `}
       >
         <Providers>

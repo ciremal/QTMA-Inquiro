@@ -103,6 +103,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     color: "var(--primaryLightGray)",
                   },
                   color: theme === "dark" ? "var(--primaryWhite)" : "black",
+                  // Add glow effect
+                  boxShadow: "0 4px 110.6px 0 rgba(110, 115, 121, 0.5)",
+                  transition: "box-shadow 0.3s ease",
                 },
               },
             }}
@@ -123,6 +126,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               },
             }}
           />
+
         </form>
       </div>
     </div>

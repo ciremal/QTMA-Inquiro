@@ -37,8 +37,8 @@ function Home() {
   } else {
     return (
       <>
-        <main className="flex flex-col h-screen">
-          <div className="flex flex-col items-center justify-center font-DM mt-8">
+        <main className="flex flex-col h-screen ">
+          <div className="flex flex-col items-center justify-center font-DM mt-8 ">
             <p
               className="font-DM mb-4 md:text-5xl text-2xl text-center"
               style={{ fontWeight: "bold" }}
@@ -46,7 +46,7 @@ function Home() {
               <span className="text-black dark:text-primaryWhite">
                 Ask me about
               </span>
-              <span className="text-[#00000066] dark:text-primaryWhite">{` ${prompt}`}</span>
+              <span className="text-[#00000066] dark:text-primaryWhite ">{` ${prompt}`}</span>
             </p>
             {/* @ts-expect-error */}
             <Table data={data}></Table>

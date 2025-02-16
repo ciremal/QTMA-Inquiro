@@ -50,8 +50,8 @@ const industriesColors: { [key: string]: { r: number; g: number; b: number } } =
 const getIndustryColor = (industry: string): { bg: string; color: string } => {
   const color = industriesColors[industry] || industriesColors.null;
   return {
-    bg: `rgba(${color.r}, ${color.g}, ${color.b}, 0.25)`,
-    color: `rgb(${color.r}, ${color.g}, ${color.b})`,
+    bg: `rgba(${color.r}, ${color.g}, ${color.b})`,
+    color: `rgb(255, 255, 255)`,
   };
 };
 
