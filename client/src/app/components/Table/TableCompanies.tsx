@@ -56,57 +56,58 @@ const TableCompanies = ({
         }}
       >
         <Table aria-label="stock information table">
-          <TableHead>
-            <TableRow
-              sx={{
-                "& th": {
-                  borderBottom: "2px solid rgba(224, 224, 224, 1)", // Thicker border
-                  fontWeight: 800,
-                },
-              }}
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.numeric ? "right" : "left"}
-                  sortDirection={
-                    orderBy === column.id &&
-                    (order === "asc" || order === "desc")
+        <TableHead>
+          <TableRow
+            sx={{
+              "& th": {
+                borderBottom: "2px solid rgba(224, 224, 224, 1)",
+                fontWeight: 800,
+              },
+            }}
+          >
+            {columns.map((column, index) => (
+              <TableCell
+                key={column.id}
+                sx={{
+                  textAlign: index === 0 ? "left" : "center", // Left-align first column, center-align others
+                }}
+                sortDirection={
+                  orderBy === column.id && (order === "asc" || order === "desc")
+                    ? order
+                    : undefined
+                }
+              >
+                <TableSortLabel
+                  className="dark:text-primaryWhite"
+                  active={orderBy === column.id}
+                  direction={
+                    orderBy === column.id && (order === "asc" || order === "desc")
                       ? order
-                      : undefined
+                      : "asc"
                   }
+                  onClick={() => handleSort(column.id)}
+                  sx={{
+                    justifyContent: index === 0 ? "flex-start" : "center",
+                    "&.Mui-active": {
+                      color:
+                        theme === "dark"
+                          ? "var(--primaryWhite)"
+                          : "var(--primaryBlack)",
+                    },
+                    "&.Mui-active .MuiTableSortLabel-icon": {
+                      color:
+                        theme === "dark"
+                          ? "var(--primaryWhite)"
+                          : "var(--primaryBlack)",
+                    },
+                  }}
                 >
-                  <TableSortLabel
-                    className="dark:text-primaryWhite"
-                    active={orderBy === column.id}
-                    direction={
-                      orderBy === column.id &&
-                      (order === "asc" || order === "desc")
-                        ? order
-                        : "asc"
-                    }
-                    onClick={() => handleSort(column.id)}
-                    sx={{
-                      "&.Mui-active": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
-                      },
-                      "&.Mui-active .MuiTableSortLabel-icon": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
-                      },
-                    }}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+                  {column.label}
+                </TableSortLabel>
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
           <TableBody>
             {paginatedData.map((item, index) => (
               <TableRow
@@ -136,7 +137,7 @@ const TableCompanies = ({
                 <TableCell
                   component="th"
                   scope="row"
-                  style={{ fontWeight: 600 }}
+                  sx={{ textAlign: "left", fontWeight: 600 }}
                 >
                   <Box className="flex items-center gap-2 dark:text-primaryWhite font-[500]">
                     <img
@@ -149,23 +150,15 @@ const TableCompanies = ({
                         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                       }}
                       onError={(e) => {
-                        // @ts-ignore
-                        e.target.onerror = null;
-                        // Creating an inline SVG to display the fallback
                         const firstLetter = item.symbol.charAt(0).toUpperCase();
-                        // Get color from the map, default to black if no match
                         const fallbackColor =
-                          letterColorMap[
-                            firstLetter as keyof typeof letterColorMap
-                          ] || "#000000";
+                        (letterColorMap as Record<string, string>)[firstLetter] || "#000000";
                         const svg = `
                           <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100%" height="100%" fill="${fallbackColor}" />
                             <text x="50%" y="50%" dy=".1em" alignment-baseline="middle" text-anchor="middle" font-size="24" fill="#fff" font-family="Helvetica, Arial, sans-serif">${firstLetter}</text>
                           </svg>`;
-                        const encodedSVG = `data:image/svg+xml;base64,${btoa(
-                          svg
-                        )}`;
+                        const encodedSVG = `data:image/svg+xml;base64,${btoa(svg)}`;
                         // @ts-ignore
                         e.target.src = encodedSVG;
                       }}
@@ -173,11 +166,11 @@ const TableCompanies = ({
                     {item.symbol}
                   </Box>
                 </TableCell>
-                <TableCell className="font-[500] dark:text-primaryWhite">
+                <TableCell sx={{ textAlign: "center" }} className="font-[500] dark:text-primaryWhite">
                   {item.longName}
                 </TableCell>
-                <TableCell>
-                  <Box className="flex gap-2 flex-wrap">
+                <TableCell sx={{ textAlign: "center" }}>
+                  <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
                       className="dark:text-primaryWhite"
                       key={item.industry}
@@ -195,16 +188,16 @@ const TableCompanies = ({
                     />
                   </Box>
                 </TableCell>
-                <TableCell align="right" className="dark:text-primaryWhite">
+                <TableCell sx={{ textAlign: "center", verticalAlign: "middle" }} className="dark:text-primaryWhite">
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
-                <TableCell align="right" className="dark:text-primaryWhite">
+                <TableCell sx={{ textAlign: "center", verticalAlign: "middle" }} className="dark:text-primaryWhite">
                   {formatPrice(item.currentPrice)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+      </Table>
       </TableContainer>
 
       <a className="my-5" href="https://parqet.com/api">

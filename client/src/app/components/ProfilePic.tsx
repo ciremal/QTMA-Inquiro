@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
+  const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const getProfileDisplay = (name: string | null | undefined) => {
@@ -17,6 +18,10 @@ const ProfilePic = () => {
       return `${splitName[0][0]}${splitName[1][0]}`;
     }
     return null;
+  };
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
   };
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,36 +40,71 @@ const ProfilePic = () => {
     redirect("/login");
   };
 
-  return (
-    <div>
-      <Avatar
-        className="dark:bg-white dark:text-primaryBlack cursor-pointer"
-        sx={{ backgroundColor: "black" }}
-        onClick={handleMenuOpen}
-      >
-        {getProfileDisplay(user?.displayName)}
-      </Avatar>
+  const shortenName = (name: string | null | undefined) => {
+    const splitName = name?.split(" ");
+    if (splitName) {
+      return `${splitName[0]} ${splitName[1][0]}.`;
+    }
+    return null;
+  }
 
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        className="mt-3"
+  const isMenuOpen = Boolean(anchorEl);
+
+  return (
+    <div className="relative w-56">
+      {/* Main Profile Section */}
+      <div
+        className={`flex items-center justify-between backdrop-blur-md bg-white dark:bg-secondaryBlack p-2 rounded-3xl border border-[#00000033] cursor-pointer transition-all duration-300 ${
+          isOpen ? "rounded-b-none" : ""
+        }`}
+        onClick={handleToggle}
       >
-        {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Settings</MenuItem> */}
-        <MenuItem onClick={() => handleSignOut()}>Logout</MenuItem>
-      </Menu>
+        <div className="flex items-center">
+          <Avatar
+            className="dark:bg-white dark:text-primaryBlack"
+            sx={{ backgroundColor: "black" }}
+          >
+            {getProfileDisplay(user?.displayName)}
+          </Avatar>
+          <p className="ml-4 font-DM dark:text-white text-center my-auto">
+            {shortenName(user?.displayName)}
+          </p>
+        </div>
+        <svg
+          className={`ml-4 my-auto transform transition-transform duration-300 ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }`}
+          width="15"
+          height="8"
+          viewBox="0 0 15 8"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.427734 0.125L7.34169 7.03896L14.2556 0.125H0.427734Z"
+            fill="#323232"
+          />
+        </svg>
+      </div>
+
+      {/* Collapsible Menu */}
+      <div
+        className={`absolute font-DM top-full left-0 w-full transition-all duration-300 overflow-hidden ${
+          isOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-white dark:bg-secondaryBlack border border-t-0 border-[#00000033]  rounded-b-3xl">
+          <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">
+            Settings
+          </button>
+          <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white rounded-b-3xl" onClick={handleSignOut}>
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
+
 
 export default ProfilePic;
