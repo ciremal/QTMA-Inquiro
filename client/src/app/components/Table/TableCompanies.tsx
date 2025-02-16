@@ -152,7 +152,7 @@ const TableCompanies = ({
                       onError={(e) => {
                         const firstLetter = item.symbol.charAt(0).toUpperCase();
                         const fallbackColor =
-                          letterColorMap[firstLetter] || "#000000";
+                        (letterColorMap as Record<string, string>)[firstLetter] || "#000000";
                         const svg = `
                           <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100%" height="100%" fill="${fallbackColor}" />
