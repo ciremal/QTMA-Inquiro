@@ -12,6 +12,8 @@ import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import SideImage from "../components/SideImage";
 
+import { AiOutlineMail, AiOutlineLock, AiFillAlert, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ function LoginPage() {
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const [incorrectCred, setIncorrectCred] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email Required"),
@@ -48,7 +51,8 @@ function LoginPage() {
         }
       } catch (error) {
         console.error(error);
-        setMessage("An error occured during signup. Please try again later.");
+        setMessage("An error occurred during signup. Please try again later.");
+        setIncorrectCred(true);
       }
       setIsLoading(false);
     },
@@ -57,39 +61,68 @@ function LoginPage() {
   });
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex items-center justify-center h-screen bg-backdrop">
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
-      <div className="flex w-full h-screen">
-        <div className="div1 flex-1 flex flex-col bg-white dark:bg-background h-max">
-          <div className="md:pl-36 px-8 flex flex-col gap-y-7">
-            <div>
-              <Typography
-                className={`font-normal leading-[58px] md:text-left text-center text-black`}
-                style={{ fontSize: 58, fontFamily: "Bagnard" }}
-              >
-                {`Log in to your account`}
-              </Typography>
-            </div>
-            <div className="md:w-[60%] w-full flex flex-col gap-y-12">
-              <LoginForm
-                formik={formik}
-                isLoading={isLoading}
-                incorrectCred={incorrectCred}
-              />
-              <div className="flex justify-center items-center text-black pb-16">
-                <Typography>
-                  New to inquiro?{" "}
-                  <Link className="font-bold" href={"/signup"}>
-                    Make an account
-                  </Link>
-                </Typography>
-              </div>
-            </div>
+      <div className="w-full max-w-md p-8 space-y-6">
+        <div className="flex justify-center">
+          <img src="/darkLogo.svg" alt="Logo" className="h-32 " />
+        </div>
+        <div className="flex justify-center space-x-4">
+          <Link href="/signup">
+            <button className="text-gray-400 hover:text-white font-sans">Sign up</button>
+          </Link>
+          <Link href="/login">
+            <button className="text-white border-b-2 border-white font-sans">Log in</button>
+          </Link>
+        </div>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <div className="relative">
+            <AiOutlineMail className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+            />
           </div>
-        </div>
-        <div className="div2 flex-1 flex-col md:flex items-center hidden">
-          <SideImage />
-        </div>
+          <div className="relative">
+            <AiOutlineLock className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3.5 text-gray-400"
+            >
+              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible /> }
+            </button>
+            {incorrectCred && (
+              <div className="flex space-x-1 items-center mt-2 ">
+                <AiFillAlert className="text-red-500" size={20} />
+                <p className="text-red-500 text-xs font-sans">
+                  Invalid email or password. Please try again.
+                </p>
+              </div>
+            )}
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 mt-4 text-white rounded-md hover:opacity-90 font-sans bg-backdrop border border-gray-600 brightness-100"
+          >
+            {isLoading ? "Logging in..." : "Log In"}
+          </button>
+        </form>
       </div>
     </main>
   );

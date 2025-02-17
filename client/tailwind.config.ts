@@ -15,10 +15,11 @@ const config: Config = {
         primaryBlack: "var(--primaryBlack)",
         secondaryBlack: "var(--secondaryBlack)",
         primaryGray: "var(--primaryGray)",
+        primaryLightGray: "var(--primaryLightGray)",
       },
       fontFamily: {
         DM: ["var(--font-dmsans)", "sans-serif"],
-        sans: ["var(--font-inter)"],
+        sans: ["var(--font-inter)", "sans"],
       },
     },
   },

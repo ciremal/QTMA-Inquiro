@@ -40,7 +40,7 @@ const TableFilters = ({
     height: "2.5rem",
     // Styling the border
     "& .MuiOutlinedInput-notchedOutline": {
-      borderRadius: "0.75rem",
+      borderRadius: "2rem",
       borderColor:
         theme === "dark" ? "var(--primaryGray)" : "var(--primaryLightGray)",
     },
@@ -52,7 +52,7 @@ const TableFilters = ({
     "& .MuiSelect-select": {
       paddingTop: "0.5rem",
       paddingBottom: "0.5rem",
-      color: theme === "dark" ? "white" : "black",
+      color: theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
     },
     // Styling the dropdown icon
     "& .MuiSelect-icon": {
@@ -66,7 +66,7 @@ const TableFilters = ({
       <Box className="md:w-2/3 w-full flex flex-row gap-6">
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            className="dark:text-primaryLightGray"
             sx={filterInputLabelStyles()}
           >
             Industry
@@ -92,7 +92,7 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            className="dark:text-primaryLightGray"
             sx={filterInputLabelStyles()}
           >
             Market Cap
@@ -117,7 +117,7 @@ const TableFilters = ({
 
         <FormControl fullWidth>
           <InputLabel
-            className="dark:text-primaryWhite"
+            className="dark:text-primaryLightGray"
             sx={filterInputLabelStyles()}
           >
             Stock Price
