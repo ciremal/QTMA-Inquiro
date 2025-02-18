@@ -24,9 +24,9 @@ export default async function Press({ company, filter = "All" }: PressProps) {
   });
 
   const total = sentimentCounts.Bearish + sentimentCounts.Neutral + sentimentCounts.Bullish;
-  const bearPercentage = ((sentimentCounts.Bearish / total) * 100).toFixed(0);
-  const neutralPercentage = ((sentimentCounts.Neutral / total) * 100).toFixed(0);
-  const bullPercentage = ((sentimentCounts.Bullish / total) * 100).toFixed(0);
+  const bearPercentage = ((sentimentCounts.Bearish / total) * 100);
+  const neutralPercentage = ((sentimentCounts.Neutral / total) * 100);
+  const bullPercentage = ((sentimentCounts.Bullish / total) * 100);
 
   // Calculate majority sentiment (excluding neutral)
   const nonNeutralTotal = sentimentCounts.Bearish + sentimentCounts.Bullish;
@@ -34,7 +34,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
   let majorityPercentage = 0;
   if (nonNeutralTotal > 0) {
     majoritySentiment = bearPercentage >= bullPercentage ? "bear" : "bull";
-    majorityPercentage = Math.max(bearPercentage, bullPercentage).toFixed(0);
+    majorityPercentage = Math.max(bearPercentage, bullPercentage);
   }
 
   const filters = ["All", "Bearish", "Neutral", "Bullish"];
@@ -162,7 +162,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
             <span className="text-green-400">{sentimentCounts.Bullish}</span>
           </div>
           <p className="mt-4 text-center text-lg font-semibold">
-            {majorityPercentage}% of the sources say{" "}
+            {majorityPercentage.toFixed(0)}% of the sources say{" "}
             <span className={majoritySentiment === "bear" ? "text-red-500" : "text-green-400"}>
               {majoritySentiment}
             </span>

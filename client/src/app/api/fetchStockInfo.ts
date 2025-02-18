@@ -142,6 +142,9 @@ export const getTickerNews = async (ticker: string): Promise<any[]> => {
     const analyzedArticles = await Promise.all(
       articles.map(async (article: any) => {
         const analysis = await analyzeArticleWithOpenAI(article.summary, ticker);
+        article.classification = analysis.classification;
+        article.sentiment = analysis.sentiment;
+        article.summary = analysis.summary;
         return { ...article, ...analysis };
       })
     );
