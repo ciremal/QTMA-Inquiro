@@ -51,7 +51,7 @@ function LoginPage() {
         }
       } catch (error) {
         console.error(error);
-        setMessage("An error occurred during signup. Please try again later.");
+        setMessage("An error occurred during login. Please try again.");
         setIncorrectCred(true);
       }
       setIsLoading(false);
@@ -112,6 +112,9 @@ function LoginPage() {
                 <p className="text-red-500 text-xs font-sans">
                   Invalid email or password. Please try again.
                 </p>
+                <Link href="/forgot-password" className="text-blue-400 text-xs underline font-sans">
+                  Forgot Password?
+                </Link>
               </div>
             )}
           </div>
