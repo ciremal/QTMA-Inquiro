@@ -1,5 +1,6 @@
 import { getReports } from "@/app/api/fetchStockInfo";
 import { ReportsCard } from "./ReportsCard";
+import { Box } from "@mui/material";
 
 interface ReportsProps {
   cik: string;
@@ -9,9 +10,31 @@ const Reports = async ({ cik }: ReportsProps) => {
   const reports = await getReports(cik);
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-1/3 box-border overflow-x-auto overflow-y-auto no-scrollbar">
-      <ReportsCard reports={reports} />
-    </div>
+    <Box className="border-2 border-slate-300 dark:border-primaryGray rounded-md p-6 bg-white dark:bg-secondaryBlack">
+      <Box
+        sx={{
+          overflow: "auto",
+          backgroundColor: "var(--secondaryBlack)",
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "var(--primaryGray)",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#4E4E4E",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#393939",
+            borderRadius: "4px",
+          },
+        }}
+        className="bg-white dark:bg-secondaryBlack max-h-[420px] overflow-auto"
+      >
+        <ReportsCard reports={reports} />
+      </Box>
+    </Box>
   );
 };
 

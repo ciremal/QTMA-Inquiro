@@ -1,5 +1,6 @@
 import { getTickerNews } from "@/app/api/fetchStockInfo";
 import PressCard from "./PressCard";
+import { Box } from "@mui/material";
 
 interface PressProps {
   company: string;
@@ -9,13 +10,33 @@ export default async function Press({ company }: PressProps) {
   const news = await getTickerNews(company);
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-2/3 box-border">
+    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 box-border w-full">
       <h1 className="font-bold text-xl mb-2">Press Release</h1>
-      <div className="flex gap-4 overflow-x-auto">
+      <Box
+        className="flex gap-4 py-4"
+        sx={{
+          overflow: "auto",
+          backgroundColor: "var(--secondaryBlack)",
+          "&::-webkit-scrollbar": {
+            height: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "var(--primaryGray)",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#4E4E4E",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#393939",
+            borderRadius: "4px",
+          },
+        }}
+      >
         {news.slice(0, 12).map((article: any) => {
           return <PressCard article={article} key={article.uuid} />;
         })}
-      </div>
+      </Box>
     </div>
   );
 }

@@ -11,12 +11,14 @@ import {
   Title,
   Tooltip,
   ChartOptions,
+  Filler,
 } from "chart.js";
 import useSWR, { useSWRConfig } from "swr";
 import Crosshair from "chartjs-plugin-crosshair";
 import GraphButton from "./GraphButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "next-themes";
+import CurrentPrice from "./CurrentPrice";
 
 ChartJS.register(
   CategoryScale,
@@ -25,14 +27,23 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Crosshair
+  Crosshair,
+  Filler
 );
 async function getData(company: string, period: string) {
-  const data = await getTickerHistoricalData(
-    company,
-    period,
-    period === "5y" ? "5d" : "1d"
-  );
+  var interval;
+
+  if (period == "1d" || period == "5d") {
+    interval = "1h";
+  } else if (period == "5y") {
+    interval = "1mo";
+  } else if (period == "max") {
+    interval = "3mo";
+  } else {
+    interval = "1d";
+  }
+
+  const data = await getTickerHistoricalData(company, period, interval);
   // Check if data is an array
   if (!Array.isArray(data)) {
     throw new Error(`Unexpected data format: ${JSON.stringify(data)}`);
@@ -50,6 +61,8 @@ async function getData(company: string, period: string) {
 
 interface GraphProps {
   company: string;
+  currPrice: number;
+  prevPrice: number;
 }
 
 // Custom hook for pre-fetching data
@@ -63,32 +76,74 @@ function usePrefetchPeriods(company: string, periods: string[]) {
   }, [company, periods, mutate]);
 }
 
-export default function Graph({ company }: GraphProps) {
+export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
+  const [comparisonCompany, setComparisonCompany] = useState<string | null>(
+    null
+  );
+  const periods = ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"];
 
   // Fetch data for the currently selected period
   const { data, error } = useSWR(period, () => getData(company, period), {
     revalidateOnFocus: false,
   });
 
-  // Pre-fetch other periods in the background
-  usePrefetchPeriods(company, ["1mo", "2y", "5y", "ytd"]);
-
-  const chartData = {
-    labels: data?.map((d) => d.x),
-    datasets: [
-      {
-        data: data?.map((d) => d.y),
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
-        pointRadius: 0,
-      },
-    ],
+  const handleCompare = (company: string) => {
+    setComparisonCompany(company);
   };
 
+  const comparisonData = periods.map((item) => {
+    const { data } = useSWR(
+      `${comparisonCompany}-${item}`,
+      () => {
+        if (comparisonCompany) {
+          return getData(comparisonCompany, item);
+        }
+      },
+      {
+        revalidateOnFocus: false,
+        revalidateOnMount: false,
+      }
+    );
+    return { period: item, data: data };
+  });
+
+  usePrefetchPeriods(company, periods);
+
+  const comparisonKey =
+    comparisonCompany && period ? `${comparisonCompany}-${period}` : null;
+
+  const chartData = useMemo(() => {
+    return {
+      labels: data?.map((d) => d.x),
+      datasets: [
+        {
+          key: company,
+          data: data?.map((d) => d.y),
+          borderColor: "rgba(22, 163, 74, 1)",
+          backgroundColor: "rgba(22, 163, 74, 0.3)",
+          fill: true,
+          pointRadius: 0,
+        },
+        comparisonCompany &&
+          comparisonData && {
+            key: comparisonKey,
+            data: comparisonData
+              .filter((item) => item.period === period)[0]
+              .data?.map((d) => d.y),
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.3)",
+            fill: true,
+            pointRadius: 0,
+          },
+      ].filter(Boolean),
+    };
+  }, [data, comparisonCompany, comparisonData]);
+
   const options: ChartOptions<"line"> = {
+    maintainAspectRatio: false,
+    responsive: true,
     interaction: {
       mode: "index",
       intersect: false,
@@ -101,6 +156,9 @@ export default function Graph({ company }: GraphProps) {
         ticks: {
           color: theme === "dark" ? "white" : "black",
         },
+        border: {
+          color: theme === "dark" ? "#757575" : "#a6a6a6",
+        },
       },
       y: {
         ticks: {
@@ -110,23 +168,11 @@ export default function Graph({ company }: GraphProps) {
           color: theme === "dark" ? "white" : "black",
         },
         grid: {
-          color: theme === "dark" ? "#757575" : "#a6a6a6",
-        },
-        border: {
-          color: theme === "dark" ? "#757575" : "#a6a6a6",
+          display: false,
         },
       },
     },
     plugins: {
-      title: {
-        display: true,
-        color: theme === "dark" ? "white" : "black",
-        text: data
-          ? `${company.toUpperCase()} Stock Price: ${period.toUpperCase()}`
-          : error
-          ? "Failed to load, retrying..."
-          : "Loading...",
-      },
       tooltip: {
         mode: "index",
         intersect: false,
@@ -162,24 +208,38 @@ export default function Graph({ company }: GraphProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md px-4 py-10 basis-0 grow-[4] flex flex-col justify-center items-center">
-      <Line data={chartData} options={options} />
-      <div className="flex justify-center gap-4 mt-4">
-        <GraphButton on={period === "1mo"} onClick={() => setPeriod("1mo")}>
-          1 Month
-        </GraphButton>
-        <GraphButton on={period === "1y"} onClick={() => setPeriod("1y")}>
-          1 Year
-        </GraphButton>
-        <GraphButton on={period === "2y"} onClick={() => setPeriod("2y")}>
-          2 Year
-        </GraphButton>
-        <GraphButton on={period === "5y"} onClick={() => setPeriod("5y")}>
-          5 Year
-        </GraphButton>
-        <GraphButton on={period === "ytd"} onClick={() => setPeriod("ytd")}>
-          YTD
-        </GraphButton>
+    <div className="w-[78%] flex flex-col justify-center gap-2">
+      <div className="flex items-center">
+        <CurrentPrice price={currPrice} previousClose={prevPrice} />
+        <div className="flex justify-end gap-4">
+          <GraphButton on={period === "1d"} onClick={() => setPeriod("1d")}>
+            1D
+          </GraphButton>
+          <GraphButton on={period === "5d"} onClick={() => setPeriod("5d")}>
+            5D
+          </GraphButton>
+          <GraphButton on={period === "1mo"} onClick={() => setPeriod("1mo")}>
+            1M
+          </GraphButton>
+          <GraphButton on={period === "3mo"} onClick={() => setPeriod("3mo")}>
+            3M
+          </GraphButton>
+          <GraphButton on={period === "1y"} onClick={() => setPeriod("1y")}>
+            1Y
+          </GraphButton>
+          <GraphButton on={period === "5y"} onClick={() => setPeriod("5y")}>
+            5Y
+          </GraphButton>
+          <GraphButton on={period === "max"} onClick={() => setPeriod("max")}>
+            Max
+          </GraphButton>
+          <GraphButton on={period === "ytd"} onClick={() => setPeriod("ytd")}>
+            YTD
+          </GraphButton>
+        </div>
+      </div>
+      <div className="w-full h-full">
+        <Line data={chartData} options={options} />
       </div>
     </div>
   );
