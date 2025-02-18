@@ -10,13 +10,12 @@ export default async function Press({ company }: PressProps) {
   const news = await getTickerNews(company);
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 box-border w-full">
+    <div className="bg-background dark:bg-secondaryBlack border border-slate-300 dark:border-primaryGray rounded-md p-8 box-border w-full">
       <h1 className="font-bold text-xl mb-2">Press Release</h1>
       <Box
-        className="flex gap-4 py-4"
+        className="flex gap-4 py-4 px-2 bg-background dark:bg-secondaryBlack"
         sx={{
           overflow: "auto",
-          backgroundColor: "var(--secondaryBlack)",
           "&::-webkit-scrollbar": {
             height: "6px",
           },

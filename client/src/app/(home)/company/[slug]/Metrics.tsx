@@ -7,11 +7,11 @@ interface MetricsProps {
 
 const Metrics = ({ company }: MetricsProps) => {
   return (
-    <Box className="flex w-auto bg-secondaryBlack p-3 border rounded-md border-primaryGray">
+    <Box className="flex w-auto dark:bg-secondaryBlack bg-background p-3 border rounded-md border-slate-300 dark:border-primaryGray">
       <Box
+        className="dark:bg-secondaryBlack bg-background"
         sx={{
           overflow: "auto",
-          backgroundColor: "var(--secondaryBlack)",
           "&::-webkit-scrollbar": {
             width: "6px",
           },
