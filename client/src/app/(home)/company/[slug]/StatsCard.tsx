@@ -32,11 +32,7 @@ export default function StatsCard({
   }
 
   return (
-    <div
-      className={`border-2 dark:border-primaryGray rounded-md flex items-center ${
-        small ? "w-52" : "w-60"
-      }`}
-    >
+    <div className={`flex items-center ${small ? "w-52" : "w-60"}`}>
       <img
         src={theme === "dark" ? `/${status}Dark.svg` : `/${status}.svg`}
         alt="up"

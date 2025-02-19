@@ -10,7 +10,7 @@ export const CompanyLogo = ({ company, logoUrl }: CompanyLogoProps) => {
     <img
       src={logoUrl}
       alt={`${company} logo`}
-      className="rounded"
+      className="rounded w-full h-full"
       onError={(e) => {
         // @ts-ignore
         e.target.onerror = null;
