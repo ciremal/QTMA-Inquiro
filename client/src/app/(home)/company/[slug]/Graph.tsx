@@ -144,7 +144,7 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
         //   : null,
       ].filter(Boolean),
     };
-  }, [data, comparisonCompany]) as unknown as ChartData<"line">;
+  }, [data, comparisonCompany, company]) as unknown as ChartData<"line">;
 
   const options: ChartOptions<"line"> = {
     maintainAspectRatio: false,
