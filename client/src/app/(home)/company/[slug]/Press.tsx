@@ -1,6 +1,5 @@
 import { getTickerNews } from "@/app/api/fetchStockInfo";
 import PressCard from "./PressCard";
-import { Box } from "@mui/material";
 
 interface PressProps {
   company: string;
@@ -24,10 +23,11 @@ export default async function Press({ company, filter = "All" }: PressProps) {
     else if (classification === "Bullish") sentimentCounts.Bullish++;
   });
 
-  const total = sentimentCounts.Bearish + sentimentCounts.Neutral + sentimentCounts.Bullish;
-  const bearPercentage = ((sentimentCounts.Bearish / total) * 100);
-  const neutralPercentage = ((sentimentCounts.Neutral / total) * 100);
-  const bullPercentage = ((sentimentCounts.Bullish / total) * 100);
+  const total =
+    sentimentCounts.Bearish + sentimentCounts.Neutral + sentimentCounts.Bullish;
+  const bearPercentage = (sentimentCounts.Bearish / total) * 100;
+  const neutralPercentage = (sentimentCounts.Neutral / total) * 100;
+  const bullPercentage = (sentimentCounts.Bullish / total) * 100;
 
   // Calculate majority sentiment (excluding neutral)
   const nonNeutralTotal = sentimentCounts.Bearish + sentimentCounts.Bullish;
@@ -76,14 +76,14 @@ export default async function Press({ company, filter = "All" }: PressProps) {
     const iconArray = Array.from(icons);
     const visibleIcons = iconArray.slice(0, 5);
     const hiddenCount = iconArray.length - 5;
-  
+
     const heightPercentage = Math.min(iconArray.length * 25, 100); // Max height = 100%
-  
+
     return (
       <div className="relative w-16 h-64 flex flex-col items-center">
         {/* Dark background (full height) */}
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(38,38,38,1)] rounded-full"></div>
-    
+
         {/* Colored overlay wrapping icons */}
         <div
           className={`absolute top-0 left-0 w-full ${color} rounded-full flex flex-col items-center justify-center space-y-2 p-2`}
@@ -92,7 +92,12 @@ export default async function Press({ company, filter = "All" }: PressProps) {
           }}
         >
           {visibleIcons.map((icon, index) => (
-            <img key={index} src={icon} alt="news icon" className="py-auto w-10 h-10 rounded-full bg-white" />
+            <img
+              key={index}
+              src={icon}
+              alt="news icon"
+              className="py-auto w-10 h-10 rounded-full bg-white"
+            />
           ))}
           {hiddenCount > 0 && (
             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-white text-sm">
@@ -105,7 +110,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-3/5 box-border max-h-[800px]">
+    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-[800px]">
       <div className="flex items-center justify-between mb-4">
         <h1 className="font-bold text-xl">Sentiment Analysis</h1>
 
@@ -126,7 +131,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
           ))}
         </form>
       </div>
-      
+
       {/* News Cards */}
       <div className="flex gap-4 overflow-x-auto mb-6">
         {news.slice(0, 12).map((article: any) => (
@@ -164,7 +169,11 @@ export default async function Press({ company, filter = "All" }: PressProps) {
           </div>
           <p className="mt-4 text-center text-lg font-semibold">
             {majorityPercentage.toFixed(0)}% of the sources say{" "}
-            <span className={majoritySentiment === "bear" ? "text-red-500" : "text-green-400"}>
+            <span
+              className={
+                majoritySentiment === "bear" ? "text-red-500" : "text-green-400"
+              }
+            >
               {majoritySentiment}
             </span>
           </p>
