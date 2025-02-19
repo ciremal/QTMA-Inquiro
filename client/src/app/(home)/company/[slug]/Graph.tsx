@@ -12,6 +12,7 @@ import {
   Tooltip,
   ChartOptions,
   Filler,
+  ChartData,
 } from "chart.js";
 import useSWR, { useSWRConfig } from "swr";
 import Crosshair from "chartjs-plugin-crosshair";
@@ -85,31 +86,34 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   const periods = ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"];
 
   // Fetch data for the currently selected period
-  const { data, error } = useSWR(period, () => getData(company, period), {
-    revalidateOnFocus: false,
-  });
-
-  const handleCompare = (company: string) => {
-    setComparisonCompany(company);
-  };
-
-  const comparisonData = periods.map((item) => {
-    const { data } = useSWR(
-      `${comparisonCompany}-${item}`,
-      () => {
-        if (comparisonCompany) {
-          return getData(comparisonCompany, item);
-        }
-      },
-      {
-        revalidateOnFocus: false,
-        revalidateOnMount: false,
-      }
-    );
-    return { period: item, data: data };
-  });
-
+  const { data, isLoading, error } = useSWR(
+    period,
+    () => getData(company, period),
+    {
+      revalidateOnFocus: false,
+    }
+  );
   usePrefetchPeriods(company, periods);
+
+  // const handleCompare = (company: string) => {
+  //   setComparisonCompany(company);
+  // };
+
+  // const comparisonData = periods.map((item) => {
+  //   const { data } = useSWR(
+  //     `${comparisonCompany}-${item}`,
+  //     () => {
+  //       if (comparisonCompany) {
+  //         return getData(comparisonCompany, item);
+  //       }
+  //     },
+  //     {
+  //       revalidateOnFocus: false,
+  //       revalidateOnMount: false,
+  //     }
+  //   );
+  //   return { period: item, data: data };
+  // });
 
   const comparisonKey =
     comparisonCompany && period ? `${comparisonCompany}-${period}` : null;
@@ -126,20 +130,21 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
           fill: true,
           pointRadius: 0,
         },
-        comparisonCompany &&
-          comparisonData && {
-            key: comparisonKey,
-            data: comparisonData
-              .filter((item) => item.period === period)[0]
-              .data?.map((d) => d.y),
-            borderColor: "rgba(255, 99, 132, 1)",
-            backgroundColor: "rgba(255, 99, 132, 0.3)",
-            fill: true,
-            pointRadius: 0,
-          },
+        // comparisonCompany && comparisonData
+        //   ? {
+        //       key: comparisonKey,
+        //       data: comparisonData
+        //         .filter((item) => item.period === period)[0]
+        //         .data?.map((d) => d.y),
+        //       borderColor: "rgba(255, 99, 132, 1)",
+        //       backgroundColor: "rgba(255, 99, 132, 0.3)",
+        //       fill: true,
+        //       pointRadius: 0,
+        //     }
+        //   : null,
       ].filter(Boolean),
     };
-  }, [data, comparisonCompany, comparisonData]);
+  }, [data, comparisonCompany]) as unknown as ChartData<"line">;
 
   const options: ChartOptions<"line"> = {
     maintainAspectRatio: false,
@@ -238,9 +243,17 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
           </GraphButton>
         </div>
       </div>
-      <div className="w-full h-full">
-        <Line data={chartData} options={options} />
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-60">
+          <p className="text-center animate-pulse">Fetching data...</p>
+        </div>
+      ) : error ? (
+        <p className="text-center text-red-500">Failed to load data.</p>
+      ) : (
+        <div className="w-full h-full">
+          <Line data={chartData} options={options} />
+        </div>
+      )}
     </div>
   );
 }
