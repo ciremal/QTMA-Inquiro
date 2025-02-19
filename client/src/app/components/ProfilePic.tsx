@@ -54,7 +54,7 @@ const ProfilePic = () => {
     <div className="relative w-sm">
       {/* Main Profile Section */}
       <div
-        className={`flex items-center justify-between backdrop-blur-md bg-white dark:bg-secondaryBlack p-2 rounded-3xl border border-[#00000033] cursor-pointer transition-all duration-300 ${
+        className={`flex items-center justify-between backdrop-blur-md bg-white dark:bg-secondaryBlack p-2 rounded-3xl border border-primaryGray cursor-pointer transition-all duration-300 ${
           isOpen ? "rounded-b-none" : ""
         }`}
         onClick={handleToggle}
@@ -66,7 +66,7 @@ const ProfilePic = () => {
           >
             {getProfileDisplay(user?.displayName)}
           </Avatar>
-          <p className="ml-4 font-DM dark:text-white text-center my-auto max-w-[75px] truncate">
+          <p className="ml-4 font-sans dark:text-white text-center my-auto max-w-[85px] truncate">
             {shortenName(user?.displayName)}
           </p>
         </div>
@@ -89,11 +89,11 @@ const ProfilePic = () => {
 
       {/* Collapsible Menu */}
       <div
-        className={`absolute font-DM top-full left-0 w-full transition-all duration-300 overflow-hidden ${
+        className={`absolute font-sans top-full left-0 w-full transition-all duration-300 overflow-hidden ${
           isOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-white dark:bg-secondaryBlack border border-t-0 border-[#00000033]  rounded-b-3xl">
+        <div className="bg-white dark:bg-secondaryBlack border border-t-0 border-primaryGray rounded-b-3xl">
           <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">
             Settings
           </button>

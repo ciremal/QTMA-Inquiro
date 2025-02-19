@@ -163,4 +163,6 @@ export interface Article {
   source: string;
   summary: string;
   url: string;
+  classification: string;
+  sentiment: number;
 }

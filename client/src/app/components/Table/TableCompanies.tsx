@@ -43,7 +43,8 @@ const TableCompanies = ({
   const [user] = useAuthState(auth);
 
   return (
-    <div className="bg-white dark:bg-[var(--secondaryBlack)] p-6 rounded-2xl border border-[#00000033] ">
+    <div className="bg-[rgba(255,255,255,0.3)] dark:bg-[rgba(31,31,31,0.4)] p-6 rounded-2xl border border-primaryGray">
+
       <TableContainer
         component={Paper}
         sx={{
@@ -205,7 +206,7 @@ const TableCompanies = ({
       </Table>
       </TableContainer>
 
-      <a className="my-5" href="https://parqet.com/api">
+      <a className="my-5 font-sans" href="https://parqet.com/api">
         Logos provided by Parqet
       </a>
     </div>

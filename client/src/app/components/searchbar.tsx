@@ -97,7 +97,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 // Inside search bar styles
                 sx: {
                   backgroundColor:
-                    theme === "dark" ? "var(--secondaryBlack)" : "white",
+                    theme === "dark" ? "dark:bg-[rgba(31,31,31,0.7)]" : "white",
                   borderRadius: "3rem",
                   "& input::placeholder": {
                     color: "var(--primaryLightGray)",
