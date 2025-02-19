@@ -32,7 +32,7 @@ ChartJS.register(
   Filler
 );
 async function getData(company: string, period: string) {
-  var interval;
+  let interval = "";
 
   if (period == "1d" || period == "5d") {
     interval = "1h";
@@ -48,6 +48,19 @@ async function getData(company: string, period: string) {
   // Check if data is an array
   if (!Array.isArray(data)) {
     throw new Error(`Unexpected data format: ${JSON.stringify(data)}`);
+  }
+
+  if (period === "1d" || period === "5d") {
+    return data.map((d) => ({
+      // @ts-ignore
+      x: new Date(d.Datetime).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+      }),
+      y: d.Close,
+    }));
   }
 
   return data.map((d) => ({
@@ -80,13 +93,14 @@ function usePrefetchPeriods(company: string, periods: string[]) {
 export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
-  const [comparisonCompany, setComparisonCompany] = useState<string | null>(
-    null
-  );
+  const { cache } = useSWRConfig();
   const periods = ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"];
+  // const [comparisonCompany, setComparisonCompany] = useState<string | null>(
+  //   null
+  // );
 
   // Fetch data for the currently selected period
-  const { data, isLoading, error } = useSWR(
+  const { data, isValidating, error } = useSWR(
     period,
     () => getData(company, period),
     {
@@ -94,6 +108,9 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
     }
   );
   usePrefetchPeriods(company, periods);
+
+  const isDataAvailable = cache.get(period);
+  const isLoading = !isDataAvailable && isValidating;
 
   // const handleCompare = (company: string) => {
   //   setComparisonCompany(company);
@@ -115,8 +132,8 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   //   return { period: item, data: data };
   // });
 
-  const comparisonKey =
-    comparisonCompany && period ? `${comparisonCompany}-${period}` : null;
+  // const comparisonKey =
+  //   comparisonCompany && period ? `${comparisonCompany}-${period}` : null;
 
   const chartData = useMemo(() => {
     return {
@@ -144,7 +161,7 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
         //   : null,
       ].filter(Boolean),
     };
-  }, [data, comparisonCompany, company]) as unknown as ChartData<"line">;
+  }, [data, company]) as unknown as ChartData<"line">;
 
   const options: ChartOptions<"line"> = {
     maintainAspectRatio: false,
