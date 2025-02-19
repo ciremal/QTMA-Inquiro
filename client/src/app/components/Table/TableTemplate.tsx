@@ -208,7 +208,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className={`w-full font-DM md:px-36 px-8`}>
+    <Box className={`w-full font-sans md:px-36 px-8`}>
       {/* Filters Section */}
       <Box className="mb-4 space-y-4">
         <SearchBar

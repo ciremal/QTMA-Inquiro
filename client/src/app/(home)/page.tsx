@@ -98,9 +98,9 @@ function Home() {
   return (
     <>
       <main className="flex flex-col h-screen ">
-        <div className="flex flex-col items-center justify-center font-DM mt-8 ">
+        <div className="flex flex-col items-center justify-center font-sans mt-8 ">
           <p
-            className="font-DM mb-4 md:text-5xl text-2xl text-center"
+            className="font-sans mb-4 md:text-5xl text-2xl text-center"
             style={{ fontWeight: "bold" }}
           >
             <span className="text-black dark:text-primaryWhite">

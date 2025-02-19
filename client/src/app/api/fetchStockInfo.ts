@@ -1,5 +1,88 @@
 import { CompanyData, HistoricalData } from "./models";
+import { OpenAI } from "openai"; 
 import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
+
+interface AnalysisResult {
+  summary: string;
+  sentiment: number | null;
+  classification: "Bullish" | "Bearish" | "Neutral" | null;
+}
+
+// Function to analyze article with OpenAI
+
+export async function analyzeArticleWithOpenAI(articleText: string, ticker: string): Promise<AnalysisResult> {
+  if (!articleText.trim()) {
+    console.warn(`Empty article text for ticker: ${ticker}. Assigning default values.`);
+    return {
+      summary: "No article text found.",
+      sentiment: 0,
+      classification: "Neutral"
+    };
+  }
+
+  const systemMessage = "You are a helpful financial analysis assistant.";
+  const userPrompt = `
+You are a financial analyst. Read the following news article about ${ticker}:
+
+\"\"\"
+${articleText}
+\"\"\"
+
+Perform the following tasks:
+1. Provide a concise summary in sentences.
+2. Provide an overall sentiment score (numeric) from -1 (extremely negative) to +1 (extremely positive).
+3. Classify the article's overall stance as 'Bullish', 'Bearish', or 'Neutral' with respect to ${ticker}.
+
+Return your response as valid JSON only, with the keys: 'summary', 'sentiment', 'classification'.
+No code fences or extra text, just valid JSON.
+`;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: systemMessage },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.7
+      })
+    });
+
+    const data = await response.json();
+    let content = data.choices?.[0]?.message?.content?.trim();
+
+    if (!content) {
+      throw new Error("Empty response from OpenAI.");
+    }
+
+    // Remove potential markdown code fences
+    content = content.replace(/```json|```/g, "").trim();
+
+    // Parse the JSON response
+    const analysis: AnalysisResult = JSON.parse(content);
+
+    // Ensure all required keys are present
+    return {
+      summary: analysis.summary ?? "No summary provided.",
+      sentiment: analysis.sentiment ?? 0,
+      classification: analysis.classification ?? "Neutral"
+    };
+
+  } catch (error) {
+    console.warn(`Failed to analyze article for ticker: ${ticker}. Assigning default neutral sentiment. Error: ${error}`);
+    return {
+      summary: "Error during analysis.",
+      sentiment: 0,
+      classification: "Neutral"
+    };
+  }
+}
 
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
@@ -42,7 +125,7 @@ export const getTickerHistoricalData = async (
   }
 };
 
-export const getTickerNews = async (ticker: string): Promise<any> => {
+export const getTickerNews = async (ticker: string): Promise<any[]> => {
   const dateToday = new Date();
   const dateTo = formatDateToYYYYMMDD(dateToday);
 
@@ -50,14 +133,30 @@ export const getTickerNews = async (ticker: string): Promise<any> => {
   const dateFrom = formatDateToYYYYMMDD(dateToday);
 
   const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
+
   try {
     const res = await fetch(url);
-    return await res.json();
+    const articles = await res.json();
+
+    // Analyze each article for sentiment
+    const analyzedArticles = await Promise.all(
+      articles.map(async (article: any) => {
+        const analysis = await analyzeArticleWithOpenAI(article.summary, ticker);
+        article.classification = analysis.classification;
+        article.sentiment = analysis.sentiment;
+        article.summary = analysis.summary;
+        return { ...article, ...analysis };
+      })
+    );
+    console.log(analyzedArticles);
+    return analyzedArticles;
+
   } catch (error) {
     console.error(error);
-    throw new Error("Failed to fetch historical data.");
+    throw new Error("Failed to fetch and analyze news data.");
   }
 };
+
 
 export const getReports = async (cik: string) => {
   try {

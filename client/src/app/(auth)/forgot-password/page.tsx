@@ -4,7 +4,6 @@ import ForgotPasswordPage from "./ForgotPasswordPage";
 function ForgotPassword() {
   return (
     <>
-      <Navbar />
       <ForgotPasswordPage />
     </>
   );

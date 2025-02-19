@@ -4,7 +4,6 @@ import LoginPage from "./LoginPage";
 function Login() {
   return (
     <>
-      <Navbar />
       <LoginPage />
     </>
   );
