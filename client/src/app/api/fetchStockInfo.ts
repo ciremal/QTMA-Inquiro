@@ -1,5 +1,4 @@
 import { CompanyData, HistoricalData } from "./models";
-import { OpenAI } from "openai"; 
 import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
 
 interface AnalysisResult {
@@ -10,13 +9,18 @@ interface AnalysisResult {
 
 // Function to analyze article with OpenAI
 
-export async function analyzeArticleWithOpenAI(articleText: string, ticker: string): Promise<AnalysisResult> {
+export async function analyzeArticleWithOpenAI(
+  articleText: string,
+  ticker: string
+): Promise<AnalysisResult> {
   if (!articleText.trim()) {
-    console.warn(`Empty article text for ticker: ${ticker}. Assigning default values.`);
+    console.warn(
+      `Empty article text for ticker: ${ticker}. Assigning default values.`
+    );
     return {
       summary: "No article text found.",
       sentiment: 0,
-      classification: "Neutral"
+      classification: "Neutral",
     };
   }
 
@@ -42,16 +46,16 @@ No code fences or extra text, just valid JSON.
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-4o",
         messages: [
           { role: "system", content: systemMessage },
-          { role: "user", content: userPrompt }
+          { role: "user", content: userPrompt },
         ],
-        temperature: 0.7
-      })
+        temperature: 0.7,
+      }),
     });
 
     const data = await response.json();
@@ -71,15 +75,16 @@ No code fences or extra text, just valid JSON.
     return {
       summary: analysis.summary ?? "No summary provided.",
       sentiment: analysis.sentiment ?? 0,
-      classification: analysis.classification ?? "Neutral"
+      classification: analysis.classification ?? "Neutral",
     };
-
   } catch (error) {
-    console.warn(`Failed to analyze article for ticker: ${ticker}. Assigning default neutral sentiment. Error: ${error}`);
+    console.warn(
+      `Failed to analyze article for ticker: ${ticker}. Assigning default neutral sentiment. Error: ${error}`
+    );
     return {
       summary: "Error during analysis.",
       sentiment: 0,
-      classification: "Neutral"
+      classification: "Neutral",
     };
   }
 }
@@ -141,22 +146,23 @@ export const getTickerNews = async (ticker: string): Promise<any[]> => {
     // Analyze each article for sentiment
     const analyzedArticles = await Promise.all(
       articles.map(async (article: any) => {
-        const analysis = await analyzeArticleWithOpenAI(article.summary, ticker);
+        const analysis = await analyzeArticleWithOpenAI(
+          article.summary,
+          ticker
+        );
         article.classification = analysis.classification;
         article.sentiment = analysis.sentiment;
         article.summary = analysis.summary;
         return { ...article, ...analysis };
       })
     );
-    console.log(analyzedArticles);
+    // console.log(analyzedArticles);
     return analyzedArticles;
-
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch and analyze news data.");
   }
 };
-
 
 export const getReports = async (cik: string) => {
   try {
@@ -167,5 +173,27 @@ export const getReports = async (cik: string) => {
   } catch (error) {
     console.error(error);
     throw new Error("Field to fetch reports");
+  }
+};
+
+export const getEarningsCallTranscript = async (ticker: string) => {
+  try {
+    const res = await fetch(
+      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-transcript?ticker=${ticker}`
+    );
+
+    const data = await res.json();
+    if (!data || !data.transcript || res.status === 404) {
+      return {
+        transcriptData: null,
+      };
+    }
+
+    return {
+      transcriptData: data,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch earnings call data.");
   }
 };

@@ -6,6 +6,7 @@ import Graph from "./Graph";
 import Press from "./Press";
 import Reports from "./Reports";
 import Metrics from "./Metrics";
+import EarningsCall from "./EarningsCall";
 
 export default async function Page({
   params,
@@ -35,8 +36,9 @@ export default async function Page({
           <Description company={company} />
           <Press company={slug} />
         </div>
-        <div className="flex max-w-[40%] w-full flex-col h-full">
+        <div className="flex max-w-[40%] w-full flex-col h-full gap-6">
           <Reports cik={company["CIK"].toString()} />
+          <EarningsCall ticker={company.symbol} />
         </div>
       </div>
     </div>

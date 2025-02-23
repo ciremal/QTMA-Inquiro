@@ -6,7 +6,7 @@ export const ReportsCard = ({ reports }: any) => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full">
-        <p className={`text-[29px] ${interBold.className} mb-3`}>
+        <p className={`text-xl ${interBold.className} mb-3`}>
           Financial Reports
         </p>
       </div>

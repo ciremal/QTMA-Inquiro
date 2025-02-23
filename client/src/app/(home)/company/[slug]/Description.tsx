@@ -1,7 +1,7 @@
 import {
   formatCompanyDescription,
   formatCompanyOwnership,
-} from "@/app/lib/formatCompanyDescription";
+} from "@/app/lib/formattingFunctions";
 
 interface DescriptionProps {
   company: any;
