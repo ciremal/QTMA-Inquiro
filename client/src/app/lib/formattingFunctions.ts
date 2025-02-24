@@ -64,10 +64,9 @@ export const formatCompanyOwnership = (
 };
 
 export const formatTranscript = (transcript: string) => {
-  // Regex to match the first "Name: Sentence" including the trailing punctuation
-  const regex = /^([\w\s]+):\s([^:]+?)(?=\s*[\w\s]+:|$)/;
-
+  const regex = /^([A-Za-z'\s]+):\s([\s\S]+?)(?=\n|$)/;
   const res = [];
+
   while (transcript) {
     // Match the first occurrence
     const match = transcript.match(regex);
@@ -84,7 +83,9 @@ export const formatTranscript = (transcript: string) => {
       transcript = transcript
         .replace(regex, "")
         .trim()
-        .replace(/^\.?\s*/, "");
+        .replace(/^\n?\s*/, "");
+    } else {
+      break;
     }
   }
   return res;
