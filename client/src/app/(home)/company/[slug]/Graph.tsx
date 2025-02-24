@@ -87,22 +87,25 @@ function usePrefetchPeriods(company: string, periods: string[]) {
     periods.forEach((period) => {
       mutate(period, getData(company, period), false);
     });
-  }, [company, periods, mutate]);
+  }, [company, periods]);
 }
 
 export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
   const { cache } = useSWRConfig();
-  const periods = ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"];
-  // const [comparisonCompany, setComparisonCompany] = useState<string | null>(
-  //   null
-  // );
+  const periods = useMemo(
+    () => ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"],
+    []
+  );
 
   // Fetch data for the currently selected period
   const { data, isValidating, error } = useSWR(
     period,
-    () => getData(company, period),
+    async () => {
+      const cachedData = cache.get(period);
+      return cachedData ? cachedData.data : getData(company, period);
+    },
     {
       revalidateOnFocus: false,
     }
@@ -112,53 +115,18 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
   const isDataAvailable = cache.get(period);
   const isLoading = !isDataAvailable && isValidating;
 
-  // const handleCompare = (company: string) => {
-  //   setComparisonCompany(company);
-  // };
-
-  // const comparisonData = periods.map((item) => {
-  //   const { data } = useSWR(
-  //     `${comparisonCompany}-${item}`,
-  //     () => {
-  //       if (comparisonCompany) {
-  //         return getData(comparisonCompany, item);
-  //       }
-  //     },
-  //     {
-  //       revalidateOnFocus: false,
-  //       revalidateOnMount: false,
-  //     }
-  //   );
-  //   return { period: item, data: data };
-  // });
-
-  // const comparisonKey =
-  //   comparisonCompany && period ? `${comparisonCompany}-${period}` : null;
-
   const chartData = useMemo(() => {
     return {
-      labels: data?.map((d) => d.x),
+      labels: data?.map((d: any) => d.x),
       datasets: [
         {
           key: company,
-          data: data?.map((d) => d.y),
+          data: data?.map((d: any) => d.y),
           borderColor: "rgba(22, 163, 74, 1)",
           backgroundColor: "rgba(22, 163, 74, 0.3)",
           fill: true,
           pointRadius: 0,
         },
-        // comparisonCompany && comparisonData
-        //   ? {
-        //       key: comparisonKey,
-        //       data: comparisonData
-        //         .filter((item) => item.period === period)[0]
-        //         .data?.map((d) => d.y),
-        //       borderColor: "rgba(255, 99, 132, 1)",
-        //       backgroundColor: "rgba(255, 99, 132, 0.3)",
-        //       fill: true,
-        //       pointRadius: 0,
-        //     }
-        //   : null,
       ].filter(Boolean),
     };
   }, [data, company]) as unknown as ChartData<"line">;
