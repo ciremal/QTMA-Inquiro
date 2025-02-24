@@ -64,7 +64,7 @@ export const formatCompanyOwnership = (
 };
 
 export const formatTranscript = (transcript: string) => {
-  const regex = /^([A-Za-z'\s]+):\s([\s\S]+?)(?=\n|$)/;
+  const regex = /^([A-Za-z'\s-]+):\s([\s\S]+?)(?=\n|$)/;
   const res = [];
 
   while (transcript) {
