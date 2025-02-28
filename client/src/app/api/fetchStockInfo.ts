@@ -130,6 +130,18 @@ export const getTickerHistoricalData = async (
   }
 };
 
+export const getTickerHistoricalDataBulk = async (ticker: string) => {
+  try {
+    const res = await fetch(
+      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-time-series-bulk/?ticker=${ticker}`
+    );
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch historical data.");
+  }
+};
+
 export const getTickerNews = async (ticker: string): Promise<any[]> => {
   const dateToday = new Date();
   const dateTo = formatDateToYYYYMMDD(dateToday);

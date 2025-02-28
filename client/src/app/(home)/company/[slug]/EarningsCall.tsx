@@ -18,9 +18,13 @@ const fetcher = async (ticker: string) => {
 };
 
 const EarningsCall = ({ ticker }: EarningsCallProps) => {
-  const { data, error, isLoading } = useSWR(ticker, () => fetcher(ticker), {
-    revalidateOnFocus: false,
-  });
+  const { data, error, isLoading } = useSWR(
+    `transcript-${ticker}`,
+    () => fetcher(ticker),
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const [open, setOpen] = useState(false);
 

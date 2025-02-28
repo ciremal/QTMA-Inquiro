@@ -1,6 +1,6 @@
 "use client";
 
-import { getTickerHistoricalData } from "@/app/api/fetchStockInfo";
+import { getTickerHistoricalDataBulk } from "@/app/api/fetchStockInfo";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,13 +13,14 @@ import {
   ChartOptions,
   Filler,
   ChartData,
+  Legend,
 } from "chart.js";
 import useSWR, { useSWRConfig } from "swr";
 import Crosshair from "chartjs-plugin-crosshair";
 import GraphButton from "./GraphButton";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useTheme } from "next-themes";
-import CurrentPrice from "./CurrentPrice";
+import DropdownMenu from "@/app/components/DropdownMenu";
 
 ChartJS.register(
   CategoryScale,
@@ -29,107 +30,153 @@ ChartJS.register(
   Title,
   Tooltip,
   Crosshair,
-  Filler
+  Filler,
+  Legend
 );
-async function getData(company: string, period: string) {
-  let interval = "";
+async function getData(
+  company: string,
+  mutate: (key: string, data: any, shouldRevalidate: boolean) => void
+) {
+  const historicalData = await getTickerHistoricalDataBulk(company);
 
-  if (period == "1d" || period == "5d") {
-    interval = "1h";
-  } else if (period == "5y") {
-    interval = "1mo";
-  } else if (period == "max") {
-    interval = "3mo";
-  } else {
-    interval = "1d";
-  }
-
-  const data = await getTickerHistoricalData(company, period, interval);
   // Check if data is an array
-  if (!Array.isArray(data)) {
-    throw new Error(`Unexpected data format: ${JSON.stringify(data)}`);
+  if (!Array.isArray(historicalData)) {
+    throw new Error(
+      `Unexpected data format: ${JSON.stringify(historicalData)}`
+    );
   }
 
-  if (period === "1d" || period === "5d") {
-    return data.map((d) => ({
-      // @ts-ignore
-      x: new Date(d.Datetime).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-      }),
-      y: d.Close,
-    }));
-  }
+  const res = historicalData.map((item) => {
+    const period = item["period"];
+    let data;
+    if (period === "1d" || period === "5d") {
+      data = item["data"].map((d: any) => ({
+        x: new Date(d.Date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+        }),
+        y: d.Close,
+      }));
+    } else {
+      data = item["data"].map((d: any) => ({
+        x: new Date(d.Date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        y: d.Close,
+      }));
+    }
+    return {
+      period: period,
+      data: data,
+    };
+  });
 
-  return data.map((d) => ({
-    x: new Date(d.Date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }),
-    y: d.Close,
-  }));
+  mutate(`time-series-${company}`, { data: res }, false);
+  return res;
 }
 
 interface GraphProps {
   company: string;
-  currPrice: number;
-  prevPrice: number;
 }
 
-// Custom hook for pre-fetching data
-function usePrefetchPeriods(company: string, periods: string[]) {
-  const { mutate } = useSWRConfig();
-
-  useEffect(() => {
-    periods.forEach((period) => {
-      mutate(period, getData(company, period), false);
-    });
-  }, [company, periods]);
-}
-
-export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
+export default function Graph({ company }: GraphProps) {
   const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
-  const { cache } = useSWRConfig();
+  const { cache, mutate } = useSWRConfig();
+  const [comparisonCompany, setComparisonCompany] = useState<string | null>(
+    null
+  );
+
   const periods = useMemo(
     () => ["1d", "5d", "1mo", "3mo", "1y", "5y", "max", "ytd"],
     []
   );
 
-  // Fetch data for the currently selected period
+  // Fetch data for the currently selected company
+  const cacheKey = `time-series-${company}`;
   const { data, isValidating, error } = useSWR(
-    period,
+    cacheKey,
     async () => {
-      const cachedData = cache.get(period);
-      return cachedData ? cachedData.data : getData(company, period);
+      const cachedData = cache.get(cacheKey);
+      return cachedData?.data ?? getData(company, mutate);
     },
     {
       revalidateOnFocus: false,
     }
   );
-  usePrefetchPeriods(company, periods);
+  const isDataAvailable = cache.get(cacheKey);
+  const isLoading = !isDataAvailable || isValidating;
 
-  const isDataAvailable = cache.get(period);
-  const isLoading = !isDataAvailable && isValidating;
+  // Fetch data for the company to be compared with
+  const comparisonCompanyCacheKey = `time-series-${comparisonCompany}`;
+  const {
+    data: comparisonData,
+    isValidating: isValidingCompareCompany,
+    error: errorCompareCompany,
+  } = useSWR(
+    comparisonCompanyCacheKey,
+    async () => {
+      if (!comparisonCompany) {
+        return null;
+      }
+      const cachedData = cache.get(comparisonCompany);
+      return cachedData?.data ?? getData(comparisonCompany, mutate);
+    },
+    {
+      revalidateOnFocus: false,
+    }
+  );
+  const isDataAvailableCompareCompany = cache.get(comparisonCompanyCacheKey);
+  const isLoadingCompareCompany =
+    !isDataAvailableCompareCompany && isValidingCompareCompany;
+
+  const periodData = data
+    ? data["data"]?.filter((item: any) => item["period"] === period)[0]
+    : { data: null };
+
+  const comparisonPeriodData = comparisonData
+    ? comparisonData["data"]?.filter(
+        (item: any) => item["period"] === period
+      )[0]
+    : null;
 
   const chartData = useMemo(() => {
     return {
-      labels: data?.map((d: any) => d.x),
+      labels: periodData["data"]?.map((d: any) => d.x),
       datasets: [
         {
-          key: company,
-          data: data?.map((d: any) => d.y),
+          label: company,
+          data: periodData["data"]?.map((d: any) => d.y.toFixed(2)),
           borderColor: "rgba(22, 163, 74, 1)",
           backgroundColor: "rgba(22, 163, 74, 0.3)",
           fill: true,
           pointRadius: 0,
         },
+        comparisonPeriodData
+          ? {
+              label: comparisonCompany,
+              data: comparisonPeriodData["data"]?.map((d: any) =>
+                d.y.toFixed(2)
+              ),
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.3)",
+              fill: true,
+              pointRadius: 0,
+            }
+          : null,
       ].filter(Boolean),
     };
-  }, [data, company]) as unknown as ChartData<"line">;
+  }, [
+    company,
+    periodData,
+    comparisonCompany,
+    comparisonData,
+    comparisonPeriodData,
+  ]) as unknown as ChartData<"line">;
 
   const options: ChartOptions<"line"> = {
     maintainAspectRatio: false,
@@ -194,39 +241,45 @@ export default function Graph({ company, currPrice, prevPrice }: GraphProps) {
           enabled: true,
         },
       },
+      legend: {
+        display: true,
+        position: "top",
+        align: "center",
+        labels: {
+          color: "white",
+          font: {
+            size: 14,
+          },
+        },
+      },
     },
   };
 
   return (
     <div className="w-[78%] flex flex-col justify-center gap-2">
-      <div className="flex items-center">
-        <CurrentPrice price={currPrice} previousClose={prevPrice} />
+      <div className="flex items-center justify-between pl-12 mb-3">
+        <DropdownMenu
+          comparisonCompany={comparisonCompany}
+          setComparisonCompany={setComparisonCompany}
+        />
         <div className="flex justify-end gap-4">
-          <GraphButton on={period === "1d"} onClick={() => setPeriod("1d")}>
-            1D
-          </GraphButton>
-          <GraphButton on={period === "5d"} onClick={() => setPeriod("5d")}>
-            5D
-          </GraphButton>
-          <GraphButton on={period === "1mo"} onClick={() => setPeriod("1mo")}>
-            1M
-          </GraphButton>
-          <GraphButton on={period === "3mo"} onClick={() => setPeriod("3mo")}>
-            3M
-          </GraphButton>
-          <GraphButton on={period === "1y"} onClick={() => setPeriod("1y")}>
-            1Y
-          </GraphButton>
-          <GraphButton on={period === "5y"} onClick={() => setPeriod("5y")}>
-            5Y
-          </GraphButton>
-          <GraphButton on={period === "max"} onClick={() => setPeriod("max")}>
-            Max
-          </GraphButton>
-          <GraphButton on={period === "ytd"} onClick={() => setPeriod("ytd")}>
-            YTD
-          </GraphButton>
+          {periods.map((p) => {
+            return (
+              <GraphButton
+                key={p}
+                on={period === p}
+                onClick={() => setPeriod(p)}
+              >
+                {p.toUpperCase()}
+              </GraphButton>
+            );
+          })}
         </div>
+      </div>
+      <div
+        className={`${!isLoadingCompareCompany ? "hidden" : ""} animate-pulse`}
+      >
+        Fetching {comparisonCompany} data...
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-60">

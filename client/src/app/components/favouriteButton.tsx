@@ -10,9 +10,9 @@ const FavouriteButton = () => {
   return (
     <button className="mr-8" onClick={() => setFavourited(!favourited)}>
       {favourited ? (
-        <StarRateRoundedIcon className="w-10 h-10" />
+        <StarRateRoundedIcon sx={{ width: "2.5rem", height: "2.5rem" }} />
       ) : (
-        <StarBorderRoundedIcon className="w-10 h-10" />
+        <StarBorderRoundedIcon sx={{ width: "2.5rem", height: "2.5rem" }} />
       )}
     </button>
   );
