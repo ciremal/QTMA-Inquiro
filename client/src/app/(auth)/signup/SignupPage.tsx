@@ -10,13 +10,22 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { AiOutlineMail, AiOutlineLock, AiOutlineUser, AiFillAlert, AiOutlineCheckCircle, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {
+  AiOutlineMail,
+  AiOutlineLock,
+  AiOutlineUser,
+  AiFillAlert,
+  AiOutlineCheckCircle,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from "react-icons/ai";
 
 function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword] =
+    useCreateUserWithEmailAndPassword(auth);
   const [error, setError] = useState(false);
   const [passwordChecks, setPasswordChecks] = useState({
     length: false,
@@ -64,7 +73,10 @@ function SignupPage() {
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        const res = await createUserWithEmailAndPassword(values.email, values.password);
+        const res = await createUserWithEmailAndPassword(
+          values.email,
+          values.password
+        );
         if (res) {
           const user = res.user;
           await updateProfile(user, {
@@ -108,15 +120,22 @@ function SignupPage() {
         </div>
         <div className="flex justify-center space-x-4">
           <Link href="/signup">
-            <button className="text-white border-b-2 border-white font-sans">Sign up</button>
+            <button className="text-white border-b-2 border-white font-sans">
+              Sign up
+            </button>
           </Link>
           <Link href="/login">
-            <button className="text-gray-400 hover:text-white font-sans">Log in</button>
+            <button className="text-gray-400 hover:text-white font-sans">
+              Log in
+            </button>
           </Link>
         </div>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div className="relative">
-            <AiOutlineUser className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <AiOutlineUser
+              className="absolute left-3 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               id="firstName"
               name="firstName"
@@ -128,7 +147,10 @@ function SignupPage() {
             />
           </div>
           <div className="relative">
-            <AiOutlineUser className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <AiOutlineUser
+              className="absolute left-3 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               id="lastName"
               name="lastName"
@@ -140,7 +162,10 @@ function SignupPage() {
             />
           </div>
           <div className="relative">
-            <AiOutlineMail className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <AiOutlineMail
+              className="absolute left-3 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               id="email"
               name="email"
@@ -152,7 +177,10 @@ function SignupPage() {
             />
           </div>
           <div className="relative">
-            <AiOutlineLock className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <AiOutlineLock
+              className="absolute left-3 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               id="password"
               name="password"
@@ -167,28 +195,68 @@ function SignupPage() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-3.5 text-gray-400"
             >
-              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible /> }
+              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </button>
             <div className="text-xs mt-2 font-sans">
-              <div className={`flex items-center ${passwordChecks.length ? "text-green-500" : "text-gray-400"}`}>
-                {passwordChecks.length && <AiOutlineCheckCircle className="mr-1" />}Minimum length of 8-12 characters
+              <div
+                className={`flex items-center ${
+                  passwordChecks.length ? "text-green-500" : "text-gray-400"
+                }`}
+              >
+                {passwordChecks.length && (
+                  <AiOutlineCheckCircle className="mr-1" />
+                )}
+                Minimum length of 8 characters
               </div>
-              <div className={`flex items-center ${passwordChecks.uppercase ? "text-green-500" : "text-gray-400"}`}>
-                {passwordChecks.uppercase && <AiOutlineCheckCircle className="mr-1" />}At least one uppercase letter
+              <div
+                className={`flex items-center ${
+                  passwordChecks.uppercase ? "text-green-500" : "text-gray-400"
+                }`}
+              >
+                {passwordChecks.uppercase && (
+                  <AiOutlineCheckCircle className="mr-1" />
+                )}
+                At least one uppercase letter
               </div>
-              <div className={`flex items-center ${passwordChecks.lowercase ? "text-green-500" : "text-gray-400"}`}>
-                {passwordChecks.lowercase && <AiOutlineCheckCircle className="mr-1" />}At least one lowercase letter
+              <div
+                className={`flex items-center ${
+                  passwordChecks.lowercase ? "text-green-500" : "text-gray-400"
+                }`}
+              >
+                {passwordChecks.lowercase && (
+                  <AiOutlineCheckCircle className="mr-1" />
+                )}
+                At least one lowercase letter
               </div>
-              <div className={`flex items-center ${passwordChecks.digit ? "text-green-500" : "text-gray-400"}`}>
-                {passwordChecks.digit && <AiOutlineCheckCircle className="mr-1" />}At least one numeric digit
+              <div
+                className={`flex items-center ${
+                  passwordChecks.digit ? "text-green-500" : "text-gray-400"
+                }`}
+              >
+                {passwordChecks.digit && (
+                  <AiOutlineCheckCircle className="mr-1" />
+                )}
+                At least one numeric digit
               </div>
-              <div className={`flex items-center ${passwordChecks.specialChar ? "text-green-500" : "text-gray-400"}`}>
-                {passwordChecks.specialChar && <AiOutlineCheckCircle className="mr-1" />}At least one special character (e.g., !@#$%^&*)
+              <div
+                className={`flex items-center ${
+                  passwordChecks.specialChar
+                    ? "text-green-500"
+                    : "text-gray-400"
+                }`}
+              >
+                {passwordChecks.specialChar && (
+                  <AiOutlineCheckCircle className="mr-1" />
+                )}
+                At least one special character (e.g., !@#$%^&*)
               </div>
             </div>
           </div>
           <div className="relative">
-            <AiOutlineLock className="absolute left-3 top-3.5 text-gray-400" size={20} />
+            <AiOutlineLock
+              className="absolute left-3 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               id="confirmPassword"
               name="confirmPassword"
