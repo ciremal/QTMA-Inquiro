@@ -193,8 +193,6 @@ export default function Graph({ company }: GraphProps) {
     adjustLabels(periodData, comparisonPeriodData);
   }
 
-  console.log(periodData);
-
   const chartData = useMemo(() => {
     return {
       labels: periodData["data"]?.map((d: any) => d.x),
