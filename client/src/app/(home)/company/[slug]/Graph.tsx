@@ -79,6 +79,51 @@ async function getData(
   return res;
 }
 
+const findEarlierDataset = (dataset1: any, dataset2: any) => {
+  const d1 = new Date(dataset1.data[0].x);
+  const d2 = new Date(dataset2.data[0].x);
+  if (d1 < d2) {
+    return 1;
+  } else if (d1 > d2) {
+    return 2;
+  } else {
+    return 0;
+  }
+};
+
+const adjustLabels = (dataset1: any, dataset2: any) => {
+  const earlierDataset = findEarlierDataset(dataset1, dataset2);
+  if (earlierDataset === 0) {
+    return;
+  }
+
+  const datesToAdd = [];
+  let index = 0;
+
+  const longerData = earlierDataset === 1 ? dataset1.data : dataset2.data;
+  const earliestAlignedDate =
+    earlierDataset === 1
+      ? new Date(dataset2.data[0].x)
+      : new Date(dataset1.data[0].x);
+
+  while (index < longerData.length) {
+    const currDate = new Date(longerData[index].x);
+    if (currDate < earliestAlignedDate) {
+      datesToAdd.push({ x: longerData[index].x, y: 0 });
+    } else {
+      break;
+    }
+    index += 1;
+  }
+
+  if (earlierDataset === 1) {
+    dataset2.data = [...datesToAdd, ...dataset2.data];
+  } else {
+    dataset1.data = [...datesToAdd, ...dataset1.data];
+  }
+  return;
+};
+
 interface GraphProps {
   company: string;
 }
@@ -143,6 +188,12 @@ export default function Graph({ company }: GraphProps) {
         (item: any) => item["period"] === period
       )[0]
     : null;
+
+  if (periodData && comparisonPeriodData) {
+    adjustLabels(periodData, comparisonPeriodData);
+  }
+
+  console.log(periodData);
 
   const chartData = useMemo(() => {
     return {
