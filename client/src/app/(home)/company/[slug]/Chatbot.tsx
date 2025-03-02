@@ -3,6 +3,65 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
 
+interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+const testConvo: Message[] = [
+  {
+    role: "system",
+    content: "Be precise and concise.",
+  },
+  {
+    role: "user",
+    content: "Who is Richard Guo",
+  },
+];
+
+async function getPerplexityResponse(conversation: Message[]) {
+  const response = await fetch("/api/chatbot", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(conversation),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  // 2. Now read from response.body as a stream
+  const reader = response.body?.getReader();
+  if (!reader) {
+    throw new Error("No readable stream");
+  }
+
+  // We'll accumulate the chunks here
+  const decoder = new TextDecoder();
+  let done = false;
+
+  while (!done) {
+    const { value, done: doneReading } = await reader.read();
+    done = doneReading;
+    if (value) {
+      // Decode the chunk
+      const chunk = decoder.decode(value, { stream: true });
+
+      // chunk may contain one or more SSE events.
+      // They often look like:
+      //  data: {...JSON data...}
+      //  data: {...JSON data...}
+      // For example, you can parse them or handle them line by line:
+      console.log("Received chunk:", chunk);
+
+      // If your server is sending well-formed SSE events,
+      // you could handle each line or parse them as needed.
+    }
+  }
+}
+
 export default function Chatbot({ slug }: { slug: string }) {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +69,8 @@ export default function Chatbot({ slug }: { slug: string }) {
     theme === "light"
       ? "/inquiro-chatbot-light.svg"
       : "/inquiro-chatbot-dark.svg";
+
+  getPerplexityResponse(testConvo);
 
   const[messages, setMessages] = useState([
     {text: "hello, how can i assist you", sender:"bot"}

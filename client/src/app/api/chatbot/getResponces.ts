@@ -15,5 +15,18 @@ export default async function handler(
 const { query } = req.body
 
 if (!query) {
-    return res.status(405).json({ message: 'Query is Required' })
+    return res.status(400).json({ message: 'Query is Required' })
 }
+
+try {
+    const response = await fetch(`${SONAR_API_URL}/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SONAR_API_KEY}`
+      },
+      body: JSON.stringify({ query })
+    })
+}
+
+if 
