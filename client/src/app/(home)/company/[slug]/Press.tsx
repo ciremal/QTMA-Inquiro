@@ -1,5 +1,6 @@
+import React from "react";
 import { getTickerNews } from "@/app/api/fetchStockInfo";
-import PressCard from "./PressCard";
+import PressClient from "./PressClient";
 
 interface PressProps {
   company: string;
@@ -112,35 +113,13 @@ export default async function Press({ company, filter = "All" }: PressProps) {
   return (
     <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-[800px]">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="font-bold text-xl">Sentiment Analysis</h1>
-
-        {/* Server-Side Filter Buttons */}
-        <form method="get" className="flex gap-2">
-          {filters.map((f) => (
-            <button
-              key={f}
-              type="submit"
-              name="filter"
-              value={f}
-              className={`border px-4 py-2 rounded-3xl font-bold text-xs hover:bg-slate-100 dark:hover:bg-primaryGray transition-all ${
-                filter === f ? "bg-slate-100 dark:bg-primaryGray" : ""
-              } hover:bg-blue-500`}
-            >
-              {f}
-            </button>
-          ))}
-        </form>
+        {/* Client-Side Filter Buttons */}
+        <PressClient news={news} filters={filters} initialFilter={filter} />
       </div>
 
-      {/* News Cards */}
-      <div className="flex gap-4 overflow-x-auto mb-6">
-        {news.slice(0, 12).map((article: any) => (
-          <PressCard article={article} key={article.uuid} />
-        ))}
-      </div>
-      <div className="flex">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {/* Sentiment News Distribution */}
-        <div className="flex justify-center gap-4 mb-6 mx-2 w-full h-64">
+        <div className="flex flex-row justify-center gap-4 w-full h-64">
           {renderColumn(columns.veryBearish, "bg-red-500")}
           {renderColumn(columns.bearish, "bg-red-400")}
           {renderColumn(columns.neutral, "bg-gray-400")}
@@ -149,7 +128,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
         </div>
 
         {/* Sentiment Summary Table */}
-        <div className="mb-6 p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md mx-2 w-full">
+        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md w-full">
           <h2 className="font-bold mb-2">Coverage Details</h2>
           <div className="flex justify-between mb-1">
             <span>Total News Sources</span>
@@ -197,9 +176,9 @@ export default async function Press({ company, filter = "All" }: PressProps) {
             ></div>
           </div>
           <div className="flex justify-between mt-2 text-xs">
-            <span className="text-red-500">{bearPercentage}%</span>
-            <span className="text-gray-400">{neutralPercentage}%</span>
-            <span className="text-green-400">{bullPercentage}%</span>
+            <span className="text-red-500">{bearPercentage.toFixed(2)}%</span>
+            <span className="text-gray-400">{neutralPercentage.toFixed(2)}%</span>
+            <span className="text-green-400">{bullPercentage.toFixed(2)}%</span>
           </div>
         </div>
       </div>

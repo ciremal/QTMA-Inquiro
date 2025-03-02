@@ -37,7 +37,7 @@ export default function PressCard({ article }: PressCardProps) {
   return (
     <Link
       href={url}
-      className="flex-shrink-0 basis-[calc(43.333%-1rem)] h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
+      className="flex-shrink-0 w-64 h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
     >
       {/* Badge in the top-right corner */}
       <div
