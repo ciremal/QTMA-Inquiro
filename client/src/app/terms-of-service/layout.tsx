@@ -26,7 +26,6 @@ const bagnard = localFont({
 const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
-  //👇 Add variable to our object
   variable: "--font-dmsans",
 });
 const inter = Inter({
@@ -47,20 +46,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} 
-        ${geistMono.variable} 
-        ${bagnard.variable} 
-        ${dmSans.variable} 
-        ${inter.variable} 
-        antialiased 
-        bg-background
-        dark:bg-foreground
-        bg-radial-gradient
-        `}
+        className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} ${inter.variable} antialiased bg-background dark:bg-foreground bg-radial-gradient flex flex-col min-h-screen`}
       >
         <Providers>
           <Navbar />
-          {children}
+          <main className="flex-grow">{children}</main>
           <Footer />
         </Providers>
       </body>

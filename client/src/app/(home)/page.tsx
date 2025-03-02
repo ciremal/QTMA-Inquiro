@@ -89,25 +89,23 @@ function Home() {
   }
 
   return (
-    <>
-      <main className="flex flex-col h-screen ">
-        <div className="flex flex-col items-center justify-center font-sans mt-8 ">
-          <p
-            className="font-sans mb-4 md:text-5xl text-2xl text-center"
-            style={{ fontWeight: "bold" }}
-          >
-            <span className="text-black dark:text-primaryWhite">
-              Ask me about{" "}
-            </span>
-            <span className="text-[#00000066] dark:text-primaryWhite">
-              {typedPrompt}
-            </span>
-          </p>
-          {/* @ts-expect-error */}
-          <Table data={data} />
-        </div>
-      </main>
-    </>
+    <div className="flex flex-col flex-grow">
+      <div className="flex flex-col items-center justify-center font-sans mt-8">
+        <p
+          className="font-sans mb-4 md:text-5xl text-2xl text-center"
+          style={{ fontWeight: "bold" }}
+        >
+          <span className="text-black dark:text-primaryWhite">
+            Ask me about{" "}
+          </span>
+          <span className="text-[#00000066] dark:text-primaryWhite">
+            {typedPrompt}
+          </span>
+        </p>
+        {/* @ts-expect-error */}
+        <Table data={data} />
+      </div>
+    </div>
   );
 }
 
