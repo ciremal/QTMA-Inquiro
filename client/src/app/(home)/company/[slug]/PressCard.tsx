@@ -16,7 +16,7 @@ export default function PressCard({ article }: PressCardProps) {
     classification,
     sentiment,
   } = article;
-  // console.log(article);
+  console.log(article);
   const date = new Date(datetime * 1000).toLocaleDateString();
   const thumbnail = image
     ? image

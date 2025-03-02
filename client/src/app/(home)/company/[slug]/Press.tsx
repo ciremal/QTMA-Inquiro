@@ -43,37 +43,49 @@ export default async function Press({ company, filter = "All" }: PressProps) {
 
   // Sort articles into columns based on sentiment
   const columns = {
-    veryBearish: new Set<string>(),
-    bearish: new Set<string>(),
-    neutral: new Set<string>(),
-    bullish: new Set<string>(),
-    veryBullish: new Set<string>(),
+    veryBearish: new Set<{ icon: string, url: string }>(),
+    bearish: new Set<{ icon: string, url: string }>(),
+    neutral: new Set<{ icon: string, url: string }>(),
+    bullish: new Set<{ icon: string, url: string }>(),
+    veryBullish: new Set<{ icon: string, url: string }>(),
   };
 
-  // Helper to get the domain from a URL
-  const getDomainFromUrl = (url: string) => {
-    try {
-      const domain = new URL(url).hostname.replace("www.", "");
-      return domain;
-    } catch {
-      return "example.com"; // fallback
-    }
+  // Helper to get the domain from a Source
+  const getDomainFromSource = (source: string) => {
+    const knownDomains: { [key: string]: string } = {
+      "Yahoo Finance": "finance.yahoo.com",
+      "Bloomberg": "bloomberg.com",
+      "Reuters": "reuters.com",
+      "CNBC": "cnbc.com",
+      "MarketWatch": "marketwatch.com",
+      "The Wall Street Journal": "wsj.com",
+      "Financial Times": "ft.com",
+      "BBC": "bbc.com",
+      "CNN": "cnn.com",
+      "Forbes": "forbes.com",
+      "SeekingAlpha": "seekingalpha.com",
+      "Finnhub": "finnhub.io",
+      // Add more known sources and their domains here
+    };
+
+    return knownDomains[source] || source + ".com"; // fallback
   };
 
   news.forEach((article: any) => {
     const sentiment = article.sentiment;
-    const domain = getDomainFromUrl(article.url);
+    const domain = getDomainFromSource(article.source);
     const icon = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    const iconData = { icon, url: article.url };
 
-    if (sentiment <= -0.6) columns.veryBearish.add(icon);
-    else if (sentiment > -0.6 && sentiment <= -0.2) columns.bearish.add(icon);
-    else if (sentiment > -0.2 && sentiment <= 0.2) columns.neutral.add(icon);
-    else if (sentiment > 0.2 && sentiment <= 0.6) columns.bullish.add(icon);
-    else columns.veryBullish.add(icon);
+    if (sentiment <= -0.6) columns.veryBearish.add(iconData);
+    else if (sentiment > -0.6 && sentiment <= -0.2) columns.bearish.add(iconData);
+    else if (sentiment > -0.2 && sentiment <= 0.2) columns.neutral.add(iconData);
+    else if (sentiment > 0.2 && sentiment <= 0.6) columns.bullish.add(iconData);
+    else columns.veryBullish.add(iconData);
   });
 
   // Helper to render column with wrapped icons in colored overlay
-  const renderColumn = (icons: Set<string>, color: string) => {
+  const renderColumn = (icons: Set<{ icon: string, url: string }>, color: string) => {
     const iconArray = Array.from(icons);
     const visibleIcons = iconArray.slice(0, 5);
     const hiddenCount = iconArray.length - 5;
@@ -92,13 +104,14 @@ export default async function Press({ company, filter = "All" }: PressProps) {
             height: `${heightPercentage}%`,
           }}
         >
-          {visibleIcons.map((icon, index) => (
-            <img
-              key={index}
-              src={icon}
-              alt="news icon"
-              className="py-auto w-10 h-10 rounded-full bg-white"
-            />
+          {visibleIcons.map(({ icon, url }, index) => (
+            <a key={index} href={url} target="_blank" rel="noopener noreferrer">
+              <img
+                src={icon}
+                alt="news icon"
+                className="py-auto w-10 h-10 rounded-full bg-white"
+              />
+            </a>
           ))}
           {hiddenCount > 0 && (
             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-white text-sm">
@@ -112,6 +125,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
 
   return (
     <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-[800px]">
+      
       <div className="flex items-center justify-between mb-4">
         {/* Client-Side Filter Buttons */}
         <PressClient news={news} filters={filters} initialFilter={filter} />

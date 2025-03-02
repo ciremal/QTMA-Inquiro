@@ -30,14 +30,7 @@ const prompts = [
   "emerging 3D printing companies to watch",
   "the best cybersecurity stocks",
   "top gaming and esports companies",
-  "leading streaming media services",
-
-  // International
-  "the biggest Chinese tech companies",
-  "fastest growing European startups",
-  "major Japanese automakers",
-  "companies driving India's tech boom",
-  "top Canadian natural resource companies",
+  "leading streaming media services"
 ];
 
 const fetcher = async () => {
