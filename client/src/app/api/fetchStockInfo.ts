@@ -7,6 +7,11 @@ interface AnalysisResult {
   classification: "Bullish" | "Bearish" | "Neutral" | null;
 }
 
+interface EarningsCallResult {
+  takeaways: any[] | null;
+  error: string | null;
+}
+
 // Function to analyze article with OpenAI
 
 export async function analyzeArticleWithOpenAI(
@@ -85,6 +90,79 @@ No code fences or extra text, just valid JSON.
       summary: "Error during analysis.",
       sentiment: 0,
       classification: "Neutral",
+    };
+  }
+}
+
+export async function getEarningsCallHighlights(
+  transcript: string,
+  ticker: string
+): Promise<EarningsCallResult> {
+  if (!transcript.trim()) {
+    return {
+      takeaways: null,
+      error: "No transcript provided",
+    };
+  }
+
+  const systemMessage = "You are a helpful financial analysis assistant.";
+  const userPrompt = `
+  You are a financial analyst. Read the following summarized earnings call transcript from ${ticker}:
+  
+  \"\"\"${transcript}\"\"\"
+  
+  Perform the following task:
+  Summarize this earnings call transcript, highlighting the key financial takeaways. Always include numbers and key metrics.
+  
+  Return your response as valid JSON only, with the following format:
+  
+  {
+    "takeaways" : [
+      { "title": "title of key financial takeway", "point": "Key financial takeaway (max 20 words)", "sentiment": "Classify the takeaway as positive, neutral, or negative" },
+      ...
+    ]
+  }
+  
+  Ensure each takeaway is concise (max 20 words) and financially relevant. Maximum of 4 takeaways. No code fences, no extra text—just valid JSON.
+  `;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: systemMessage },
+          { role: "user", content: userPrompt },
+        ],
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
+    });
+
+    const data = await response.json();
+    let content = data.choices?.[0]?.message?.content?.trim();
+
+    if (!content) {
+      return {
+        takeaways: null,
+        error: "Empty response from OpenAI",
+      };
+    }
+
+    // Remove potential markdown code fences
+    content = content.replace(/```json|```/g, "").trim();
+    const res: EarningsCallResult = JSON.parse(content);
+
+    return res;
+  } catch (error) {
+    return {
+      takeaways: null,
+      error: "Failed to fetch transcript analysis",
     };
   }
 }
@@ -198,8 +276,40 @@ export const getEarningsCallTranscript = async (ticker: string) => {
     if (!data || !data.transcript || res.status === 404) {
       return {
         transcriptData: null,
+        takeaways: null,
       };
     }
+
+    const takeaways = await getEarningsCallHighlights(
+      data.summarized,
+      data.ticker
+    );
+
+    // const takeaways = [
+    //   {
+    //     title: "Record iPhone Revenue",
+    //     point: "iPhone revenues hit $46.2 billion, up 6% year-over-year.",
+    //     sentiment: "positive",
+    //   },
+    //   {
+    //     title: "iPad Revenue Growth",
+    //     point:
+    //       "iPad revenue rose to $7 billion, an 8% increase year-over-year.",
+    //     sentiment: "positive",
+    //   },
+    //   {
+    //     title: "Wearables Revenue Decline",
+    //     point: "Wearable, Home and Accessories revenue fell 3% to $9 billion.",
+    //     sentiment: "negative",
+    //   },
+    //   {
+    //     title: "One-Time Tax Charge",
+    //     point: "A $10.2 billion income tax charge was recorded.",
+    //     sentiment: "neutral",
+    //   },
+    // ];
+
+    data["takeaways"] = takeaways.takeaways;
 
     return {
       transcriptData: data,

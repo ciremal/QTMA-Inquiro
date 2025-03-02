@@ -3,30 +3,47 @@
 import { getEarningsCallTranscript } from "@/app/api/fetchStockInfo";
 import { formatTranscript } from "@/app/lib/formattingFunctions";
 import { Box } from "@mui/material";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import TranscriptModal from "@/app/components/TranscriptModal";
 
 interface EarningsCallProps {
   ticker: string;
 }
 
-const fetcher = async (ticker: string) => {
+const fetcher = async (
+  ticker: string,
+  mutate: (key: string, data: any, shouldRevalidate: boolean) => void
+) => {
   const data = await getEarningsCallTranscript(ticker);
+  mutate(`transcript-${ticker}`, { data }, false);
   return data;
 };
 
 const EarningsCall = ({ ticker }: EarningsCallProps) => {
-  const { data, error, isLoading } = useSWR(
-    `transcript-${ticker}`,
-    () => fetcher(ticker),
+  const { cache, mutate } = useSWRConfig();
+  const cacheKey = `transcript-${ticker}`;
+
+  const { data, isValidating, error } = useSWR(
+    cacheKey,
+    async () => {
+      const cachedData = cache.get(cacheKey);
+      return cachedData?.data ?? fetcher(ticker, mutate);
+    },
     {
       revalidateOnFocus: false,
     }
   );
+  const isDataAvailable = cache.get(cacheKey);
+  const isLoading = !isDataAvailable || isValidating;
 
   const [open, setOpen] = useState(false);
+  const transcriptData = useMemo(() => {
+    if (data) {
+      return data.data.transcriptData;
+    }
+  }, [data]);
 
   return (
     <Box className="flex w-auto dark:bg-secondaryBlack bg-background p-6 border rounded-md border-slate-300 dark:border-primaryGray">
@@ -38,7 +55,7 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
           <div>Loading Data...</div>
         ) : (
           <div className="flex flex-col px-6 pt-6 gap-4">
-            {!data?.transcriptData ? (
+            {!data ? (
               <div>No earnings call transcript provided for {ticker}</div>
             ) : (
               <div className="flex justify-between">
@@ -49,15 +66,25 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
               </div>
             )}
 
-            {/* <div>
+            <div>
               <div className="mb-1">Key Insights</div>
-              {data?.transcriptTakeaways?.takeaways?.map((item: any) => {
+              {transcriptData?.takeaways?.map((item: any) => {
                 return (
                   <div
                     key={item.title}
-                    className="flex justify-center items-center mb-5"
+                    className="flex justify-center items-center mb-5 gap-4"
                   >
-                    <img src={`/upDark.svg`} alt="up" />
+                    <img
+                      src={
+                        item.sentiment.toLowerCase() === "positive"
+                          ? `/upDark.svg`
+                          : item.sentiment.toLowerCase() === "negative"
+                          ? "/downDark.svg"
+                          : "/neutralDark.svg"
+                      }
+                      className={"w-10"}
+                      alt="up"
+                    />
                     <div>
                       <p className="font-semibold">{item.title}:</p>
                       <p className="font-light">{item.point}</p>
@@ -65,13 +92,13 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
                   </div>
                 );
               })}
-            </div> */}
+            </div>
           </div>
         )}
       </div>
-      {data?.transcriptData && (
+      {transcriptData && (
         <TranscriptModal
-          transcript={formatTranscript(data?.transcriptData.transcript)}
+          transcript={formatTranscript(transcriptData.transcript)}
           open={open}
           setOpen={setOpen}
           ticker={ticker}
