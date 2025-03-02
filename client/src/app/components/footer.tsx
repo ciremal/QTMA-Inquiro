@@ -6,18 +6,19 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 
 const Footer = () => {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+
   return (
     <footer className={`font-normal ${epilogue.className} text-black bg-white dark:bg-black text-black dark:text-white py-6 mt-16 px-16 flex flex-col md:flex-row justify-between items-center`}>
       <div className="flex flex-col items-center md:items-start">
         <div className="flex items-center space-x-2">
           <Image
-                    src={theme === "dark" ? "/darkLogo.svg" : "/logo.svg"}
-                    width={75}
-                    height={27}
-                    alt="logo"
-                    style={{ verticalAlign: "bottom" }}
-                  />
+            src={resolvedTheme === "dark" ? "/darkLogo.svg" : "/logo.svg"}
+            width={75}
+            height={27}
+            alt="logo"
+            style={{ verticalAlign: "bottom" }}
+          />
           <span className="text-xl font-semibold">Inquiro</span>
         </div>
         <p className="mt-2">&copy;Inquiro. 2025 All rights reserved.</p>
