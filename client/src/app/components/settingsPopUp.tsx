@@ -54,7 +54,7 @@ const SettingsPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
       setSuccess("Profile updated successfully!");
     } catch (err) {
-      if (err.code === "auth/requires-recent-login") {
+      if ((err as { code: string }).code === "auth/requires-recent-login") {
         setRequiresReauth(true);
       } else {
         setError("Failed to update profile. Please try again.");
@@ -83,7 +83,7 @@ const SettingsPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   return (
     isOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-[rgb(14,14,14)] text-white p-6 rounded-xl border border-gray-600 shadow-lg w-96">
+        <div className="bg-[rgb(14,14,14)] text-white p-6 rounded-xl border border-gray-600 shadow-lg w-96 max-h-[90vh] overflow-y-auto">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Account Settings</h2>
             <button className="text-gray-400 hover:text-gray-200" onClick={onClose}>
@@ -143,8 +143,8 @@ const SettingsPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 rounded-xl bg-[rgb(0,0,0)] border border-gray-600"
+                disabled
+                className="w-full p-2 rounded-xl bg-[rgb(0,0,0)] border border-gray-600 cursor-not-allowed text-gray-400"
               />
 
               {/* Current Password */}
@@ -223,10 +223,10 @@ const SettingsPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
               {/* Buttons */}
               <div className="flex justify-end mt-4">
-                <button className="px-4 py-2 bg-gray-700 rounded-xl mr-2 text-white underline" onClick={onClose}>
+                <button className="px-4 py-2 rounded-xl mr-2 text-white underline" onClick={onClose}>
                   Cancel
                 </button>
-                <button className="px-4 py-2 bg-blue-500 rounded-xl text-white" onClick={handleSave}>
+                <button className="px-4 py-2 border border-gray-600 bg-backdrop rounded-xl text-white" onClick={handleSave}>
                   Save
                 </button>
               </div>
