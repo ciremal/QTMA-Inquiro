@@ -8,7 +8,7 @@ import Link from "next/link";
 const Footer = () => {
   const { theme } = useTheme();
   return (
-    <footer className={`font-normal ${epilogue.className} text-black bg-white dark:bg-black text-black dark:text-white py-6 px-16 flex flex-col md:flex-row justify-between items-center`}>
+    <footer className={`font-normal ${epilogue.className} text-black bg-white dark:bg-black text-black dark:text-white py-6 mt-16 px-16 flex flex-col md:flex-row justify-between items-center`}>
       <div className="flex flex-col items-center md:items-start">
         <div className="flex items-center space-x-2">
           <Image

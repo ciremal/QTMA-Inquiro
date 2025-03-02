@@ -8,7 +8,7 @@ const TermsOfServicePage: React.FC = () => {
         <p className="text-gray-600 mb-2">Effective Date: March 2, 2025</p>
 
         <p className="mb-6">
-          Welcome to Inquiro! These Terms of Service ("Terms") constitute a legal agreement between you ("User") and Inquiro ("Company," "we," "our," or "us"). By accessing or using Inquiro’s services, you acknowledge and agree to be bound by these Terms. If you do not agree to these Terms, please do not use our services.
+          Welcome to Inquiro! These Terms of Service (&quot;Terms&quot;) constitute a legal agreement between you (&quot;User&quot;) and Inquiro (&quot;Company,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using Inquiro&apos;s services, you acknowledge and agree to be bound by these Terms. If you do not agree to these Terms, please do not use our services.
         </p>
 
         <h2 className="text-xl font-semibold mt-6">1. Nature of Our Services</h2>
@@ -19,7 +19,7 @@ const TermsOfServicePage: React.FC = () => {
         <h3 className="text-lg font-semibold mt-4">No Financial Liability</h3>
         <ul className="list-disc list-inside mb-6">
           <li>Inquiro is not a financial advisor, broker, or investment firm.</li>
-          <li>Any investment decisions made based on Inquiro’s data or analysis are solely your responsibility.</li>
+          <li>Any investment decisions made based on Inquiro&apos;s data or analysis are solely your responsibility.</li>
           <li>We do not guarantee the accuracy, reliability, or completeness of the information provided.</li>
           <li>Past performance of any investment or strategy does not guarantee future results.</li>
           <li>You assume full responsibility for your investment choices and acknowledge that investing involves risk, including the potential loss of principal.</li>
@@ -36,11 +36,11 @@ const TermsOfServicePage: React.FC = () => {
         <h2 className="text-xl font-semibold mt-6">3. No Warranty & Limitation of Liability</h2>
         <h3 className="text-lg font-semibold mt-4">No Warranties</h3>
         <p className="mb-4">
-          Inquiro’s services are provided "as is" and "as available" without warranties of any kind, express or implied. We disclaim all warranties, including but not limited to:
+          Inquiro&apos;s services are provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, express or implied. We disclaim all warranties, including but not limited to:
         </p>
         <ul className="list-disc list-inside mb-6">
           <li>The accuracy, reliability, or timeliness of our data and insights.</li>
-          <li>The suitability of Inquiro’s information for any particular investment purpose.</li>
+          <li>The suitability of Inquiro&apos;s information for any particular investment purpose.</li>
           <li>The availability and uninterrupted operation of our services.</li>
         </ul>
 

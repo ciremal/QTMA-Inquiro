@@ -8,7 +8,7 @@ const PrivacyPolicyPage: React.FC = () => {
         <p className="text-gray-600 mb-2">Effective Date: March 2, 2025</p>
 
         <p className="mb-6">
-          Inquiro ("Company," "we," "our," or "us") is committed to protecting your privacy and maintaining transparency about how we collect, use, and share information. By using Inquiro’s services, you agree to the terms outlined in this Privacy Policy.
+          Inquiro (&quot;Company,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy and maintaining transparency about how we collect, use, and share information. By using Inquiro&apos;s services, you agree to the terms outlined in this Privacy Policy.
         </p>
 
         <h2 className="text-xl font-semibold mt-6">1. Overview</h2>
@@ -37,8 +37,8 @@ const PrivacyPolicyPage: React.FC = () => {
 
         <h2 className="text-xl font-semibold mt-6">3. How We Use Your Information</h2>
         <ul className="list-disc list-inside mb-6">
-          <li>Provide, personalize, and improve Inquiro’s research tools.</li>
-          <li>Analyze user trends to enhance our platform’s features and performance.</li>
+          <li>Provide, personalize, and improve Inquiro&apos;s research tools.</li>
+          <li>Analyze user trends to enhance our platform&apos;s features and performance.</li>
           <li>Send service-related updates and marketing communications (you can opt out at any time).</li>
           <li>Sell aggregated and anonymized consumer research data to financial institutions, such as banks, to help them understand market trends.</li>
         </ul>
@@ -62,7 +62,7 @@ const PrivacyPolicyPage: React.FC = () => {
         <h2 className="text-xl font-semibold mt-6">6. Your Rights & Choices</h2>
         <h3 className="text-lg font-semibold mt-4">A. Opt-Out Options</h3>
         <ul className="list-disc list-inside mb-6">
-          <li>You may opt out of marketing communications by following the "unsubscribe" link in our emails.</li>
+          <li>You may opt out of marketing communications by following the &quot;unsubscribe&quot; link in our emails.</li>
           <li>If you do not want your anonymized data included in aggregated sales, you can contact us at [Insert Contact Email] to request exclusion.</li>
         </ul>
         
@@ -70,7 +70,7 @@ const PrivacyPolicyPage: React.FC = () => {
         <p className="mb-6">You can request account deletion at any time, and we will remove personally identifiable data, except where legally required to retain it.</p>
 
         <h2 className="text-xl font-semibold mt-6">7. Changes to This Policy</h2>
-        <p className="mb-6">We may update this Privacy Policy periodically. The "Effective Date" will reflect the latest changes. Continued use of Inquiro signifies acceptance of these updates.</p>
+        <p className="mb-6">We may update this Privacy Policy periodically. The &quot;Effective Date&quot; will reflect the latest changes. Continued use of Inquiro signifies acceptance of these updates.</p>
 
         <h2 className="text-xl font-semibold mt-6">8. Contact Us</h2>
         <p className="mb-6">For questions regarding this Privacy Policy, please contact us at hello@inquiro.app.</p>
