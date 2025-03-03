@@ -244,6 +244,15 @@ export default function Chatbot({ slug }: { slug: string }) {
         <div className="fixed bottom-20 right-4 w-[31rem] h-[30rem] bg-white shadow-lg rounded-lg flex flex-col dark:bg-black border border-solid  border-neutral-600">
           {/* Chat Messages */}
           <div className="flex-1 p-3 overflow-y-auto">
+            {messages.length === 0 && (
+              <div className="h-full w-full flex flex-col items-center justify-center">
+                <img
+                  src="/inquiro-chatbot-light.svg"
+                  alt="chatbot-logo"
+                  className="opacity-10 w-56"
+                />
+              </div>
+            )}
             {messagesMarkdown.map((message, index) => (
               <div
                 key={index}
@@ -260,85 +269,68 @@ export default function Chatbot({ slug }: { slug: string }) {
                     />
                   </div>
                 )}
-                <div
-                  className={
-                    "mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 list-disc flex flex-col gap-4"
-                  }
-                >
-                  <ReactMarkDown
-                    components={{
-                      h1({ node, ...rest }) {
-                        return <h1 className="text-xl font-bold" {...rest} />;
-                      },
-                      h2({ node, ...rest }) {
-                        return <h2 className="text-lg font-bold" {...rest} />;
-                      },
-                      ol({ node, ...rest }) {
-                        return (
-                          <ol
-                            className="list-decimal pl-[1em] flex-col gap2"
-                            {...rest}
-                          />
-                        );
-                      },
-                      ul({ node, ...rest }) {
-                        return (
-                          <ul
-                            className="list-disc pl-[1em] flex flex-col gap-2"
-                            {...rest}
-                          />
-                        );
-                      },
-                      a({ node, ...rest }) {
-                        return (
-                          <sup>
-                            <a
-                              className="text-blue-400 text-sm"
-                              target="_blank"
-                              rel="noreferrer"
+                {!message.text &&
+                message.sender === "bot" &&
+                isLoading &&
+                index === messagesMarkdown.length - 1 ? (
+                  <span className="relative flex size-3.5 my-auto">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+                    <span className="relative inline-flex size-3.5 rounded-full bg-white"></span>
+                  </span>
+                ) : (
+                  <div
+                    className={
+                      "mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 list-disc flex flex-col gap-4"
+                    }
+                  >
+                    <ReactMarkDown
+                      components={{
+                        h1({ node, ...rest }) {
+                          return <h1 className="text-xl font-bold" {...rest} />;
+                        },
+                        h2({ node, ...rest }) {
+                          return <h2 className="text-lg font-bold" {...rest} />;
+                        },
+                        ol({ node, ...rest }) {
+                          return (
+                            <ol
+                              className="list-decimal pl-[1em] flex-col gap2"
                               {...rest}
                             />
-                          </sup>
-                        );
-                      },
-                    }}
-                  >
-                    {message.text ||
-                      (message.sender === "bot" &&
-                      isLoading &&
-                      index === messagesMarkdown.length - 1
-                        ? "..."
-                        : message.text)}
-                  </ReactMarkDown>
-                </div>
+                          );
+                        },
+                        ul({ node, ...rest }) {
+                          return (
+                            <ul
+                              className="list-disc pl-[1em] flex flex-col gap-2"
+                              {...rest}
+                            />
+                          );
+                        },
+                        a({ node, ...rest }) {
+                          return (
+                            <sup>
+                              <a
+                                className="text-blue-400 text-sm"
+                                target="_blank"
+                                rel="noreferrer"
+                                {...rest}
+                              />
+                            </sup>
+                          );
+                        },
+                      }}
+                    >
+                      {message.text}
+                    </ReactMarkDown>
+                  </div>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />
           </div>
-
-          {/* Styling for citation links */}
-          <style jsx global>{`
-            .citation-link {
-              cursor: pointer;
-              font-size: 0.8em;
-              vertical-align: super;
-              color: #0078d4;
-              text-decoration: none;
-              margin-left: 2px;
-              font-weight: bold;
-            }
-
-            .citation-link:hover {
-              text-decoration: underline;
-            }
-
-            .dark .citation-link {
-              color: #1e9bf0;
-            }
-          `}</style>
-
           {/* Chat Input */}
-          <form onSubmit={handleSubmit} className="p-2 flex items-center">
+          <form onSubmit={handleSubmit} className="p-2 px-5 flex items-center">
             <input
               type="text"
               className="w-full p-3 px-5 border rounded-full focus:outline-none dark:text-white dark:border-gray-600"
