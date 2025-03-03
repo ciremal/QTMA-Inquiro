@@ -245,7 +245,12 @@ export default function Chatbot({ slug }: { slug: string }) {
           {/* Chat Messages */}
           <div className="flex-1 p-3 overflow-y-auto">
             {messagesMarkdown.map((message, index) => (
-              <div key={index} className="flex gap-4">
+              <div
+                key={index}
+                className={`flex gap-4 ${
+                  message.sender === "user" ? "justify-end" : ""
+                }`}
+              >
                 {message.sender === "bot" && (
                   <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-2xl shadow-lg cursor-pointer dark:bg-white">
                     <img
@@ -256,9 +261,9 @@ export default function Chatbot({ slug }: { slug: string }) {
                   </div>
                 )}
                 <div
-                  className={`mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 list-disc flex flex-col gap-4${
-                    message.sender === "user" ? "ml-auto" : ""
-                  }`}
+                  className={
+                    "mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 list-disc flex flex-col gap-4"
+                  }
                 >
                   <ReactMarkDown
                     components={{
@@ -333,13 +338,10 @@ export default function Chatbot({ slug }: { slug: string }) {
           `}</style>
 
           {/* Chat Input */}
-          <form
-            onSubmit={handleSubmit}
-            className="p-2 border-t flex items-center"
-          >
+          <form onSubmit={handleSubmit} className="p-2 flex items-center">
             <input
               type="text"
-              className="w-full p-3 border rounded-full focus:outline-none dark:text-white dark:border-gray-600"
+              className="w-full p-3 px-5 border rounded-full focus:outline-none dark:text-white dark:border-gray-600"
               placeholder={`Ask me anything about ${slug}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
