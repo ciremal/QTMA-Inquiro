@@ -111,10 +111,7 @@ export async function getEarningsCallHighlights(
   
   \"\"\"${transcript}\"\"\"
   
-  Perform the following task:
-  Summarize this earnings call transcript, highlighting the key financial takeaways. Always include numbers and key metrics.
-  
-  Return your response as valid JSON only, with the following format:
+  Perform the following task: Extract the key financial takeaways from the earnings call. Always include numbers and key metrics in the takeaway. Return your response as valid JSON only, with the following format:
   
   {
     "takeaways" : [
@@ -122,7 +119,7 @@ export async function getEarningsCallHighlights(
       ...
     ]
   }
-  
+
   Ensure each takeaway is concise (max 20 words) and financially relevant. Maximum of 4 takeaways. No code fences, no extra text—just valid JSON.
   `;
 
@@ -134,12 +131,12 @@ export async function getEarningsCallHighlights(
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        model: "gpt-4-turbo",
         messages: [
           { role: "system", content: systemMessage },
           { role: "user", content: userPrompt },
         ],
-        max_tokens: 300,
+        max_tokens: 200,
         temperature: 0.7,
       }),
     });
@@ -280,35 +277,12 @@ export const getEarningsCallTranscript = async (ticker: string) => {
       };
     }
 
-    const takeaways = await getEarningsCallHighlights(
+    const takeawaysPromise = getEarningsCallHighlights(
       data.summarized,
       data.ticker
     );
 
-    // const takeaways = [
-    //   {
-    //     title: "Record iPhone Revenue",
-    //     point: "iPhone revenues hit $46.2 billion, up 6% year-over-year.",
-    //     sentiment: "positive",
-    //   },
-    //   {
-    //     title: "iPad Revenue Growth",
-    //     point:
-    //       "iPad revenue rose to $7 billion, an 8% increase year-over-year.",
-    //     sentiment: "positive",
-    //   },
-    //   {
-    //     title: "Wearables Revenue Decline",
-    //     point: "Wearable, Home and Accessories revenue fell 3% to $9 billion.",
-    //     sentiment: "negative",
-    //   },
-    //   {
-    //     title: "One-Time Tax Charge",
-    //     point: "A $10.2 billion income tax charge was recorded.",
-    //     sentiment: "neutral",
-    //   },
-    // ];
-
+    const takeaways = await takeawaysPromise;
     data["takeaways"] = takeaways.takeaways;
 
     return {

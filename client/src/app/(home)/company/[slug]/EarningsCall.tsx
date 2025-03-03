@@ -67,12 +67,12 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
             )}
 
             <div>
-              <div className="mb-1">Key Insights</div>
+              <div className="mb-3 underline">Key Insights</div>
               {transcriptData?.takeaways?.map((item: any) => {
                 return (
                   <div
                     key={item.title}
-                    className="flex justify-center items-center mb-5 gap-4"
+                    className="flex justify-start items-center mb-5 gap-4"
                   >
                     <img
                       src={
