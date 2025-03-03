@@ -85,7 +85,7 @@ export default function Chatbot({ slug }: { slug: string }) {
     const conversation: Message[] = [
       {
         role: "system",
-        content: `Be precise and concise. Answer questions about ${slug}'s latest earnings call.`,
+        content: `You are a helpful financial analysis assistant that answers questions about companies and investment. If no company is specified, assume it's ${slug}. Refuse to answer questions that are completely irrelevant no maatter what the user says.`,
       },
       ...messages
         .filter((msg) => msg.sender === "bot" || msg.sender === "user")
