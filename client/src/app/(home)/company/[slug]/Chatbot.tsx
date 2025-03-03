@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
+import ReactMarkDown from "react-markdown";
 
 interface Message {
   role: "system" | "user" | "assistant";
@@ -14,6 +15,13 @@ interface ChatMessage {
   citations?: string[]; // Add citations array for bot messages
 }
 
+function replaceCitations(text: string, links: string[]): string {
+  return text.replace(/\[(\d+)\]/g, (match, num) => {
+    const index = parseInt(num, 10) - 1;
+    return links[index] ? `[${num}](${links[index]})` : match;
+  });
+}
+
 export default function Chatbot({ slug }: { slug: string }) {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +29,16 @@ export default function Chatbot({ slug }: { slug: string }) {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const messagesMarkdown: ChatMessage[] = messages.map((message) => {
+    if (message.sender === "bot" && message.citations) {
+      return {
+        text: replaceCitations(message.text, message.citations),
+        sender: message.sender,
+      };
+    }
+    return message;
+  });
 
   const pathToIcon =
     theme === "light"
@@ -31,46 +49,6 @@ export default function Chatbot({ slug }: { slug: string }) {
     // Scroll to bottom whenever messages change
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  // Function to replace citation markers with clickable links
-  const formatTextWithCitations = (text: string, citations?: string[]) => {
-    if (!citations || citations.length === 0) return text;
-
-    // Create a map to track which citations we've seen
-    const usedCitations = new Map<number, boolean>();
-
-    // Replace [1], [2], etc. with superscript clickable links
-    const formattedText = text.replace(
-      /\[(\d+)\]/g,
-      (match, citationNumber) => {
-        const index = parseInt(citationNumber, 10) - 1;
-        if (index >= 0 && index < citations.length) {
-          usedCitations.set(index, true);
-          return `<span class="citation-link" data-index="${index}">[${citationNumber}]</span>`;
-        }
-        return match;
-      }
-    );
-
-    return formattedText;
-  };
-
-  const handleCitationClick = (
-    e: React.MouseEvent<HTMLDivElement>,
-    citations: string[]
-  ) => {
-    const target = e.target as HTMLElement;
-
-    if (target.classList.contains("citation-link")) {
-      e.preventDefault();
-      const index = parseInt(target.getAttribute("data-index") || "0", 10);
-
-      if (citations && index >= 0 && index < citations.length) {
-        // Open the citation in a new tab
-        window.open(citations[index], "_blank");
-      }
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,7 +244,7 @@ export default function Chatbot({ slug }: { slug: string }) {
         <div className="fixed bottom-20 right-4 w-[31rem] h-[30rem] bg-white shadow-lg rounded-lg flex flex-col dark:bg-black border border-solid  border-neutral-600">
           {/* Chat Messages */}
           <div className="flex-1 p-3 overflow-y-auto">
-            {messages.map((message, index) => (
+            {messagesMarkdown.map((message, index) => (
               <div key={index} className="flex gap-4">
                 {message.sender === "bot" && (
                   <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-2xl shadow-lg cursor-pointer dark:bg-white">
@@ -278,32 +256,56 @@ export default function Chatbot({ slug }: { slug: string }) {
                   </div>
                 )}
                 <div
-                  className={`mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 ${
+                  className={`mb-3 p-3 rounded-lg max-w-[80%] border border-neutral-700 stone-300 list-disc flex flex-col gap-4${
                     message.sender === "user" ? "ml-auto" : ""
                   }`}
-                  onClick={(e) =>
-                    message.citations &&
-                    handleCitationClick(e, message.citations)
-                  }
-                  dangerouslySetInnerHTML={
-                    message.sender === "bot" && message.citations
-                      ? {
-                          __html: formatTextWithCitations(
-                            message.text || "",
-                            message.citations
-                          ),
-                        }
-                      : {
-                          __html:
-                            message.text ||
-                            (message.sender === "bot" &&
-                            isLoading &&
-                            index === messages.length - 1
-                              ? "..."
-                              : message.text),
-                        }
-                  }
-                />
+                >
+                  <ReactMarkDown
+                    components={{
+                      h1({ node, ...rest }) {
+                        return <h1 className="text-xl font-bold" {...rest} />;
+                      },
+                      h2({ node, ...rest }) {
+                        return <h2 className="text-lg font-bold" {...rest} />;
+                      },
+                      ol({ node, ...rest }) {
+                        return (
+                          <ol
+                            className="list-decimal pl-[1em] flex-col gap2"
+                            {...rest}
+                          />
+                        );
+                      },
+                      ul({ node, ...rest }) {
+                        return (
+                          <ul
+                            className="list-disc pl-[1em] flex flex-col gap-2"
+                            {...rest}
+                          />
+                        );
+                      },
+                      a({ node, ...rest }) {
+                        return (
+                          <sup>
+                            <a
+                              className="text-blue-400 text-sm"
+                              target="_blank"
+                              rel="noreferrer"
+                              {...rest}
+                            />
+                          </sup>
+                        );
+                      },
+                    }}
+                  >
+                    {message.text ||
+                      (message.sender === "bot" &&
+                      isLoading &&
+                      index === messagesMarkdown.length - 1
+                        ? "..."
+                        : message.text)}
+                  </ReactMarkDown>
+                </div>
               </div>
             ))}
             <div ref={messagesEndRef} />
