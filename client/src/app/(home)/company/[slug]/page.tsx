@@ -8,6 +8,7 @@ import Reports from "./Reports";
 import Metrics from "./Metrics";
 import EarningsCall from "./EarningsCall";
 import CurrentPrice from "./CurrentPrice";
+import Chatbot from "./Chatbot";
 
 export default async function Page({
   params,
@@ -42,6 +43,7 @@ export default async function Page({
           <EarningsCall ticker={company.symbol} />
         </div>
       </div>
+      <Chatbot slug={slug} />
     </div>
   );
 }
