@@ -6,7 +6,7 @@ interface Message {
 export async function POST(request: Request) {
   const conversation: Message[] = await request.json();
   const url = "https://api.perplexity.ai/chat/completions";
-  const bearerToken = process.env.PERPLEXITY_API_KEY;
+  const bearerToken = process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY;
 
   // Build request body
   const requestBody = {
