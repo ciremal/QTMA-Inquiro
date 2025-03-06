@@ -1,15 +1,25 @@
+"use client"
+
 import { CompanyData } from "@/app/api/models";
 import { Chip } from "@mui/material";
 import getIndustryColor from "@/app/lib/industryColors";
 import { CompanyLogo } from "@/app/components/companyLogo";
 import FavouriteButton from "@/app/components/favouriteButton";
+import { useRouter } from "next/navigation"; 
 
 interface CompanyProps {
   company: CompanyData;
   logo: string;
 }
 
-export default async function Company({ company, logo }: CompanyProps) {
+
+export default function Company({ company, logo }: CompanyProps) {
+  const router = useRouter();
+
+  const handleChipClick = (filterType: string, value: string) => {
+    router.push(`/categoryPage?${filterType}=${encodeURIComponent(value)}`);
+  }
+
   return (
     <div className=" px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
       <div className="flex justify-between">
@@ -26,6 +36,7 @@ export default async function Company({ company, logo }: CompanyProps) {
               <Chip
                 className="font-[500] dark:text-primaryWhite"
                 label={company.industry}
+                onClick={() => handleChipClick('industry', company.industry)}
                 sx={{
                   backgroundColor: getIndustryColor(company.industry).bg,
                   color: getIndustryColor(company.industry).color,
@@ -40,6 +51,7 @@ export default async function Company({ company, logo }: CompanyProps) {
               <Chip
                 className="font-[500] dark:text-primaryWhite"
                 label={company.sector}
+                onClick={() => handleChipClick('sector', company.sector)}
                 sx={{
                   backgroundColor: getIndustryColor(company.sector).bg,
                   color: getIndustryColor(company.sector).color,
