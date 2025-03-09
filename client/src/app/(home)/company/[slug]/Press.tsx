@@ -8,8 +8,9 @@ interface PressProps {
 }
 
 export default async function Press({ company, filter = "All" }: PressProps) {
-  const news = await getTickerNews(company);
-
+  const news = (await getTickerNews(company)).slice(0, 10);
+  
+  // Limit to the first 10 articles
   // Count sentiments
   const sentimentCounts = {
     Bearish: 0,
@@ -86,6 +87,14 @@ export default async function Press({ company, filter = "All" }: PressProps) {
 
   // Helper to render column with wrapped icons in colored overlay
   const renderColumn = (icons: Set<{ icon: string, url: string }>, color: string) => {
+    if (icons.size === 0) {
+      return (
+        <div className="relative w-16 h-64 flex flex-col items-center border-2 border-dashed border-gray-100 dark:border-gray-600 rounded-full">
+          <div className="absolute top-0 left-0 w-full h-full bg-grey dark:bg-[rgba(38,38,38,1)] rounded-full"></div>
+        </div>
+      );
+    }
+
     const iconArray = Array.from(icons);
     const visibleIcons = iconArray.slice(0, 5);
     const hiddenCount = iconArray.length - 5;
@@ -105,44 +114,44 @@ export default async function Press({ company, filter = "All" }: PressProps) {
           }}
         >
           {visibleIcons.map(({ icon, url }, index) => (
-            <a key={index} href={url} target="_blank" rel="noopener noreferrer">
+            <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="relative">
               <img
                 src={icon}
                 alt="news icon"
                 className="py-auto w-10 h-10 rounded-full bg-white"
               />
+              {hiddenCount > 0 && index === visibleIcons.length - 1 && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gray-700/75 text-white text-sm">
+                  +{hiddenCount}
+                </div>
+              )}
             </a>
           ))}
-          {hiddenCount > 0 && (
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-white text-sm">
-              +{hiddenCount}
-            </div>
-          )}
         </div>
       </div>
     );
   };
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-[800px]">
+    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-full">
       
       <div className="flex items-center justify-between mb-4">
         {/* Client-Side Filter Buttons */}
         <PressClient news={news} filters={filters} initialFilter={filter} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Sentiment News Distribution */}
         <div className="flex flex-row justify-center gap-4 w-full h-64">
-          {renderColumn(columns.veryBearish, "bg-red-500")}
-          {renderColumn(columns.bearish, "bg-red-400")}
-          {renderColumn(columns.neutral, "bg-gray-400")}
-          {renderColumn(columns.bullish, "bg-green-400")}
-          {renderColumn(columns.veryBullish, "bg-green-600")}
+            {renderColumn(columns.veryBearish, "bg-gradient-to-t from-red-500 to-red-500/50")}
+            {renderColumn(columns.bearish, "bg-gradient-to-t from-[rgba(239,68,68,0.75)] to-[rgba(239,68,68,0.375)]")}
+            {renderColumn(columns.neutral, "bg-gradient-to-t from-gray-400 to-gray-400/50")}
+            {renderColumn(columns.bullish, "bg-gradient-to-t from-[rgba(22,163,74,0.75)] to-[rgba(22,163,74,0.375)]")}
+            {renderColumn(columns.veryBullish, "bg-gradient-to-t from-green-600 to-green-600/50")}
         </div>
 
         {/* Sentiment Summary Table */}
-        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md w-full">
+        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md w-full h-full">
           <h2 className="font-bold mb-2">Coverage Details</h2>
           <div className="flex justify-between mb-1">
             <span>Total News Sources</span>

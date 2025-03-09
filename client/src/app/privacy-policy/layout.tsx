@@ -49,7 +49,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${bagnard.variable} ${dmSans.variable} ${inter.variable} antialiased bg-background dark:bg-foreground bg-radial-gradient`}
       >
         <Providers>
-          {children}
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>

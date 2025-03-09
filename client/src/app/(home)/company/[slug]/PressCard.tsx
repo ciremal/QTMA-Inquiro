@@ -26,9 +26,9 @@ export default function PressCard({ article }: PressCardProps) {
   const getBadgeColor = () => {
     switch (classification) {
       case "Bullish":
-        return "bg-[rgba(22,163,74,0.75)]"; // Green 50%
+        return "bg-[rgba(22, 163, 74,0.75)]"; // Green 50%
       case "Bearish":
-        return "bg-[rgba(239,68,68,0.75)]"; // Red 50%
+        return "bg-[rgba(239, 68, 68,0.75)]"; // Red 50%
       default:
         return "bg-[rgba(100,100,100,0.75)]"; // Gray 50%
     }
