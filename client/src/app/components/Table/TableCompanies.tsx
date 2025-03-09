@@ -200,6 +200,25 @@ const TableCompanies = ({
                     />
                   </Box>
                 </TableCell>
+                <TableCell sx={{ textAlign: "center", borderBottom: "2px solid #262626" }}>
+                  <Box className="flex gap-2 flex-wrap justify-center">
+                  <Chip
+                    className="dark:text-primaryWhite"
+                    key={item.sector}
+                    label={item.sector}
+                    sx={{
+                    backgroundColor: getIndustryColor(item.sector).bg,
+                    color: getIndustryColor(item.sector).color,
+                    "&:hover": {
+                      backgroundColor: getIndustryColor(item.sector).bg,
+                      opacity: 0.8,
+                    },
+                    cursor: "pointer",
+                    fontWeight: 500,
+                    }}
+                  />
+                  </Box>
+                </TableCell>
                 <TableCell sx={{ textAlign: "center", verticalAlign: "middle", borderBottom: "2px solid #262626" }} className="dark:text-primaryWhite">
                   {formatMarketCap(item.marketCap)}
                 </TableCell>

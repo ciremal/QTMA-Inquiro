@@ -151,7 +151,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
         </div>
 
         {/* Sentiment Summary Table */}
-        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md w-full h-full">
+        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-xl w-full h-full">
           <h2 className="font-bold mb-2">Coverage Details</h2>
           <div className="flex justify-between mb-1">
             <span>Total News Sources</span>

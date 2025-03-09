@@ -59,17 +59,9 @@ const filterData = (
       const matchesPriceRange =
         !priceRange ||
         (() => {
+          console.log(priceRange);
           const price = Number(item.currentPrice);
-          switch (priceRange) {
-            case "under50":
-              return price < 50;
-            case "50to200":
-              return price >= 50 && price <= 200;
-            case "over200":
-              return price > 200;
-            default:
-              return true;
-          }
+          return price >= priceRange[0] && price <= priceRange[1];
         })();
 
       const matchesMarketCap =
@@ -137,6 +129,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     { id: "symbol", label: "Ticker", numeric: false },
     { id: "longName", label: "Company Name", numeric: false },
     { id: "industry", label: "Industry", numeric: false },
+    { id: "sector", label: "Sector", numeric: false },
     { id: "marketCap", label: "Market Cap", numeric: true },
     { id: "currentPrice", label: "Current Price", numeric: true },
   ];

@@ -44,9 +44,11 @@ function Home() {
   const [promptIndex, setPromptIndex] = useState(0);
   const [typedPrompt, setTypedPrompt] = useState("");
 
-  const prompt = prompts[promptIndex];
-
   useEffect(() => {
+    const prompt = prompts[promptIndex];
+    console.log(`Current prompt index: ${promptIndex}`);
+    console.log(`Current prompt: ${prompt}`);
+
     if (!prompt) return;
 
     let i = 0;
@@ -56,7 +58,12 @@ function Home() {
       setTypedPrompt("");
       i = 0;
       // Pick a brand-new random index for the next prompt
-      setPromptIndex(() => Math.floor(Math.random() * prompts.length));
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * prompts.length);
+      } while (newIndex === promptIndex);
+      console.log(`New prompt index: ${newIndex}`);
+      setPromptIndex(newIndex);
     }
 
     function typeWrite() {
@@ -67,8 +74,6 @@ function Home() {
       } else {
         // After typing finishes, wait 2 seconds, then move to next prompt
         timeoutId = setTimeout(() => {
-          i = 0;
-          // Wrap around prompts array
           resetTypewriter();
         }, 2000);
       }
@@ -78,7 +83,7 @@ function Home() {
     typeWrite();
 
     return () => clearTimeout(timeoutId);
-  }, [prompt, promptIndex]);
+  }, [promptIndex]);
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,
