@@ -100,6 +100,76 @@ No code fences or extra text, just valid JSON.
   }
 }
 
+export async function getEarningsCallHighlights(
+  transcript: string,
+  ticker: string
+): Promise<EarningsCallResult> {
+  if (!transcript.trim()) {
+    return {
+      takeaways: null,
+      error: "No transcript provided",
+    };
+  }
+
+  const systemMessage = "You are a helpful financial analysis assistant.";
+  const userPrompt = `
+  You are a financial analyst. Read the following summarized earnings call transcript from ${ticker}:
+  
+  \"\"\"${transcript}\"\"\"
+  
+  Perform the following task: Extract the key financial takeaways from the earnings call. Always include numbers and key metrics in the takeaway. Return your response as valid JSON only, with the following format:
+  
+  {
+    "takeaways" : [
+      { "title": "title of key financial takeway", "point": "Key financial takeaway (max 20 words)", "sentiment": "Classify the takeaway as positive, neutral, or negative" },
+      ...
+    ]
+  }
+
+  Ensure each takeaway is concise (max 20 words) and financially relevant. Maximum of 4 takeaways. No code fences, no extra text—just valid JSON.
+  `;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4-turbo",
+        messages: [
+          { role: "system", content: systemMessage },
+          { role: "user", content: userPrompt },
+        ],
+        max_tokens: 200,
+        temperature: 0.7,
+      }),
+    });
+
+    const data = await response.json();
+    let content = data.choices?.[0]?.message?.content?.trim();
+
+    if (!content) {
+      return {
+        takeaways: null,
+        error: "Empty response from OpenAI",
+      };
+    }
+
+    // Remove potential markdown code fences
+    content = content.replace(/```json|```/g, "").trim();
+    const res: EarningsCallResult = JSON.parse(content);
+
+    return res;
+  } catch (error) {
+    return {
+      takeaways: null,
+      error: "Failed to fetch transcript analysis",
+    };
+  }
+}
+
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
     const res = await fetch(
@@ -209,8 +279,17 @@ export const getEarningsCallTranscript = async (ticker: string) => {
     if (!data || !data.transcript || res.status === 404) {
       return {
         transcriptData: null,
+        takeaways: null,
       };
     }
+
+    const takeawaysPromise = getEarningsCallHighlights(
+      data.summarized,
+      data.ticker
+    );
+
+    const takeaways = await takeawaysPromise;
+    data["takeaways"] = takeaways.takeaways;
 
     return {
       transcriptData: data,

@@ -6,11 +6,13 @@ import { auth } from "../firebase/config";
 import { useState } from "react";
 import { signOut } from "firebase/auth";
 import { redirect } from "next/navigation";
+import SettingsPopup from "./settingsPopUp";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const getProfileDisplay = (name: string | null | undefined) => {
     const splitName = name?.split(" ");
@@ -22,10 +24,6 @@ const ProfilePic = () => {
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
-  };
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
@@ -46,9 +44,7 @@ const ProfilePic = () => {
       return `${splitName[0]} ${splitName[1][0]}.`;
     }
     return null;
-  }
-
-  const isMenuOpen = Boolean(anchorEl);
+  };
 
   return (
     <div className="relative w-sm">
@@ -94,10 +90,20 @@ const ProfilePic = () => {
         }`}
       >
         <div className="bg-white dark:bg-secondaryBlack border border-t-0 border-primaryGray rounded-b-3xl">
-          <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">
+          <button
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
+            onClick={() => setIsSettingsOpen(true)}
+          >
             Settings
           </button>
-          <button className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white rounded-b-3xl" onClick={handleSignOut}>
+          <SettingsPopup
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+          />
+          <button
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white rounded-b-3xl"
+            onClick={handleSignOut}
+          >
             Logout
           </button>
         </div>
@@ -105,6 +111,5 @@ const ProfilePic = () => {
     </div>
   );
 };
-
 
 export default ProfilePic;
