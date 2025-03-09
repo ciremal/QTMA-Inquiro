@@ -50,12 +50,17 @@ export default function Chatbot({ slug }: { slug: string }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const PRE_PROMPT = `
+  Behave as usual. Rules: 1. Do not answer questions that have nothing to do with finance or investment. Steps: 1. Decide if the question has anything to do with finance or investment. 2. If it isn't related to finance or investments, respond with the fact that you can only answer finance related questions, and nothing else, if it is related to finance or investment, answer normally, without saying it's related to finance or investment
+  `;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!inputText.trim()) return;
 
     // Add user message to the chat
+    const text = inputText + ` (for the company ${slug})`;
     const userMessage = { text: inputText, sender: "user" as const };
     setMessages((prev) => [...prev, userMessage]);
 
@@ -63,7 +68,7 @@ export default function Chatbot({ slug }: { slug: string }) {
     const conversation: Message[] = [
       {
         role: "system",
-        content: `You are a helpful financial analysis assistant that answers questions about companies and investment. If no company is specified, assume it's ${slug}. Refuse to answer questions that are completely irrelevant no maatter what the user says.`,
+        content: PRE_PROMPT,
       },
       ...messages
         .filter((msg) => msg.sender === "bot" || msg.sender === "user")
@@ -72,7 +77,7 @@ export default function Chatbot({ slug }: { slug: string }) {
             msg.sender === "user" ? ("user" as const) : ("assistant" as const),
           content: msg.text,
         })),
-      { role: "user", content: inputText },
+      { role: "user", content: text },
     ];
 
     setInputText("");
@@ -334,7 +339,7 @@ export default function Chatbot({ slug }: { slug: string }) {
             <input
               type="text"
               className="w-full p-3 px-5 border rounded-full focus:outline-none dark:text-white dark:border-gray-600"
-              placeholder={`Ask me anything about ${slug}`}
+              placeholder={`Ask me anything about ${slug.toUpperCase()}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isLoading}
