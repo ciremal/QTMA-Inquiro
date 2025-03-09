@@ -209,7 +209,12 @@ const TableFilters = ({
           >
             <p className="mb-2 font-sans font-semibold">Select Market Cap</p>
             <FormGroup
-              sx={{ "& .MuiFormControlLabel-root": { marginBottom: "0px" } }}
+              sx={{
+                "& .MuiFormControlLabel-root": {
+                  marginBottom: "0px",
+                  padding: 0,
+                },
+              }}
             >
               {[
                 { label: "Micro Cap (Under $300M)", value: "micro" },
@@ -231,6 +236,7 @@ const TableFilters = ({
                           color: "grey",
                         },
                         margin: "0px",
+                        p: 0,
                       }}
                     />
                   }
