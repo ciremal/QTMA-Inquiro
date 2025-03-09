@@ -1,6 +1,10 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { inter } from "../../ui/fonts";
 import { useTheme } from "next-themes";
+import {
+  filterInputLabelStyles,
+  filterInputSelectStyles,
+} from "@/app/lib/styles";
 
 type TableFiltersProps = {
   industryFilter: any;
@@ -27,43 +31,9 @@ const TableFilters = ({
 }: TableFiltersProps) => {
   const { theme } = useTheme();
 
-  const filterInputLabelStyles = () => ({
-    "&.MuiInputLabel-root": {
-      transform: "translate(0.875rem, 0.5em) scale(1)",
-    },
-    "&.MuiInputLabel-shrink": {
-      transform: "translate(0.875rem, -0.375rem) scale(0.75)",
-    },
-  });
-
-  const filterInputSelectStyles = (theme: string | undefined) => ({
-    height: "2.5rem",
-    // Styling the border
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderRadius: "2rem",
-      borderColor:
-        theme === "dark" ? "var(--primaryGray)" : "var(--primaryLightGray)",
-    },
-    // Styling the border on hover
-    "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: theme === "dark" ? "white" : "#1976D2",
-    },
-    // Styling the inside of the component
-    "& .MuiSelect-select": {
-      paddingTop: "0.5rem",
-      paddingBottom: "0.5rem",
-      color: theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
-    },
-    // Styling the dropdown icon
-    "& .MuiSelect-icon": {
-      color:
-        theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
-    },
-  });
-
   return (
     <Box className="w-full flex justify-between items-center">
-      <Box className="md:w-2/3 w-full flex flex-row gap-6">
+      <Box className="md:w-2/3 w-full flex md:flex-row flex-col gap-6">
         <FormControl fullWidth>
           <InputLabel
             className="dark:text-primaryLightGray"

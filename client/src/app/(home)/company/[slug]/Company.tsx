@@ -13,9 +13,9 @@ export default async function Company({ company, logo }: CompanyProps) {
   return (
     <div className="px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
       <div className="flex justify-between">
-        <div className="flex gap-8">
+        <div className="flex gap-8 md:flex-row flex-col">
           <CompanyLogo company={company.symbol} logoUrl={logo} />
-          <div className="m-auto">
+          <div className="m-auto text-center">
             <h1 className="text-neutral-400 text-xl">
               {company.exchange}: {company.symbol}
             </h1>
