@@ -101,11 +101,19 @@ const TableFilters = ({
           </Typography>
           <Button
             onClick={handleOpenIndustry}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-gray-500 border-opacity-50"
+            className=""
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -171,11 +179,18 @@ const TableFilters = ({
           </Typography>
           <Button
             onClick={handleOpenMarketCap}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-primaryGray"
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -262,11 +277,18 @@ const TableFilters = ({
           </Typography>
           <Button
             onClick={handleOpenPrice}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-primaryGray"
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -327,7 +349,7 @@ const TableFilters = ({
                 <Button
                   key={label}
                   onClick={() => handlePriceChange(value as [number, number])}
-                  className={`text-white text-xs rounded-full border-1 border-rgba(255,255,255,0.2) rounded-full px-3 py-1`}
+                  className={`text-white text-xs rounded-full border-1 border-rgba(255,255,255,0.2) px-3 py-1`}
                   sx={{
                     backgroundColor:
                       priceRange[0] === value[0] && priceRange[1] === value[1]
@@ -357,7 +379,7 @@ const TableFilters = ({
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"
         >
-          <Delete />
+          <Delete sx={{ color: "white" }} />
         </Button>
       </Box>
     </Box>
