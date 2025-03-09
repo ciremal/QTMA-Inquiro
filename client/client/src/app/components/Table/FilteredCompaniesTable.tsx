@@ -36,7 +36,6 @@ const filterData = (
   data: any,
   searchTerm: any,
   industryFilter: any,
-  filterType: 'industry' | 'sector' | null,
   priceRange: any,
   marketCapRange: any,
   blurbResult: { blurb: string } | null,
@@ -60,10 +59,8 @@ const filterData = (
         item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesFilter = 
-        !industryFilter || 
-        (filterType === 'industry' && item.industry === industryFilter) ||
-        (filterType === 'sector' && item.sector === industryFilter);
+      const matchesIndustry =
+        !industryFilter || item.industry === industryFilter;
 
       const matchesPriceRange =
         !priceRange ||
@@ -103,7 +100,7 @@ const filterData = (
 
       return (
         matchesSearch &&
-        matchesFilter &&
+        matchesIndustry &&
         matchesPriceRange &&
         matchesMarketCap
       );
@@ -126,8 +123,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
-  const [filterType, setFilterType] = useState<'industry' | 'sector' | null>(null);
-
 
 
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
@@ -149,20 +144,17 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     const industry = searchParams.get('industry');
     const sector = searchParams.get('sector'); 
 
+    console.log("URL Parameters:", { industry, sector }); // Add this for debugging
+
     if (industry) {
-      setIndustryFilter(industry);
-      setFilterType('industry');
-      setPage(0);
+      setIndustryFilter(industry)
+      setPage(0)
     } else if (sector) {
       setIndustryFilter(sector);
-      setFilterType('sector');
-      setPage(0);
-    } else {
-      setIndustryFilter('');
-      setFilterType(null);
+      setPage(0) // set the page to zero w
     }
     
-  }, [searchParams]);
+  }, [searchParams, setPage]);
 
 
   // Column definitions
@@ -209,7 +201,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         data,
         searchTerm,
         industryFilter,
-        filterType,
         priceRange,
         marketCapRange,
         blurb,
@@ -224,7 +215,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     orderBy,
     order,
     industryFilter,
-    filterType,
     priceRange,
     marketCapRange,
     blurb,
@@ -268,12 +258,8 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     <Box className="mt-11 ml-2">
       {industryFilter && (
         <Chip
-          label={`${filterType === 'industry' ? 'Industry:' : 'Sector:'} ${industryFilter}`}
-          onDelete={() => {
-            setIndustryFilter('');
-            setFilterType(null);
-            router.push('/categoryPage');
-          }}
+          label={`${searchParams.get('industry') ? 'Industry:' : 'Sector:'} ${industryFilter}`}
+
           sx={{
             backgroundColor: getIndustryColor(industryFilter).bg,
             color: getIndustryColor(industryFilter).color,
@@ -283,11 +269,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             },
             cursor: "pointer",
             fontWeight: 500,
-            '& .MuiChip-deleteIcon': {
-              color: getIndustryColor(industryFilter).color,
-            }
           }}
-        />
+        >
+
+        </Chip>
       )}
     </Box>
     </Box>

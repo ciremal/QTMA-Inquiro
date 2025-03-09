@@ -1,0 +1,9 @@
+<svg width="106" height="107" viewBox="0 0 106 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Centered circle -->
+    <rect x="21" y="21.5" width="64" height="64" rx="32" fill="white" />
+    <rect x="21.8" y="22.3" width="62.4" height="62.4" rx="31.2" stroke="#DFE1E7" stroke-width="1.6" />
+
+    <!-- Centered arrow -->
+    <path d="M53 64L53 38M53 64L43 54M53 64L63 54" stroke="#EF4444"
+        stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

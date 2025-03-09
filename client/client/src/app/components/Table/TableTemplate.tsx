@@ -1,18 +1,12 @@
-import React, { useState, useMemo, useTransition, useEffect } from "react";
-import { TablePagination, Box, CircularProgress, Typography, stepConnectorClasses, Chip } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
-import SearchBar from "../categorySearchBar";
+import React, { useState, useMemo, useTransition } from "react";
+import { TablePagination, Box, CircularProgress } from "@mui/material";
+import { useRouter } from "next/navigation";
+import SearchBar from "../searchbar";
 import { interBold, robotoSemibold } from "../../ui/fonts";
 import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
 import { useTheme } from "next-themes";
-import Logo from "../Logo";
-import { ThemeSwitcher } from "../ThemeSwitcher";
-import ProfilePic from "../ProfilePic";
-import getIndustryColor from "@/app/lib/industryColors"; 
-import FavouriteButton from "../favouriteButton";
-
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -36,7 +30,6 @@ const filterData = (
   data: any,
   searchTerm: any,
   industryFilter: any,
-  filterType: 'industry' | 'sector' | null,
   priceRange: any,
   marketCapRange: any,
   blurbResult: { blurb: string } | null,
@@ -60,10 +53,8 @@ const filterData = (
         item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesFilter = 
-        !industryFilter || 
-        (filterType === 'industry' && item.industry === industryFilter) ||
-        (filterType === 'sector' && item.sector === industryFilter);
+      const matchesIndustry =
+        !industryFilter || item.industry === industryFilter;
 
       const matchesPriceRange =
         !priceRange ||
@@ -103,7 +94,7 @@ const filterData = (
 
       return (
         matchesSearch &&
-        matchesFilter &&
+        matchesIndustry &&
         matchesPriceRange &&
         matchesMarketCap
       );
@@ -126,9 +117,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
-  const [filterType, setFilterType] = useState<'industry' | 'sector' | null>(null);
-
-
 
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
   const [companies, setCompanies] = useState<{ companies: any[] } | null>(null);
@@ -136,7 +124,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { theme } = useTheme();
-  const searchParams = useSearchParams();
 
   const industries = useMemo(() => {
     if (!data) return [];
@@ -144,26 +131,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
       .filter(Boolean)
       .sort();
   }, [data]);
-
-  useEffect(() => {
-    const industry = searchParams.get('industry');
-    const sector = searchParams.get('sector'); 
-
-    if (industry) {
-      setIndustryFilter(industry);
-      setFilterType('industry');
-      setPage(0);
-    } else if (sector) {
-      setIndustryFilter(sector);
-      setFilterType('sector');
-      setPage(0);
-    } else {
-      setIndustryFilter('');
-      setFilterType(null);
-    }
-    
-  }, [searchParams]);
-
 
   // Column definitions
   const columns = [
@@ -209,7 +176,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         data,
         searchTerm,
         industryFilter,
-        filterType,
         priceRange,
         marketCapRange,
         blurb,
@@ -224,7 +190,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     orderBy,
     order,
     industryFilter,
-    filterType,
     priceRange,
     marketCapRange,
     blurb,
@@ -243,10 +208,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   }
 
   return (
-    <Box className="w-full font-sans">
-    <div className="flex items-center justify-between w-full px-20">
-      <Logo />
-      <div className="flex-grow">
+    <Box className={`w-full font-sans md:px-36 px-8`}>
+      {/* Filters Section */}
+      <Box className="mb-4 space-y-4">
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -256,49 +220,12 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           setIsLoadingAISearch={setIsLoadingAISearch}
           data={data}
         />
-      </div>
-      <div className="mr-8">
-      <ProfilePic/>
-      </div>
-    </div>
-    <Box className="flex">
-    <Typography className="ml-20 mb-10 mt-10 text-4xl font-bold">
-      Companies in:
-    </Typography>
-    <Box className="mt-11 ml-2">
-      {industryFilter && (
-        <Chip
-          label={`${filterType === 'industry' ? 'Industry:' : 'Sector:'} ${industryFilter}`}
-          onDelete={() => {
-            setIndustryFilter('');
-            setFilterType(null);
-            router.push('/categoryPage');
-          }}
-          sx={{
-            backgroundColor: getIndustryColor(industryFilter).bg,
-            color: getIndustryColor(industryFilter).color,
-            "&:hover": {
-              backgroundColor: getIndustryColor(industryFilter).bg,
-              opacity: 0.8,
-            },
-            cursor: "pointer",
-            fontWeight: 500,
-            '& .MuiChip-deleteIcon': {
-              color: getIndustryColor(industryFilter).color,
-            }
-          }}
-        />
-      )}
-    </Box>
-    </Box>
-      <Box className="md:px-36 px-8 ">
-      <Box className="border-2 border-gray-300 rounded-lg p-6 bg- gray-700">
-      <Box className="mb-4 ">
+
         <Box className="flex w-full flex-col justify-center items-center">
           {isLoadingAISearch && <CircularProgress />}
         </Box>
         {blurb && (
-          <div className="results">
+          <div className="results mt-8">
             {/* Display the blurb */}
             <p className={`blurb text-lg ${robotoSemibold.className}`}>
               {blurb.blurb.replaceAll("*", "")}
@@ -311,64 +238,60 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             </div>
 
             {/* Dropdown Filters */}
-
-          
             <Box className="w-3/4 flex gap-6">{/* Dropdowns go here */}</Box>
           </div>
         )}
-          <div>
-            <p className={`pb-3 ${interBold.className}`}>Filter By:</p>
-          </div>
-          {/* Dropdown Filters */}
-          <TableFilters
-            industryFilter={industryFilter}
-            setIndustryFilter={setIndustryFilter}
-            setPage={setPage}
-            industries={industries}
-            marketCapRange={marketCapRange}
-            setMarketCapRange={setMarketCapRange}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            handleReset={handleReset}
-          />
-        </Box>
-
-        {/* Container div with background and rounded corners */}
-        <TableCompanies
-          columns={columns}
-          orderBy={orderBy}
-          order={order}
-          handleSort={handleSort}
-          paginatedData={paginatedData}
-          isPending={isPending}
-          startTransition={startTransition}
-          router={router}
-        />
-
-        {/* Pagination */}
-        <TablePagination
-          style={{
-            color:
-              theme === "dark" ? "var(--primaryWhite)" : "var(--primaryBlack)",
-          }}
-          sx={{
-            "& .MuiTablePagination-selectIcon": {
-              color: theme === "dark" ? "var(--primaryWhite)" : "black",
-            },
-            "& .MuiTablePagination-actions button.Mui-disabled": {
-              color: theme === "dark" ? "gray" : "black",
-            },
-          }}
-          rowsPerPageOptions={[25, 50, 100, 200]}
-          component="div"
-          count={processedData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <div>
+          <p className={`pt-12 ${interBold.className}`}>Filter By:</p>
+        </div>
+        {/* Dropdown Filters */}
+        <TableFilters
+          industryFilter={industryFilter}
+          setIndustryFilter={setIndustryFilter}
+          setPage={setPage}
+          industries={industries}
+          marketCapRange={marketCapRange}
+          setMarketCapRange={setMarketCapRange}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          handleReset={handleReset}
         />
       </Box>
-    </Box>
+
+      {/* Container div with background and rounded corners */}
+      <TableCompanies
+        columns={columns}
+        orderBy={orderBy}
+        order={order}
+        handleSort={handleSort}
+        paginatedData={paginatedData}
+        isPending={isPending}
+        startTransition={startTransition}
+        router={router}
+      />
+
+      {/* Pagination */}
+      <TablePagination
+        style={{
+          color:
+            theme === "dark" ? "var(--primaryWhite)" : "var(--primaryBlack)",
+        }}
+        sx={{
+          "& .MuiTablePagination-selectIcon": {
+            color: theme === "dark" ? "var(--primaryWhite)" : "black",
+          },
+          "& .MuiTablePagination-actions button.Mui-disabled": {
+            color: theme === "dark" ? "gray" : "black",
+          },
+        }}
+        rowsPerPageOptions={[25, 50, 100, 200]}
+        component="div"
+        count={processedData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 }
