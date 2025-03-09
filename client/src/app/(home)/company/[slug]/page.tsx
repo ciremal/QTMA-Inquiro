@@ -28,7 +28,7 @@ export default async function Page({
         price={company.currentPrice}
         previousClose={company.previousClose}
       />
-      <div className="flex md:max-h-[600px] w-full md:justify-between md:flex-row flex-col gap-10">
+      <div className="flex md:max-h-[600px] h-full w-full md:justify-between md:flex-row flex-col gap-10">
         <Graph company={slug} />
         <Metrics company={company} />
       </div>

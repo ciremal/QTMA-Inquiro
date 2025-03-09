@@ -374,7 +374,7 @@ export default function Graph({ company }: GraphProps) {
       ) : error ? (
         <p className="text-center text-red-500">Failed to load data.</p>
       ) : (
-        <div className="h-full">
+        <div className="md:h-full h-[300px]">
           <Line data={chartData} options={options} />
         </div>
       )}
