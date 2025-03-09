@@ -1,6 +1,10 @@
 import { Box, Button, Popover, Chip, FormControl, FormGroup, FormControlLabel, Checkbox, Typography, Slider } from "@mui/material";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import {
+  filterInputLabelStyles,
+  filterInputSelectStyles,
+} from "@/app/lib/styles";
 import { KeyboardArrowDown, Delete } from "@mui/icons-material";
 import getIndustryColor from "@/app/lib/industryColors";
 
@@ -29,76 +33,47 @@ const TableFilters = ({
 }: TableFiltersProps) => {
   const { theme } = useTheme();
 
-  // Popover state management
-  const [anchorElIndustry, setAnchorElIndustry] = useState(null);
-  const [anchorElMarketCap, setAnchorElMarketCap] = useState(null);
-  const [anchorElPrice, setAnchorElPrice] = useState(null);
+  const filterInputLabelStyles = () => ({
+    "&.MuiInputLabel-root": {
+      transform: "translate(0.875rem, 0.5em) scale(1)",
+    },
+    "&.MuiInputLabel-shrink": {
+      transform: "translate(0.875rem, -0.375rem) scale(0.75)",
+    },
+  });
 
-  const openIndustry = Boolean(anchorElIndustry);
-  const openMarketCap = Boolean(anchorElMarketCap);
-  const openPrice = Boolean(anchorElPrice);
-
-  
-  const handleOpen = (setAnchor: any) => (event: any) => setAnchor(event.currentTarget);
-  const handleClose = (setAnchor: any) => () => setAnchor(null);
-  const handleOpenIndustry = (event: any) => setAnchorElIndustry(event.currentTarget);
-  const handleOpenMarketCap = (event: any) => setAnchorElMarketCap(event.currentTarget);
-  const handleOpenPrice = (event: any) => setAnchorElPrice(event.currentTarget);
-
-  const handleCloseIndustry = () => setAnchorElIndustry(null);
-  const handleCloseMarketCap = () => setAnchorElMarketCap(null);
-  const handleClosePrice = () => setAnchorElPrice(null);
-
-  // Predefined price range options
-  const priceOptions = [
-    { label: "Under $50", value: [0, 50] },
-    { label: "$50 - $200", value: [50, 200] },
-    { label: "Over $200", value: [200, 10000] },
-  ];
-
-  // Industry filter selection
-  const handleIndustryChange = (industry: string) => {
-    setIndustryFilter(industry);
-    setPage(0);
-    handleCloseIndustry();
-  };
-
-  // Market Cap filter selection
-  const handleMarketCapChange = (cap: string) => {
-    setMarketCapRange(cap);
-    setPage(0);
-    handleCloseMarketCap();
-  };
-
-  // Price filter selection
-  const handlePriceChange = (price: [number, number]) => {
-    setPriceRange(price);
-    setPage(0);
-    handleClosePrice();
-  };
+  const filterInputSelectStyles = (theme: string | undefined) => ({
+    height: "2.5rem",
+    // Styling the border
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderRadius: "2rem",
+      borderColor:
+        theme === "dark" ? "var(--primaryGray)" : "var(--primaryLightGray)",
+    },
+    // Styling the border on hover
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme === "dark" ? "white" : "#1976D2",
+    },
+    // Styling the inside of the component
+    "& .MuiSelect-select": {
+      paddingTop: "0.5rem",
+      paddingBottom: "0.5rem",
+      color: theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
+    },
+    // Styling the dropdown icon
+    "& .MuiSelect-icon": {
+      color:
+        theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
+    },
+  });
 
   return (
     <Box className="w-full flex justify-between items-center">
       <Box className="md:w-2/3 w-full flex flex-row gap-6">
-        
-        {/* Industry Filter */}
-        <Box className="flex items-center gap-2">
-          <Typography variant="body2" className="text-white">Industry</Typography>
-          <Button
-            onClick={handleOpen(setAnchorElIndustry)}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-gray-500 border-opacity-50"
-            endIcon={<KeyboardArrowDown />}
-            sx={{
-              backgroundColor: "rgba(31,31,31,0.4)",
-              border: "1px solid rgba(255,255,255,0.2)", // Light gray border
-              "&:hover": {
-                backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
-                border: "1px solid rgba(255,255,255,0.3)", // More visible on hover
-              },
-              "&:focus": {
-                border: "1px solid white",
-              },
-            }}
+        <FormControl fullWidth>
+          <InputLabel
+            className="dark:text-primaryLightGray"
+            sx={filterInputLabelStyles()}
           >
             {industryFilter || "Any"}
           </Button>

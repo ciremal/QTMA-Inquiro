@@ -21,6 +21,11 @@ import GraphButton from "./GraphButton";
 import { useState, useMemo } from "react";
 import { useTheme } from "next-themes";
 import DropdownMenu from "@/app/components/DropdownMenu";
+import { InputLabel, Menu, MenuItem, Select } from "@mui/material";
+import {
+  filterInputLabelStyles,
+  filterInputSelectStyles,
+} from "@/app/lib/styles";
 
 ChartJS.register(
   CategoryScale,
@@ -305,13 +310,13 @@ export default function Graph({ company }: GraphProps) {
   };
 
   return (
-    <div className="w-[78%] flex flex-col justify-center gap-2">
-      <div className="flex items-center justify-between pl-12 mb-3">
+    <div className="md:w-[78%] w-full flex flex-col justify-center gap-2">
+      <div className="flex items-center justify-between md:pl-12 mb-3 md:flex-row flex-col gap-5">
         <DropdownMenu
           comparisonCompany={comparisonCompany}
           setComparisonCompany={setComparisonCompany}
         />
-        <div className="flex justify-end gap-4">
+        <div className="justify-end gap-4 md:flex hidden">
           {periods.map((p) => {
             return (
               <GraphButton
@@ -323,6 +328,38 @@ export default function Graph({ company }: GraphProps) {
               </GraphButton>
             );
           })}
+        </div>
+        <div className="w-full md:hidden">
+          <Select
+            value={period}
+            onChange={(e) => {
+              setPeriod(e.target.value);
+            }}
+            sx={{
+              width: "100%",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primaryWhite)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primaryWhite)",
+              },
+              "& .MuiSelect-select": {
+                paddingTop: "0.5rem",
+                paddingBottom: "0.5rem",
+                color: "var(--primaryWhite)",
+              },
+              "& .MuiSelect-icon": {
+                color: "var(--primaryWhite)",
+              },
+            }}
+          >
+            {periods.map((industry: any) => (
+              // @ts-ignore
+              <MenuItem key={industry} value={industry}>
+                {industry}
+              </MenuItem>
+            ))}
+          </Select>
         </div>
       </div>
       <div
@@ -337,7 +374,7 @@ export default function Graph({ company }: GraphProps) {
       ) : error ? (
         <p className="text-center text-red-500">Failed to load data.</p>
       ) : (
-        <div className="w-full h-full">
+        <div className="md:h-full h-[300px]">
           <Line data={chartData} options={options} />
         </div>
       )}
