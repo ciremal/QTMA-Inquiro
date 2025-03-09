@@ -349,8 +349,14 @@ const TableFilters = ({
                 <Button
                   key={label}
                   onClick={() => handlePriceChange(value as [number, number])}
-                  className={`text-white text-xs rounded-full border-1 border-rgba(255,255,255,0.2) px-3 py-1`}
                   sx={{
+                    color: "white",
+                    fontSize: 12,
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: "rgba(255,255,255,0.2)",
+                    paddingX: "0.75rem",
+                    paddingY: "0.25rem",
                     backgroundColor:
                       priceRange[0] === value[0] && priceRange[1] === value[1]
                         ? "rgba(255,255,255,0.2)"
