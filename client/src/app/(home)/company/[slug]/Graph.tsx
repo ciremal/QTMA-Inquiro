@@ -246,6 +246,7 @@ export default function Graph({ company }: GraphProps) {
         },
         ticks: {
           color: theme === "dark" ? "white" : "black",
+          maxTicksLimit: 12,
         },
         border: {
           color: theme === "dark" ? "#757575" : "#a6a6a6",
