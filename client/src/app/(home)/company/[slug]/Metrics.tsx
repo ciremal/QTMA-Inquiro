@@ -29,34 +29,28 @@ const Metrics = ({ company }: MetricsProps) => {
         }}
       >
         <List>
-          <ListItem disablePadding>
+          <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="Revenue"
               value={company.totalRevenue}
               status="neutral"
             />
-          </ListItem>
-          <ListItem disablePadding>
             <StatsCard title="EPS" value={company.forwardEps} status="up" />
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="Gross"
               value={company.grossMargins}
               status="neutral"
             />
-          </ListItem>
-          <ListItem disablePadding>
             <StatsCard title="P/E" value={company.forwardPE} status="down" />
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="EV"
               value={company.enterpriseValue}
               status="down"
             />
-          </ListItem>
-          <ListItem disablePadding>
             <StatsCard title="EBITDA" value={company.ebitda} status="up" />
           </ListItem>
         </List>

@@ -38,7 +38,7 @@ const DropdownMenu = ({
   };
 
   const autoCompleteStyle = {
-    width: 300,
+    width: "100%",
     "& .MuiSvgIcon-root": {
       color: "var(--primaryWhite)",
     },

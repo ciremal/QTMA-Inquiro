@@ -305,8 +305,8 @@ export default function Graph({ company }: GraphProps) {
   };
 
   return (
-    <div className="w-[78%] flex flex-col justify-center gap-2">
-      <div className="flex items-center justify-between pl-12 mb-3">
+    <div className="md:w-[78%] w-full flex flex-col justify-center gap-2">
+      <div className="flex items-center justify-between md:pl-12 mb-3 md:flex-row flex-col gap-5">
         <DropdownMenu
           comparisonCompany={comparisonCompany}
           setComparisonCompany={setComparisonCompany}
@@ -337,7 +337,7 @@ export default function Graph({ company }: GraphProps) {
       ) : error ? (
         <p className="text-center text-red-500">Failed to load data.</p>
       ) : (
-        <div className="w-full h-full">
+        <div className="h-full">
           <Line data={chartData} options={options} />
         </div>
       )}

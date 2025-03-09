@@ -11,7 +11,7 @@ interface CompanyProps {
 
 export default async function Company({ company, logo }: CompanyProps) {
   return (
-    <div className=" px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
+    <div className="px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
       <div className="flex justify-between">
         <div className="flex gap-8">
           <CompanyLogo company={company.symbol} logoUrl={logo} />
