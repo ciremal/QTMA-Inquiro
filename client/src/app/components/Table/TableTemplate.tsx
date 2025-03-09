@@ -107,7 +107,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [searchTerm, setSearchTerm] = useState("");
   const [industryFilter, setIndustryFilter] = useState("");
-  const [priceRange, setPriceRange] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [marketCapRange, setMarketCapRange] = useState("");
 
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
@@ -117,12 +117,17 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const router = useRouter();
   const { theme } = useTheme();
 
-  const industries = useMemo(() => {
+  const industries: string[] = useMemo(() => {
     if (!data) return [];
-    return [...new Set(data.map((item: any) => item.industry))]
-      .filter(Boolean)
-      .sort();
+  
+    return [...new Set(data
+      .map((item: { industry?: string }) => item.industry ?? "") // Ensure string type
+    )]
+    .filter((industry): industry is string => industry !== "") // Type predicate for filtering
+    .sort();
   }, [data]);
+  
+  
 
   // Column definitions
   const columns = [
@@ -155,7 +160,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const handleReset = () => {
     setIndustryFilter("");
     setMarketCapRange("");
-    setPriceRange("");
+    setPriceRange([0, 10000]);
     setSearchTerm("");
     setBlurb(null);
     setCompanies(null);
