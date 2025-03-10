@@ -153,7 +153,7 @@ const TableCompanies = ({
                       onError={(e) => {
 
                         console.log(item.website);
-                        const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=128`;
+                        const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=256`;
                         const img = new Image();
                         img.src = icon;
                         img.onload = () => {
