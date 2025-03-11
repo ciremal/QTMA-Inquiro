@@ -93,9 +93,9 @@ const TableFilters = ({
 
   return (
     <Box className="w-full flex justify-between items-center">
-      <Box className="md:w-2/3 w-full flex md:flex-row gap-6 flex-col">
+      <Box className="md:w-1/2 w-full flex md:flex-row gap-6 flex-col">
         {/* Industry Filter */}
-        <Box className="flex items-center gap-2">
+        <Box className="flex items-center gap-2 w-full">
           <Typography variant="body2" className="text-white">
             Industry
           </Typography>
@@ -173,8 +173,11 @@ const TableFilters = ({
         </Popover>
 
         {/* Market Cap Filter */}
-        <Box className="flex items-center gap-2">
-          <Typography variant="body2" className="text-white">
+        <Box className="flex items-center gap-2 w-full">
+          <Typography
+            variant="body2"
+            sx={{ color: "white", whiteSpace: "nowrap" }}
+          >
             Market Cap
           </Typography>
           <Button
@@ -271,8 +274,11 @@ const TableFilters = ({
         </Popover>
 
         {/* Stock Price Filter */}
-        <Box className="flex items-center gap-2">
-          <Typography variant="body2" className="text-white">
+        <Box className="flex items-center gap-2 w-full">
+          <Typography
+            variant="body2"
+            sx={{ color: "white", whiteSpace: "nowrap" }}
+          >
             Stock Price
           </Typography>
           <Button
@@ -328,23 +334,46 @@ const TableFilters = ({
             {/* Slider for Custom Price Selection */}
             <Box className="flex flex-col items-center mt-6 mx-4">
               <Slider
-                min={0}
-                max={10000}
-                value={priceRange}
+                defaultValue={1}
+                min={1}
+                max={3}
+                step={null}
+                valueLabelDisplay="off"
+                marks={[
+                  {
+                    value: 1,
+                  },
+                  {
+                    value: 2,
+                  },
+                  {
+                    value: 3,
+                  },
+                ]}
                 onChange={(e, newValue) => {
-                  if (Array.isArray(newValue) && newValue.length === 2) {
-                    setPriceRange([newValue[0], newValue[1]]);
+                  switch (newValue) {
+                    case 1:
+                      setPriceRange([0, 50]);
+                      break;
+                    case 2:
+                      setPriceRange([50, 200]);
+                      break;
+                    case 3:
+                      setPriceRange([200, 10000]);
+                      break;
+                    default:
+                      break;
                   }
                 }}
-                valueLabelDisplay="auto"
                 sx={{
                   color: "white",
+                  width: "100%",
                   "& .MuiSlider-thumb": { backgroundColor: "white" },
                 }}
               />
             </Box>
             {/* Price Selection Buttons */}
-            <Box className="flex justify-between items-center gap-3 my-4">
+            <Box className="flex justify-between items-center gap-10 my-4">
               {priceOptions.map(({ label, value }) => (
                 <Button
                   key={label}

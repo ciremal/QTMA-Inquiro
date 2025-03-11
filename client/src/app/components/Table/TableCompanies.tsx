@@ -1,6 +1,10 @@
 import { auth } from "@/app/firebase/config";
 import { letterColorMap } from "@/app/lib/constants";
-import { formatMarketCap, formatPrice, calculatePriceDifference } from "@/app/lib/formattingFunctions";
+import {
+  formatMarketCap,
+  formatPrice,
+  calculatePriceDifference,
+} from "@/app/lib/formattingFunctions";
 import getIndustryColor from "@/app/lib/industryColors";
 import {
   Box,
@@ -73,7 +77,8 @@ const TableCompanies = ({
                     borderBottom: "2px solid #262626", // Set bottom border color
                   }}
                   sortDirection={
-                    orderBy === column.id && (order === "asc" || order === "desc")
+                    orderBy === column.id &&
+                    (order === "asc" || order === "desc")
                       ? order
                       : undefined
                   }
@@ -82,7 +87,8 @@ const TableCompanies = ({
                     className="dark:text-primaryWhite"
                     active={orderBy === column.id}
                     direction={
-                      orderBy === column.id && (order === "asc" || order === "desc")
+                      orderBy === column.id &&
+                      (order === "asc" || order === "desc")
                         ? order
                         : "asc"
                     }
@@ -138,7 +144,11 @@ const TableCompanies = ({
                 <TableCell
                   component="th"
                   scope="row"
-                  sx={{ textAlign: "left", fontWeight: 600, borderBottom: "2px solid #262626" }} // Set bottom border color
+                  sx={{
+                    textAlign: "left",
+                    fontWeight: 600,
+                    borderBottom: "2px solid #262626",
+                  }} // Set bottom border color
                 >
                   <Box className="flex items-center gap-2 dark:text-primaryWhite font-[500]">
                     <img
@@ -151,8 +161,7 @@ const TableCompanies = ({
                         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                       }}
                       onError={(e) => {
-
-                        console.log(item.website);
+                        // console.log(item.website);
                         const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=256`;
                         const img = new Image();
                         img.src = icon;
@@ -161,15 +170,21 @@ const TableCompanies = ({
                           e.target.src = icon;
                         };
                         img.onerror = () => {
-                          const firstLetter = item.symbol.charAt(0).toUpperCase();
+                          const firstLetter = item.symbol
+                            .charAt(0)
+                            .toUpperCase();
                           const fallbackColor =
-                          (letterColorMap as Record<string, string>)[firstLetter] || "#000000";
+                            (letterColorMap as Record<string, string>)[
+                              firstLetter
+                            ] || "#000000";
                           const svg = `
                           <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
                             <rect width="100%" height="100%" fill="${fallbackColor}" />
                             <text x="50%" y="50%" dy=".1em" alignment-baseline="middle" text-anchor="middle" font-size="24" fill="#fff" font-family="Helvetica, Arial, sans-serif">${firstLetter}</text>
                           </svg>`;
-                          const encodedSVG = `data:image/svg+xml;base64,${btoa(svg)}`;
+                          const encodedSVG = `data:image/svg+xml;base64,${btoa(
+                            svg
+                          )}`;
                           // @ts-ignore
                           e.target.src = encodedSVG;
                         };
@@ -178,10 +193,21 @@ const TableCompanies = ({
                     {item.symbol}
                   </Box>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", borderBottom: "2px solid #262626" }} className="font-[500] dark:text-primaryWhite">
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    borderBottom: "2px solid #262626",
+                  }}
+                  className="font-[500] dark:text-primaryWhite"
+                >
                   {item.longName}
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", borderBottom: "2px solid #262626" }}>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    borderBottom: "2px solid #262626",
+                  }}
+                >
                   <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
                       className="dark:text-primaryWhite"
@@ -200,34 +226,63 @@ const TableCompanies = ({
                     />
                   </Box>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", borderBottom: "2px solid #262626" }}>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    borderBottom: "2px solid #262626",
+                  }}
+                >
                   <Box className="flex gap-2 flex-wrap justify-center">
-                  <Chip
-                    className="dark:text-primaryWhite"
-                    key={item.sector}
-                    label={item.sector}
-                    sx={{
-                    backgroundColor: getIndustryColor(item.sector).bg,
-                    color: getIndustryColor(item.sector).color,
-                    "&:hover": {
-                      backgroundColor: getIndustryColor(item.sector).bg,
-                      opacity: 0.8,
-                    },
-                    cursor: "pointer",
-                    fontWeight: 500,
-                    }}
-                  />
+                    <Chip
+                      className="dark:text-primaryWhite"
+                      key={item.sector}
+                      label={item.sector}
+                      sx={{
+                        backgroundColor: getIndustryColor(item.sector).bg,
+                        color: getIndustryColor(item.sector).color,
+                        "&:hover": {
+                          backgroundColor: getIndustryColor(item.sector).bg,
+                          opacity: 0.8,
+                        },
+                        cursor: "pointer",
+                        fontWeight: 500,
+                      }}
+                    />
                   </Box>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", verticalAlign: "middle", borderBottom: "2px solid #262626" }} className="dark:text-primaryWhite">
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    verticalAlign: "middle",
+                    borderBottom: "2px solid #262626",
+                  }}
+                  className="dark:text-primaryWhite"
+                >
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
-                <TableCell sx={{ textAlign: "center", verticalAlign: "middle", borderBottom: "2px solid #262626" }} className="dark:text-primaryWhite flex-col">
-                  <div>
-                    {formatPrice(item.currentPrice)}
-                  </div>
-                  <div style={{ color: calculatePriceDifference(item.currentPrice, item.previousClose).color }}>
-                    {calculatePriceDifference(item.currentPrice, item.previousClose).formattedDifference}
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    verticalAlign: "middle",
+                    borderBottom: "2px solid #262626",
+                  }}
+                  className="dark:text-primaryWhite flex-col"
+                >
+                  <div>{formatPrice(item.currentPrice)}</div>
+                  <div
+                    style={{
+                      color: calculatePriceDifference(
+                        item.currentPrice,
+                        item.previousClose
+                      ).color,
+                    }}
+                  >
+                    {
+                      calculatePriceDifference(
+                        item.currentPrice,
+                        item.previousClose
+                      ).formattedDifference
+                    }
                   </div>
                 </TableCell>
               </TableRow>
@@ -235,7 +290,6 @@ const TableCompanies = ({
           </TableBody>
         </Table>
       </TableContainer>
-
     </div>
   );
 };

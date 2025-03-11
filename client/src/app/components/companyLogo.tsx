@@ -6,10 +6,14 @@ type CompanyLogoProps = {
   companyWebsite: string;
 };
 
-export const CompanyLogo = ({ company, logoUrl, companyWebsite }: CompanyLogoProps) => {
-  console.log("Company Website: " + companyWebsite);
-  console.log("Company Symbol: " + company);
-  console.log("Company Logo: " + logoUrl);
+export const CompanyLogo = ({
+  company,
+  logoUrl,
+  companyWebsite,
+}: CompanyLogoProps) => {
+  // console.log("Company Website: " + companyWebsite);
+  // console.log("Company Symbol: " + company);
+  // console.log("Company Logo: " + logoUrl);
   return (
     <img
       src={logoUrl}
