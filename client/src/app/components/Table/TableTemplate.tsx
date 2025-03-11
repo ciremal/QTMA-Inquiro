@@ -7,6 +7,7 @@ import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
 import { useTheme } from "next-themes";
+import { useUser } from "@/app/(home)/useUserData";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -59,7 +60,6 @@ const filterData = (
       const matchesPriceRange =
         !priceRange ||
         (() => {
-          console.log(priceRange);
           const price = Number(item.currentPrice);
           return price >= priceRange[0] && price <= priceRange[1];
         })();
@@ -119,15 +119,15 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
   const industries: string[] = useMemo(() => {
     if (!data) return [];
-  
-    return [...new Set(data
-      .map((item: { industry?: string }) => item.industry ?? "") // Ensure string type
-    )]
-    .filter((industry): industry is string => industry !== "") // Type predicate for filtering
-    .sort();
+
+    return [
+      ...new Set(
+        data.map((item: { industry?: string }) => item.industry ?? "") // Ensure string type
+      ),
+    ]
+      .filter((industry): industry is string => industry !== "") // Type predicate for filtering
+      .sort();
   }, [data]);
-  
-  
 
   // Column definitions
   const columns = [
@@ -137,6 +137,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     { id: "sector", label: "Sector", numeric: false },
     { id: "marketCap", label: "Market Cap", numeric: true },
     { id: "currentPrice", label: "Current Price", numeric: true },
+    { id: "favourite", label: "", numeric: false },
   ];
 
   // Handle sort request

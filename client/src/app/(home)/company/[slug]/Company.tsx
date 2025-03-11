@@ -3,6 +3,7 @@ import { Chip } from "@mui/material";
 import getIndustryColor from "@/app/lib/industryColors";
 import { CompanyLogo } from "@/app/components/companyLogo";
 import FavouriteButton from "@/app/components/favouriteButton";
+import { UserProvider } from "../../useUserData";
 
 interface CompanyProps {
   company: CompanyData;
@@ -55,7 +56,9 @@ export default async function Company({ company, logo }: CompanyProps) {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <FavouriteButton />
+          <UserProvider>
+            <FavouriteButton initialState={false} company={company.symbol} />
+          </UserProvider>
         </div>
       </div>
     </div>

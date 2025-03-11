@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../components/Table/TableTemplate";
 import { getTickerInfoBulk } from "../api/fetchStockInfo";
 import useSWR from "swr";
+import { UserProvider } from "./useUserData";
 
 const prompts = [
   // Industry-specific queries
@@ -30,7 +31,7 @@ const prompts = [
   "emerging 3D printing companies to watch",
   "the best cybersecurity stocks",
   "top gaming and esports companies",
-  "leading streaming media services"
+  "leading streaming media services",
 ];
 
 const fetcher = async () => {
@@ -46,9 +47,6 @@ function Home() {
 
   useEffect(() => {
     const prompt = prompts[promptIndex];
-    console.log(`Current prompt index: ${promptIndex}`);
-    console.log(`Current prompt: ${prompt}`);
-
     if (!prompt) return;
 
     let i = 0;
@@ -62,7 +60,6 @@ function Home() {
       do {
         newIndex = Math.floor(Math.random() * prompts.length);
       } while (newIndex === promptIndex);
-      console.log(`New prompt index: ${newIndex}`);
       setPromptIndex(newIndex);
     }
 
@@ -94,23 +91,25 @@ function Home() {
   }
 
   return (
-    <div className="flex flex-col flex-grow">
-      <div className="flex flex-col items-center justify-center font-sans mt-8">
-        <p
-          className="font-sans mb-4 md:text-5xl text-2xl text-center"
-          style={{ fontWeight: "bold" }}
-        >
-          <span className="text-black dark:text-primaryWhite">
-            Ask me about{" "}
-          </span>
-          <span className="text-[#00000066] dark:text-primaryWhite">
-            {typedPrompt}
-          </span>
-        </p>
-        {/* @ts-expect-error */}
-        <Table data={data} />
+    <UserProvider>
+      <div className="flex flex-col flex-grow">
+        <div className="flex flex-col items-center justify-center font-sans mt-8">
+          <p
+            className="font-sans mb-4 md:text-5xl text-2xl text-center"
+            style={{ fontWeight: "bold" }}
+          >
+            <span className="text-black dark:text-primaryWhite">
+              Ask me about{" "}
+            </span>
+            <span className="text-[#00000066] dark:text-primaryWhite">
+              {typedPrompt}
+            </span>
+          </p>
+          {/* @ts-expect-error */}
+          <Table data={data} />
+        </div>
       </div>
-    </div>
+    </UserProvider>
   );
 }
 
