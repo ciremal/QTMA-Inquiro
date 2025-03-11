@@ -33,6 +33,8 @@ const filterData = (
   industryFilter: any,
   priceRange: any,
   marketCapRange: any,
+  showFavourites: boolean,
+  favourites: string[],
   blurbResult: { blurb: string } | null,
   companyResult: { companies: any[] } | null
 ) => {
@@ -84,11 +86,16 @@ const filterData = (
           }
         })();
 
+      const matchesFavourites = showFavourites
+        ? favourites.includes(item.symbol)
+        : true;
+
       return (
         matchesSearch &&
         matchesIndustry &&
         matchesPriceRange &&
-        matchesMarketCap
+        matchesMarketCap &&
+        matchesFavourites
       );
     });
   }
@@ -109,6 +116,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [marketCapRange, setMarketCapRange] = useState("");
+  const [showFavourites, setShowFavourites] = useState(false);
+  const { userData } = useUser();
+  const favourites = userData?.favourites || [];
 
   const [blurb, setBlurb] = useState<{ blurb: string } | null>(null);
   const [companies, setCompanies] = useState<{ companies: any[] } | null>(null);
@@ -177,6 +187,8 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         industryFilter,
         priceRange,
         marketCapRange,
+        showFavourites,
+        favourites,
         blurb,
         companies // Added for ai search
       ),
@@ -191,6 +203,8 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     industryFilter,
     priceRange,
     marketCapRange,
+    showFavourites,
+    favourites,
     blurb,
     companies, // Added for ai search
   ]);
@@ -253,6 +267,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           setMarketCapRange={setMarketCapRange}
           priceRange={priceRange}
           setPriceRange={setPriceRange}
+          setShowFavourites={setShowFavourites}
           handleReset={handleReset}
         />
       </Box>

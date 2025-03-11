@@ -9,6 +9,7 @@ import {
   Checkbox,
   Typography,
   Slider,
+  Switch,
 } from "@mui/material";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -24,6 +25,7 @@ type TableFiltersProps = {
   setMarketCapRange: (range: string) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
+  setShowFavourites: (show: boolean) => void;
   handleReset: () => void;
 };
 
@@ -36,6 +38,7 @@ const TableFilters = ({
   setMarketCapRange,
   priceRange,
   setPriceRange,
+  setShowFavourites,
   handleReset,
 }: TableFiltersProps) => {
   const { theme } = useTheme();
@@ -89,6 +92,11 @@ const TableFilters = ({
     setPriceRange(price);
     setPage(0);
     handleClosePrice();
+  };
+
+  const handleFavouritesToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowFavourites(e.target.checked);
+    setPage(0);
   };
 
   return (
@@ -347,6 +355,8 @@ const TableFilters = ({
       </Box>
 
       <Box className={"px-5"}>
+        <Switch onChange={handleFavouritesToggle}></Switch>
+
         <Button
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"
