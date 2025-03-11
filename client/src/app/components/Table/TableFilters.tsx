@@ -355,7 +355,46 @@ const TableFilters = ({
       </Box>
 
       <Box className={"px-5"}>
-        <Switch onChange={handleFavouritesToggle}></Switch>
+        <Switch
+          onChange={handleFavouritesToggle}
+          sx={{
+            width: 64,
+            height: 32,
+            padding: 0,
+            "& .MuiSwitch-switchBase": {
+              padding: 0,
+              margin: "2px",
+              transitionDuration: "300ms",
+              "&.Mui-checked": {
+                transform: "translateX(32px)",
+                "& + .MuiSwitch-track": {
+                  backgroundColor: "transparent",
+                  opacity: 0.5,
+                  border: "1px solid #555",
+                },
+                "& .MuiSwitch-thumb": {
+                  backgroundImage: `url('/favourite-toggle-on.png')`,
+                },
+              },
+            },
+            "& .MuiSwitch-thumb": {
+              width: 28,
+              height: 28,
+              backgroundImage: `url('/favourite-toggle.svg')`,
+              backgroundSize: "100%",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "#1C1E12",
+            },
+            "& .MuiSwitch-track": {
+              borderRadius: 16,
+              backgroundColor: "transparent",
+              border: "1px solid #555",
+              opacity: 0.5,
+              boxSizing: "border-box",
+            },
+          }}
+        />
 
         <Button
           onClick={handleReset}
