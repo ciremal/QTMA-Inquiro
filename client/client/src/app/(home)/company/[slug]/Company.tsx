@@ -21,11 +21,11 @@ export default function Company({ company, logo }: CompanyProps) {
   }
 
   return (
-    <div className="px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
+    <div className=" px-10 pt-16 pb-8 flex flex-col gap-12 rounded-md w-full">
       <div className="flex justify-between">
-        <div className="flex gap-8 md:flex-row flex-col">
-          <CompanyLogo company={company.symbol} logoUrl={logo} companyWebsite={company.website}/>
-          <div className="m-auto md:text-start text-center">
+        <div className="flex gap-8">
+          <CompanyLogo company={company.symbol} logoUrl={logo} />
+          <div className="m-auto">
             <h1 className="text-neutral-400 text-xl">
               {company.exchange}: {company.symbol}
             </h1>
