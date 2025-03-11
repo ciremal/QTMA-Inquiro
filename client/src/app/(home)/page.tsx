@@ -30,7 +30,7 @@ const prompts = [
   "emerging 3D printing companies to watch",
   "the best cybersecurity stocks",
   "top gaming and esports companies",
-  "leading streaming media services"
+  "leading streaming media services",
 ];
 
 const fetcher = async () => {
@@ -46,8 +46,8 @@ function Home() {
 
   useEffect(() => {
     const prompt = prompts[promptIndex];
-    console.log(`Current prompt index: ${promptIndex}`);
-    console.log(`Current prompt: ${prompt}`);
+    // console.log(`Current prompt index: ${promptIndex}`);
+    // console.log(`Current prompt: ${prompt}`);
 
     if (!prompt) return;
 
@@ -62,7 +62,7 @@ function Home() {
       do {
         newIndex = Math.floor(Math.random() * prompts.length);
       } while (newIndex === promptIndex);
-      console.log(`New prompt index: ${newIndex}`);
+      // console.log(`New prompt index: ${newIndex}`);
       setPromptIndex(newIndex);
     }
 
