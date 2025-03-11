@@ -32,11 +32,13 @@ export default function StatsCard({
   }
 
   return (
-    <div className={`flex items-center ${small ? "w-52" : "w-60"}`}>
+    <div
+      className={`flex items-center gap-4 ${small ? "w-52" : "w-60"} py-2 pl-4`}
+    >
       <img
         src={theme === "dark" ? `/${status}Dark.svg` : `/${status}.svg`}
         alt="up"
-        className={`${small ? "w-14" : "w-[70px]"}`}
+        className={"w-[45px]"}
       />
       <div>
         <h1 className={`text-slate-500 ${small ? "text-xs" : ""}`}>{title}</h1>

@@ -16,7 +16,7 @@ export default function PressCard({ article }: PressCardProps) {
     classification,
     sentiment,
   } = article;
-  // console.log(article);
+  console.log(article);
   const date = new Date(datetime * 1000).toLocaleDateString();
   const thumbnail = image
     ? image
@@ -26,9 +26,9 @@ export default function PressCard({ article }: PressCardProps) {
   const getBadgeColor = () => {
     switch (classification) {
       case "Bullish":
-        return "bg-[rgba(22,163,74,0.75)]"; // Green 50%
+        return "bg-[rgba(22, 163, 74,0.75)]"; // Green 50%
       case "Bearish":
-        return "bg-[rgba(239,68,68,0.75)]"; // Red 50%
+        return "bg-[rgba(239, 68, 68,0.75)]"; // Red 50%
       default:
         return "bg-[rgba(100,100,100,0.75)]"; // Gray 50%
     }
@@ -37,7 +37,7 @@ export default function PressCard({ article }: PressCardProps) {
   return (
     <Link
       href={url}
-      className="flex-shrink-0 basis-[calc(43.333%-1rem)] h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
+      className="flex-shrink-0 w-64 h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
     >
       {/* Badge in the top-right corner */}
       <div

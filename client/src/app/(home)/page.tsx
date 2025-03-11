@@ -30,14 +30,7 @@ const prompts = [
   "emerging 3D printing companies to watch",
   "the best cybersecurity stocks",
   "top gaming and esports companies",
-  "leading streaming media services",
-
-  // International
-  "the biggest Chinese tech companies",
-  "fastest growing European startups",
-  "major Japanese automakers",
-  "companies driving India's tech boom",
-  "top Canadian natural resource companies",
+  "leading streaming media services"
 ];
 
 const fetcher = async () => {
@@ -51,9 +44,11 @@ function Home() {
   const [promptIndex, setPromptIndex] = useState(0);
   const [typedPrompt, setTypedPrompt] = useState("");
 
-  const prompt = prompts[promptIndex];
-
   useEffect(() => {
+    const prompt = prompts[promptIndex];
+    console.log(`Current prompt index: ${promptIndex}`);
+    console.log(`Current prompt: ${prompt}`);
+
     if (!prompt) return;
 
     let i = 0;
@@ -63,7 +58,12 @@ function Home() {
       setTypedPrompt("");
       i = 0;
       // Pick a brand-new random index for the next prompt
-      setPromptIndex(() => Math.floor(Math.random() * prompts.length));
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * prompts.length);
+      } while (newIndex === promptIndex);
+      console.log(`New prompt index: ${newIndex}`);
+      setPromptIndex(newIndex);
     }
 
     function typeWrite() {
@@ -74,8 +74,6 @@ function Home() {
       } else {
         // After typing finishes, wait 2 seconds, then move to next prompt
         timeoutId = setTimeout(() => {
-          i = 0;
-          // Wrap around prompts array
           resetTypewriter();
         }, 2000);
       }
@@ -85,7 +83,7 @@ function Home() {
     typeWrite();
 
     return () => clearTimeout(timeoutId);
-  }, [prompt, promptIndex]);
+  }, [promptIndex]);
 
   const { data, error } = useSWR("stockData", fetcher, {
     revalidateOnFocus: false,
@@ -96,25 +94,23 @@ function Home() {
   }
 
   return (
-    <>
-      <main className="flex flex-col h-screen ">
-        <div className="flex flex-col items-center justify-center font-sans mt-8 ">
-          <p
-            className="font-sans mb-4 md:text-5xl text-2xl text-center"
-            style={{ fontWeight: "bold" }}
-          >
-            <span className="text-black dark:text-primaryWhite">
-              Ask me about{" "}
-            </span>
-            <span className="text-[#00000066] dark:text-primaryWhite">
-              {typedPrompt}
-            </span>
-          </p>
-          {/* @ts-expect-error */}
-          <Table data={data} />
-        </div>
-      </main>
-    </>
+    <div className="flex flex-col flex-grow">
+      <div className="flex flex-col items-center justify-center font-sans mt-8">
+        <p
+          className="font-sans mb-4 md:text-5xl text-2xl text-center"
+          style={{ fontWeight: "bold" }}
+        >
+          <span className="text-black dark:text-primaryWhite">
+            Ask me about{" "}
+          </span>
+          <span className="text-[#00000066] dark:text-primaryWhite">
+            {typedPrompt}
+          </span>
+        </p>
+        {/* @ts-expect-error */}
+        <Table data={data} />
+      </div>
+    </div>
   );
 }
 

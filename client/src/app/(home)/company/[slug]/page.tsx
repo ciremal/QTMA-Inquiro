@@ -20,24 +20,25 @@ export default async function Page({
     notFound();
   }
   const logo = `https://assets.parqet.com/logos/symbol/${slug}?format=svg`;
+  //const logo = `https://www.google.com/s2/favicons?domain=${company.website}&sz=128`;
 
   return (
-    <div className="flex flex-col gap-6 items-center justify-center mx-16 font-sans mb-10">
+    <div className="flex flex-col gap-6 items-center justify-center md:mx-16 mx-4 font-sans">
       <Company company={company} logo={logo} />
       <CurrentPrice
         price={company.currentPrice}
         previousClose={company.previousClose}
       />
-      <div className="flex max-h-[600px] w-full justify-between">
+      <div className="flex md:max-h-[600px] h-full w-full md:justify-between md:flex-row flex-col gap-10">
         <Graph company={slug} />
         <Metrics company={company} />
       </div>
-      <div className="flex gap-12 w-full mt-8">
-        <div className="flex max-w-[60%] w-full flex-col justify-center items-center h-full gap-6">
+      <div className="flex gap-12 w-full md:mt-8 flex-col md:flex-row">
+        <div className="flex md:max-w-[60%] w-full flex-col justify-center items-center h-full gap-6">
           <Description company={company} />
           <Press company={slug} />
         </div>
-        <div className="flex max-w-[40%] w-full flex-col h-full gap-6">
+        <div className="flex md:max-w-[40%] w-full flex-col h-full gap-6">
           <Reports cik={company["CIK"].toString()} />
           <EarningsCall ticker={company.symbol} />
         </div>

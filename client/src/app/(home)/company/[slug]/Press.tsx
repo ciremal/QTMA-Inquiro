@@ -1,5 +1,6 @@
+import React from "react";
 import { getTickerNews } from "@/app/api/fetchStockInfo";
-import PressCard from "./PressCard";
+import PressClient from "./PressClient";
 
 interface PressProps {
   company: string;
@@ -7,8 +8,9 @@ interface PressProps {
 }
 
 export default async function Press({ company, filter = "All" }: PressProps) {
-  const news = await getTickerNews(company);
-
+  const news = (await getTickerNews(company)).slice(0, 10);
+  
+  // Limit to the first 10 articles
   // Count sentiments
   const sentimentCounts = {
     Bearish: 0,
@@ -42,37 +44,57 @@ export default async function Press({ company, filter = "All" }: PressProps) {
 
   // Sort articles into columns based on sentiment
   const columns = {
-    veryBearish: new Set<string>(),
-    bearish: new Set<string>(),
-    neutral: new Set<string>(),
-    bullish: new Set<string>(),
-    veryBullish: new Set<string>(),
+    veryBearish: new Set<{ icon: string, url: string }>(),
+    bearish: new Set<{ icon: string, url: string }>(),
+    neutral: new Set<{ icon: string, url: string }>(),
+    bullish: new Set<{ icon: string, url: string }>(),
+    veryBullish: new Set<{ icon: string, url: string }>(),
   };
 
-  // Helper to get the domain from a URL
-  const getDomainFromUrl = (url: string) => {
-    try {
-      const domain = new URL(url).hostname.replace("www.", "");
-      return domain;
-    } catch {
-      return "example.com"; // fallback
-    }
+  // Helper to get the domain from a Source
+  const getDomainFromSource = (source: string) => {
+    const knownDomains: { [key: string]: string } = {
+      "Yahoo Finance": "finance.yahoo.com",
+      "Bloomberg": "bloomberg.com",
+      "Reuters": "reuters.com",
+      "CNBC": "cnbc.com",
+      "MarketWatch": "marketwatch.com",
+      "The Wall Street Journal": "wsj.com",
+      "Financial Times": "ft.com",
+      "BBC": "bbc.com",
+      "CNN": "cnn.com",
+      "Forbes": "forbes.com",
+      "SeekingAlpha": "seekingalpha.com",
+      "Finnhub": "finnhub.io",
+      // Add more known sources and their domains here
+    };
+
+    return knownDomains[source] || source + ".com"; // fallback
   };
 
   news.forEach((article: any) => {
     const sentiment = article.sentiment;
-    const domain = getDomainFromUrl(article.url);
+    const domain = getDomainFromSource(article.source);
     const icon = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    const iconData = { icon, url: article.url };
 
-    if (sentiment <= -0.6) columns.veryBearish.add(icon);
-    else if (sentiment > -0.6 && sentiment <= -0.2) columns.bearish.add(icon);
-    else if (sentiment > -0.2 && sentiment <= 0.2) columns.neutral.add(icon);
-    else if (sentiment > 0.2 && sentiment <= 0.6) columns.bullish.add(icon);
-    else columns.veryBullish.add(icon);
+    if (sentiment <= -0.6) columns.veryBearish.add(iconData);
+    else if (sentiment > -0.6 && sentiment <= -0.2) columns.bearish.add(iconData);
+    else if (sentiment > -0.2 && sentiment <= 0.2) columns.neutral.add(iconData);
+    else if (sentiment > 0.2 && sentiment <= 0.6) columns.bullish.add(iconData);
+    else columns.veryBullish.add(iconData);
   });
 
   // Helper to render column with wrapped icons in colored overlay
-  const renderColumn = (icons: Set<string>, color: string) => {
+  const renderColumn = (icons: Set<{ icon: string, url: string }>, color: string) => {
+    if (icons.size === 0) {
+      return (
+        <div className="relative w-16 h-64 flex flex-col items-center border-2 border-dashed border-gray-100 dark:border-gray-600 rounded-full">
+          <div className="absolute top-0 left-0 w-full h-full bg-grey dark:bg-[rgba(38,38,38,1)] rounded-full"></div>
+        </div>
+      );
+    }
+
     const iconArray = Array.from(icons);
     const visibleIcons = iconArray.slice(0, 5);
     const hiddenCount = iconArray.length - 5;
@@ -91,65 +113,45 @@ export default async function Press({ company, filter = "All" }: PressProps) {
             height: `${heightPercentage}%`,
           }}
         >
-          {visibleIcons.map((icon, index) => (
-            <img
-              key={index}
-              src={icon}
-              alt="news icon"
-              className="py-auto w-10 h-10 rounded-full bg-white"
-            />
+          {visibleIcons.map(({ icon, url }, index) => (
+            <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="relative">
+              <img
+                src={icon}
+                alt="news icon"
+                className="py-auto w-10 h-10 rounded-full bg-white"
+              />
+              {hiddenCount > 0 && index === visibleIcons.length - 1 && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gray-700/75 text-white text-sm">
+                  +{hiddenCount}
+                </div>
+              )}
+            </a>
           ))}
-          {hiddenCount > 0 && (
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-white text-sm">
-              +{hiddenCount}
-            </div>
-          )}
         </div>
       </div>
     );
   };
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-[800px]">
+    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-full">
+      
       <div className="flex items-center justify-between mb-4">
-        <h1 className="font-bold text-xl">Sentiment Analysis</h1>
-
-        {/* Server-Side Filter Buttons */}
-        <form method="get" className="flex gap-2">
-          {filters.map((f) => (
-            <button
-              key={f}
-              type="submit"
-              name="filter"
-              value={f}
-              className={`border px-4 py-2 rounded-3xl font-bold text-xs hover:bg-slate-100 dark:hover:bg-primaryGray transition-all ${
-                filter === f ? "bg-slate-100 dark:bg-primaryGray" : ""
-              } hover:bg-blue-500`}
-            >
-              {f}
-            </button>
-          ))}
-        </form>
+        {/* Client-Side Filter Buttons */}
+        <PressClient news={news} filters={filters} initialFilter={filter} />
       </div>
 
-      {/* News Cards */}
-      <div className="flex gap-4 overflow-x-auto mb-6">
-        {news.slice(0, 12).map((article: any) => (
-          <PressCard article={article} key={article.uuid} />
-        ))}
-      </div>
-      <div className="flex">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Sentiment News Distribution */}
-        <div className="flex justify-center gap-4 mb-6 mx-2 w-full h-64">
-          {renderColumn(columns.veryBearish, "bg-red-500")}
-          {renderColumn(columns.bearish, "bg-red-400")}
-          {renderColumn(columns.neutral, "bg-gray-400")}
-          {renderColumn(columns.bullish, "bg-green-400")}
-          {renderColumn(columns.veryBullish, "bg-green-600")}
+        <div className="flex flex-row justify-center gap-4 w-full h-64">
+            {renderColumn(columns.veryBearish, "bg-gradient-to-t from-red-500 to-red-500/50")}
+            {renderColumn(columns.bearish, "bg-gradient-to-t from-[rgba(239,68,68,0.75)] to-[rgba(239,68,68,0.375)]")}
+            {renderColumn(columns.neutral, "bg-gradient-to-t from-gray-400 to-gray-400/50")}
+            {renderColumn(columns.bullish, "bg-gradient-to-t from-[rgba(22,163,74,0.75)] to-[rgba(22,163,74,0.375)]")}
+            {renderColumn(columns.veryBullish, "bg-gradient-to-t from-green-600 to-green-600/50")}
         </div>
 
         {/* Sentiment Summary Table */}
-        <div className="mb-6 p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-md mx-2 w-full">
+        <div className="p-4 bg-[rgba(49,49,49,0.85)] text-white rounded-xl w-full h-full">
           <h2 className="font-bold mb-2">Coverage Details</h2>
           <div className="flex justify-between mb-1">
             <span>Total News Sources</span>
@@ -197,9 +199,9 @@ export default async function Press({ company, filter = "All" }: PressProps) {
             ></div>
           </div>
           <div className="flex justify-between mt-2 text-xs">
-            <span className="text-red-500">{bearPercentage}%</span>
-            <span className="text-gray-400">{neutralPercentage}%</span>
-            <span className="text-green-400">{bullPercentage}%</span>
+            <span className="text-red-500">{bearPercentage.toFixed(2)}%</span>
+            <span className="text-gray-400">{neutralPercentage.toFixed(2)}%</span>
+            <span className="text-green-400">{bullPercentage.toFixed(2)}%</span>
           </div>
         </div>
       </div>
