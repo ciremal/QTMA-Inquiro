@@ -4,7 +4,6 @@ import {
   Box,
   CircularProgress,
   Typography,
-  stepConnectorClasses,
   Chip,
 } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -15,10 +14,8 @@ import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
 import { useTheme } from "next-themes";
 import Logo from "../Logo";
-import { ThemeSwitcher } from "../ThemeSwitcher";
 import ProfilePic from "../ProfilePic";
 import getIndustryColor from "@/app/lib/industryColors";
-import FavouriteButton from "../favouriteButton";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -328,10 +325,13 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               industryFilter={industryFilter}
               setIndustryFilter={setIndustryFilter}
               setPage={setPage}
+              // @ts-ignore
               industries={industries}
               marketCapRange={marketCapRange}
               setMarketCapRange={setMarketCapRange}
+              // @ts-ignore
               priceRange={priceRange}
+              // @ts-ignore
               setPriceRange={setPriceRange}
               handleReset={handleReset}
             />
