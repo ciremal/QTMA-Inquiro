@@ -42,7 +42,7 @@ const FavouriteButton = ({
   };
 
   return (
-    <button className="mr-8" onClick={handleOnClick}>
+    <button onClick={handleOnClick}>
       {favourited ? (
         <StarRateRoundedIcon sx={{ width: "2.5rem", height: "2.5rem" }} />
       ) : (

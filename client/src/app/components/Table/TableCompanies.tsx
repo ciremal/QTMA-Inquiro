@@ -292,7 +292,7 @@ const TableCompanies = ({
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
                   }}
-                  className="dark:text-primaryWhite"
+                  className="dark:text-primaryWhite "
                 >
                   <FavouriteButton
                     initialState={false}
