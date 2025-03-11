@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import Navbar from "../components/navbar";
 import { Providers } from "../providers";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -59,6 +60,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
+          <Analytics />
         </Providers>
       </body>
     </html>

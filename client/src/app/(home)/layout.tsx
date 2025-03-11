@@ -6,6 +6,7 @@ import "../globals.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { Providers } from "../providers";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -62,6 +63,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <Analytics />
         </Providers>
       </body>
     </html>

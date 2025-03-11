@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import "../globals.css";
 import { Providers } from "@/app/providers";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Inquiro",
@@ -18,7 +19,10 @@ export default function AuthLayout({
         className="bg-background
         dark:bg-foreground"
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );
