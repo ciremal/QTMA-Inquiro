@@ -3,23 +3,35 @@
 import React, { useState } from "react";
 import PressCard from "./PressCard";
 import { inter, interBold } from "@/app/ui/fonts";
+import { News } from "@/app/api/fetchStockInfo";
 
 interface PressClientProps {
-  news: any[];
+  news: News[];
   filters: string[];
   initialFilter: string;
 }
 
-const PressClient: React.FC<PressClientProps> = ({ news, filters, initialFilter }) => {
+const PressClient: React.FC<PressClientProps> = ({
+  news,
+  filters,
+  initialFilter,
+}) => {
   const [selectedFilter, setSelectedFilter] = useState(initialFilter);
 
   // Filter news based on selected filter
-  const filteredNews = selectedFilter === "All" ? news : news.filter((article: any) => article.classification === selectedFilter);
+  const filteredNews =
+    selectedFilter === "All"
+      ? news
+      : news.filter(
+          (article: any) => article.classification === selectedFilter
+        );
 
   return (
     <div className="overflow-hidden">
       <div className="flex justify-between items-center gap-2 mb-4">
-        <p className={`text-xl ${interBold.className} my-auto`}>News and Sentiment</p>
+        <p className={`text-xl ${interBold.className} my-auto`}>
+          News and Sentiment
+        </p>
         <div className="flex gap-2">
           {filters.map((f) => (
             <button

@@ -18,6 +18,18 @@ export interface Report {
   cik: number;
 }
 
+export interface News {
+  category: string;
+  datetime: number;
+  headline: string;
+  id: number;
+  image: string;
+  related: string;
+  source: string;
+  summary: string;
+  url: string;
+}
+
 // Function to analyze article with OpenAI
 
 export async function analyzeArticleWithOpenAI(
@@ -223,7 +235,7 @@ export const getTickerHistoricalDataBulk = async (ticker: string) => {
   }
 };
 
-export const getTickerNews = async (ticker: string): Promise<any[]> => {
+export const getTickerNews = async (ticker: string): Promise<News[]> => {
   const dateToday = new Date();
   const dateTo = formatDateToYYYYMMDD(dateToday);
 
@@ -231,6 +243,7 @@ export const getTickerNews = async (ticker: string): Promise<any[]> => {
   const dateFrom = formatDateToYYYYMMDD(dateToday);
 
   const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
+  console.log(url);
 
   try {
     const res = await fetch(url);
