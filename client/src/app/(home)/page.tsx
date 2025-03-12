@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../components/Table/TableTemplate";
 import { getTickerInfoBulk } from "../api/fetchStockInfo";
 import useSWR from "swr";
+import Carousel from "../components/Carousel";
 
 const prompts = [
   // Industry-specific queries
