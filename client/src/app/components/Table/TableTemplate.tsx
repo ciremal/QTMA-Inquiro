@@ -7,6 +7,7 @@ import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
 import { useTheme } from "next-themes";
+import Carousel from "../Carousel";
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -119,15 +120,15 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
 
   const industries: string[] = useMemo(() => {
     if (!data) return [];
-  
-    return [...new Set(data
-      .map((item: { industry?: string }) => item.industry ?? "") // Ensure string type
-    )]
-    .filter((industry): industry is string => industry !== "") // Type predicate for filtering
-    .sort();
+
+    return [
+      ...new Set(
+        data.map((item: { industry?: string }) => item.industry ?? "") // Ensure string type
+      ),
+    ]
+      .filter((industry): industry is string => industry !== "") // Type predicate for filtering
+      .sort();
   }, [data]);
-  
-  
 
   // Column definitions
   const columns = [
@@ -218,6 +219,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           setIsLoadingAISearch={setIsLoadingAISearch}
           data={data}
         />
+        <Carousel data={data} />
 
         <Box className="flex w-full flex-col justify-center items-center">
           {isLoadingAISearch && <CircularProgress />}
@@ -240,7 +242,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </div>
         )}
         <div>
-          <p className={`pt-12 ${interBold.className}`}>Filter By:</p>
+          <p className={`pt-8 ${interBold.className}`}>Filter By:</p>
         </div>
         {/* Dropdown Filters */}
         <TableFilters

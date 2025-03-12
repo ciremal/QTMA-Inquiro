@@ -21,6 +21,8 @@
     "chart.js": "^4.4.6",
     "chartjs-plugin-crosshair": "^2.0.0",
     "cors": "^2.8.5",
+    "embla-carousel-auto-scroll": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "express": "^4.21.1",
     "finnhub": "^1.2.19",
     "firebase": "^11.2.0",
