@@ -19,6 +19,8 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +116,7 @@ function SignupPage() {
   return (
     <main className="flex items-center justify-center h-screen bg-backdrop">
       <SnackbarResponse open={open} setOpen={setOpen} message={message} />
-      <div className="w-full max-w-md p-8 space-y-6">
+      <div className="w-full max-w-lg p-8 space-y-8">
         <div className="flex justify-center">
           <img src="/darkLogo.svg" alt="Logo" className="h-32" />
         </div>
@@ -130,156 +132,168 @@ function SignupPage() {
             </button>
           </Link>
         </div>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <div className="relative">
-            <AiOutlineUser
-              className="absolute left-3 top-3.5 text-gray-400"
-              size={20}
-            />
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              placeholder="First name"
-              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-            />
-          </div>
-          <div className="relative">
-            <AiOutlineUser
-              className="absolute left-3 top-3.5 text-gray-400"
-              size={20}
-            />
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              placeholder="Last name"
-              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-            />
-          </div>
-          <div className="relative">
-            <AiOutlineMail
-              className="absolute left-3 top-3.5 text-gray-400"
-              size={20}
-            />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-            />
-          </div>
-          <div className="relative">
-            <AiOutlineLock
-              className="absolute left-3 top-3.5 text-gray-400"
-              size={20}
-            />
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
-              value={formik.values.password}
-              onChange={handlePasswordChange}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3.5 text-gray-400"
-            >
-              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-            </button>
-            <div className="text-xs mt-2 font-sans">
-              <div
-                className={`flex items-center ${
-                  passwordChecks.length ? "text-green-500" : "text-gray-400"
-                }`}
+        <form
+          onSubmit={formik.handleSubmit}
+          className=" text-white font-sans text-[13px]"
+        >
+          <div className="space-y-4">
+            <div className="relative">
+              <label htmlFor="firstName">First Name</label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="First name"
+                className="w-full p-3 text-white bg-transparent border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-white text-[16px] font-sans"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+                className="w-full p-3 text-white bg-transparent border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-white text-[16px] font-sans"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                className="w-full p-3 text-white bg-transparent border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-white text-[16px] font-sans"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="lastName">Password</label>
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full p-3 text-white bg-transparent border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-white text-[16px] font-sans"
+                value={formik.values.password}
+                onChange={handlePasswordChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-8 text-gray-400"
               >
-                {passwordChecks.length && (
-                  <AiOutlineCheckCircle className="mr-1" />
+                {showPassword ? (
+                  <VisibilityOutlinedIcon fontSize="small" />
+                ) : (
+                  <VisibilityOffOutlinedIcon fontSize="small" />
                 )}
-                Minimum length of 8 characters
-              </div>
-              <div
-                className={`flex items-center ${
-                  passwordChecks.uppercase ? "text-green-500" : "text-gray-400"
-                }`}
-              >
-                {passwordChecks.uppercase && (
-                  <AiOutlineCheckCircle className="mr-1" />
-                )}
-                At least one uppercase letter
-              </div>
-              <div
-                className={`flex items-center ${
-                  passwordChecks.lowercase ? "text-green-500" : "text-gray-400"
-                }`}
-              >
-                {passwordChecks.lowercase && (
-                  <AiOutlineCheckCircle className="mr-1" />
-                )}
-                At least one lowercase letter
-              </div>
-              <div
-                className={`flex items-center ${
-                  passwordChecks.digit ? "text-green-500" : "text-gray-400"
-                }`}
-              >
-                {passwordChecks.digit && (
-                  <AiOutlineCheckCircle className="mr-1" />
-                )}
-                At least one numeric digit
-              </div>
-              <div
-                className={`flex items-center ${
-                  passwordChecks.specialChar
-                    ? "text-green-500"
-                    : "text-gray-400"
-                }`}
-              >
-                {passwordChecks.specialChar && (
-                  <AiOutlineCheckCircle className="mr-1" />
-                )}
-                At least one special character (e.g., !@#$%^&*)
+              </button>
+              <div className="text-[14px] mt-2 pl-10 font-sans">
+                <div
+                  className={`flex items-center ${
+                    passwordChecks.length ? "text-green-500" : "text-gray-400"
+                  }`}
+                >
+                  {passwordChecks.length && (
+                    <AiOutlineCheckCircle className="mr-1" />
+                  )}
+                  Minimum length of 8 characters
+                </div>
+                <div
+                  className={`flex items-center ${
+                    passwordChecks.uppercase
+                      ? "text-green-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {passwordChecks.uppercase && (
+                    <AiOutlineCheckCircle className="mr-1" />
+                  )}
+                  At least one uppercase letter
+                </div>
+                <div
+                  className={`flex items-center ${
+                    passwordChecks.lowercase
+                      ? "text-green-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {passwordChecks.lowercase && (
+                    <AiOutlineCheckCircle className="mr-1" />
+                  )}
+                  At least one lowercase letter
+                </div>
+                <div
+                  className={`flex items-center ${
+                    passwordChecks.digit ? "text-green-500" : "text-gray-400"
+                  }`}
+                >
+                  {passwordChecks.digit && (
+                    <AiOutlineCheckCircle className="mr-1" />
+                  )}
+                  At least one numeric digit
+                </div>
+                <div
+                  className={`flex items-center ${
+                    passwordChecks.specialChar
+                      ? "text-green-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {passwordChecks.specialChar && (
+                    <AiOutlineCheckCircle className="mr-1" />
+                  )}
+                  At least one special character (e.g., !@#$%^&*)
+                </div>
               </div>
             </div>
-          </div>
-          <div className="relative">
-            <AiOutlineLock
-              className="absolute left-3 top-3.5 text-gray-400"
-              size={20}
-            />
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm your password"
-              className="w-full p-3 pl-10 text-white bg-transparent border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-white text-sm font-sans"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-            />
+            <div className="relative">
+              <label htmlFor="confirmPassword" className="text-primaryGray">
+                Confirm your password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Enter your password again"
+                className="w-full p-3  text-white bg-transparent border border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-white text-[16px] font-sans"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-8 text-gray-600"
+              >
+                {showConfirmPassword ? (
+                  <VisibilityOutlinedIcon fontSize="small" />
+                ) : (
+                  <VisibilityOffOutlinedIcon fontSize="small" />
+                )}
+              </button>
 
-            {error && (
-              <div className="flex space-x-1 items-center mt-2">
-                <AiFillAlert className="text-red-500" size={20} />
-                <p className="text-red-500 text-xs font-sans">
-                  Signup failed. Please check your details and try again.
-                </p>
-              </div>
-            )}
+              {error && (
+                <div className="flex space-x-1 items-center mt-2">
+                  <AiFillAlert className="text-red-500" size={20} />
+                  <p className="text-red-500 text-xs font-sans">
+                    Signup failed. Please check your details and try again.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 mt-4 text-white rounded-md hover:opacity-90 font-sans bg-backdrop border border-gray-600 brightness-100"
+            className="w-full py-3 mt-12 text-white text-[16px] rounded-xl hover:opacity-90 font-sans bg-backdrop border border-gray-600 brightness-100"
           >
             {isLoading ? "Signing up..." : "Create an account"}
           </button>
