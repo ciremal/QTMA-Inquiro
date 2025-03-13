@@ -147,7 +147,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     { id: "sector", label: "Sector", numeric: false },
     { id: "marketCap", label: "Market Cap", numeric: true },
     { id: "currentPrice", label: "Current Price", numeric: true },
-    // { id: "favourite", label: "", numeric: false },
+    { id: "favourite", label: "", numeric: false },
   ];
 
   // Handle sort request

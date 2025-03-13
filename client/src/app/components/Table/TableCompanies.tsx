@@ -85,7 +85,7 @@ const TableCompanies = ({
                   }
                 >
                   <TableSortLabel
-                    className="dark:text-primaryWhite"
+                    className="text-primaryWhite"
                     active={orderBy === column.id}
                     direction={
                       orderBy === column.id &&
@@ -294,10 +294,12 @@ const TableCompanies = ({
                   }}
                   className="dark:text-primaryWhite "
                 >
-                  <FavouriteButton
-                    initialState={false}
-                    company={item.symbol}
-                  ></FavouriteButton>
+                  <div onClick={(event) => event.stopPropagation()}>
+                    <FavouriteButton
+                      initialState={false}
+                      company={item.symbol}
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
