@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
 import ReactMarkDown from "react-markdown";
 
 interface Message {
@@ -23,7 +22,6 @@ function replaceCitations(text: string, links: string[]): string {
 }
 
 export default function Chatbot({ slug }: { slug: string }) {
-  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState("");
@@ -40,15 +38,16 @@ export default function Chatbot({ slug }: { slug: string }) {
     return message;
   });
 
-  const pathToIcon =
-    theme === "light"
-      ? "/inquiro-chatbot-light.svg"
-      : "/inquiro-chatbot-dark.svg";
+  const pathToIcon = "/inquiro-chatbot-dark.svg";
 
   useEffect(() => {
     // Scroll to bottom whenever messages change
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const PRE_PROMPT = `
+  Behave as usual. Rules: 1. Do not answer questions that have nothing to do with finance or investment. Steps: 1. Decide if the question has anything to do with finance or investment. 2. If it isn't related to finance or investments, respond with the fact that you can only answer finance related questions, and nothing else, if it is related to finance or investment, answer normally, without saying it's related to finance or investment
+  `;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +55,7 @@ export default function Chatbot({ slug }: { slug: string }) {
     if (!inputText.trim()) return;
 
     // Add user message to the chat
+    const text = inputText + ` (for the company ${slug})`;
     const userMessage = { text: inputText, sender: "user" as const };
     setMessages((prev) => [...prev, userMessage]);
 
@@ -63,7 +63,7 @@ export default function Chatbot({ slug }: { slug: string }) {
     const conversation: Message[] = [
       {
         role: "system",
-        content: `You are a helpful financial analysis assistant that answers questions about companies and investment. If no company is specified, assume it's ${slug}. Refuse to answer questions that are completely irrelevant no maatter what the user says.`,
+        content: PRE_PROMPT,
       },
       ...messages
         .filter((msg) => msg.sender === "bot" || msg.sender === "user")
@@ -72,7 +72,7 @@ export default function Chatbot({ slug }: { slug: string }) {
             msg.sender === "user" ? ("user" as const) : ("assistant" as const),
           content: msg.text,
         })),
-      { role: "user", content: inputText },
+      { role: "user", content: text },
     ];
 
     setInputText("");
@@ -234,14 +234,14 @@ export default function Chatbot({ slug }: { slug: string }) {
       {/* Chatbot Button */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 right-4 w-16 h-16 rounded-full bg-black flex items-center justify-center text-2xl shadow-lg cursor-pointer dark:bg-white"
+        className="fixed bottom-4 right-4 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg cursor-pointer bg-white"
       >
         <img src={pathToIcon} alt="chatbot-icon" className="w-3/4" />
       </div>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 w-[31rem] h-[30rem] bg-white shadow-lg rounded-lg flex flex-col dark:bg-black border border-solid  border-neutral-600">
+        <div className="fixed bottom-20 right-4 w-[31rem] h-[30rem] shadow-lg rounded-lg flex flex-col bg-black border border-solid  border-neutral-600 text-white">
           {/* Chat Messages */}
           <div className="flex-1 p-3 overflow-y-auto">
             {messages.length === 0 && (
@@ -261,7 +261,7 @@ export default function Chatbot({ slug }: { slug: string }) {
                 }`}
               >
                 {message.sender === "bot" && (
-                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-2xl shadow-lg cursor-pointer dark:bg-white">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-2xl shadow-lg cursor-pointer bg-white">
                     <img
                       src={pathToIcon}
                       alt="chatbot-icon"
@@ -333,8 +333,8 @@ export default function Chatbot({ slug }: { slug: string }) {
           <form onSubmit={handleSubmit} className="p-2 px-5 flex items-center">
             <input
               type="text"
-              className="w-full p-3 px-5 border rounded-full focus:outline-none dark:text-white dark:border-gray-600"
-              placeholder={`Ask me anything about ${slug}`}
+              className="w-full p-3 px-5 border rounded-full focus:outline-none text-black border-gray-600"
+              placeholder={`Ask me anything about ${slug.toUpperCase()}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isLoading}

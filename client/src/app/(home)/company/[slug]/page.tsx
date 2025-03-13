@@ -8,6 +8,7 @@ import Reports from "./Reports";
 import Metrics from "./Metrics";
 import EarningsCall from "./EarningsCall";
 import CurrentPrice from "./CurrentPrice";
+import Chatbot from "./Chatbot";
 
 export default async function Page({
   params,
@@ -20,6 +21,7 @@ export default async function Page({
     notFound();
   }
   const logo = `https://assets.parqet.com/logos/symbol/${slug}?format=svg`;
+  //const logo = `https://www.google.com/s2/favicons?domain=${company.website}&sz=128`;
 
   return (
     <div className="flex flex-col gap-6 items-center justify-center md:mx-16 mx-4 font-sans">
@@ -42,6 +44,7 @@ export default async function Page({
           <EarningsCall ticker={company.symbol} />
         </div>
       </div>
+      <Chatbot slug={slug} />
     </div>
   );
 }

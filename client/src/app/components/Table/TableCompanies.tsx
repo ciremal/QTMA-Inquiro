@@ -18,7 +18,6 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
-import { useTheme } from "next-themes";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useAuthState } from "react-firebase-hooks/auth";
 import FavouriteButton from "../favouriteButton";
@@ -44,14 +43,14 @@ const TableCompanies = ({
   startTransition,
   router,
 }: TableCompaniesProps) => {
-  const { theme } = useTheme();
   const [user] = useAuthState(auth);
 
   return (
-    <div className="bg-[rgba(255,255,255,0.3)] dark:bg-[rgba(31,31,31,0.4)] p-6 rounded-2xl border border-primaryGray">
+    <div className="bg-[rgba(31,31,31,0.4)] p-6 rounded-2xl border border-primaryGray">
       <TableContainer
         component={Paper}
         sx={{
+          color: "white",
           borderRadius: "14px",
           boxShadow: "none", // Remove default Paper shadow
           backgroundColor: "transparent", // Make Paper background transparent
@@ -94,21 +93,12 @@ const TableCompanies = ({
                     }
                     onClick={() => handleSort(column.id)}
                     sx={{
-                      color: "var(--primaryWhite)",
+                      color: "white",
                       justifyContent: index === 0 ? "flex-start" : "center",
                       "&.Mui-active": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
+                        color: "var(--primaryWhite)",
                       },
                       "&.Mui-active .MuiTableSortLabel-icon": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
-                      },
-                      "&:hover": {
                         color: "var(--primaryWhite)",
                       },
                     }}
@@ -154,7 +144,7 @@ const TableCompanies = ({
                     borderBottom: "2px solid #262626",
                   }} // Set bottom border color
                 >
-                  <Box className="flex items-center gap-2 dark:text-primaryWhite font-[500]">
+                  <Box className="flex items-center gap-2 text-primaryWhite font-[500]">
                     <img
                       src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
                       alt={`${item.symbol} logo`}
@@ -165,8 +155,8 @@ const TableCompanies = ({
                         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                       }}
                       onError={(e) => {
-                        console.log(item.website);
-                        const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=128`;
+                        // console.log(item.website);
+                        const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=256`;
                         const img = new Image();
                         img.src = icon;
                         img.onload = () => {
@@ -201,8 +191,9 @@ const TableCompanies = ({
                   sx={{
                     textAlign: "center",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="font-[500] dark:text-primaryWhite"
+                  className="font-[500]"
                 >
                   {item.longName}
                 </TableCell>
@@ -214,7 +205,7 @@ const TableCompanies = ({
                 >
                   <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
-                      className="dark:text-primaryWhite"
+                      className="text-primaryWhite"
                       key={item.industry}
                       label={item.industry}
                       sx={{
@@ -238,7 +229,7 @@ const TableCompanies = ({
                 >
                   <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
-                      className="dark:text-primaryWhite"
+                      className="text-primaryWhite"
                       key={item.sector}
                       label={item.sector}
                       sx={{
@@ -259,8 +250,8 @@ const TableCompanies = ({
                     textAlign: "center",
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="dark:text-primaryWhite"
                 >
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
@@ -269,8 +260,9 @@ const TableCompanies = ({
                     textAlign: "center",
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="dark:text-primaryWhite flex-col"
+                  className="flex-col"
                 >
                   <div>{formatPrice(item.currentPrice)}</div>
                   <div
@@ -295,14 +287,12 @@ const TableCompanies = ({
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
                   }}
-                  className="dark:text-primaryWhite "
+                  className="dark:text-primaryWhite"
                 >
-                  <div onClick={(event) => event.stopPropagation()}>
-                    <FavouriteButton
-                      initialState={false}
-                      company={item.symbol}
-                    />
-                  </div>
+                  <FavouriteButton
+                    initialState={false}
+                    company={item.symbol}
+                  ></FavouriteButton>
                 </TableCell>
               </TableRow>
             ))}

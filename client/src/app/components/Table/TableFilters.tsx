@@ -12,7 +12,6 @@ import {
   Switch,
 } from "@mui/material";
 import { useState } from "react";
-import { useTheme } from "next-themes";
 import { KeyboardArrowDown, Delete } from "@mui/icons-material";
 import getIndustryColor from "@/app/lib/industryColors";
 
@@ -41,8 +40,6 @@ const TableFilters = ({
   setShowFavourites,
   handleReset,
 }: TableFiltersProps) => {
-  const { theme } = useTheme();
-
   // Popover state management
   const [anchorElIndustry, setAnchorElIndustry] = useState<null | HTMLElement>(
     null
@@ -101,19 +98,27 @@ const TableFilters = ({
 
   return (
     <Box className="w-full flex justify-between items-center">
-      <Box className="md:w-2/3 w-full flex md:flex-row gap-6 flex-col">
+      <Box className="md:w-1/2 w-full flex md:flex-row gap-6 flex-col">
         {/* Industry Filter */}
-        <Box className="flex items-center gap-2">
+        <Box className="flex items-center gap-2 w-full">
           <Typography variant="body2" className="text-white">
             Industry
           </Typography>
           <Button
             onClick={handleOpenIndustry}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-gray-500 border-opacity-50"
+            className=""
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -173,17 +178,27 @@ const TableFilters = ({
         </Popover>
 
         {/* Market Cap Filter */}
-        <Box className="flex items-center gap-2">
-          <Typography variant="body2" className="text-white">
+        <Box className="flex items-center gap-2 w-full">
+          <Typography
+            variant="body2"
+            sx={{ color: "white", whiteSpace: "nowrap" }}
+          >
             Market Cap
           </Typography>
           <Button
             onClick={handleOpenMarketCap}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-primaryGray"
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -217,7 +232,12 @@ const TableFilters = ({
           >
             <p className="mb-2 font-sans font-semibold">Select Market Cap</p>
             <FormGroup
-              sx={{ "& .MuiFormControlLabel-root": { marginBottom: "0px" } }}
+              sx={{
+                "& .MuiFormControlLabel-root": {
+                  marginBottom: "0px",
+                  padding: 0,
+                },
+              }}
             >
               {[
                 { label: "Micro Cap (Under $300M)", value: "micro" },
@@ -239,6 +259,7 @@ const TableFilters = ({
                           color: "grey",
                         },
                         margin: "0px",
+                        p: 0,
                       }}
                     />
                   }
@@ -258,17 +279,27 @@ const TableFilters = ({
         </Popover>
 
         {/* Stock Price Filter */}
-        <Box className="flex items-center gap-2">
-          <Typography variant="body2" className="text-white">
+        <Box className="flex items-center gap-2 w-full">
+          <Typography
+            variant="body2"
+            sx={{ color: "white", whiteSpace: "nowrap" }}
+          >
             Stock Price
           </Typography>
           <Button
             onClick={handleOpenPrice}
-            className="flex items-center justify-between px-4 py-2 w-42 bg-[rgba(31,31,31,0.4)] text-white text-xs rounded-full border border-primaryGray"
             endIcon={<KeyboardArrowDown />}
             sx={{
               width: "100%",
-              backgroundColor: "rgba(31,31,31,0.4)",
+              backgroundColor: "var(--secondaryBlack)",
+              borderRadius: 5,
+              paddingX: "1rem",
+              paddingY: "0.5rem",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -308,29 +339,58 @@ const TableFilters = ({
             {/* Slider for Custom Price Selection */}
             <Box className="flex flex-col items-center mt-6 mx-4">
               <Slider
-                min={0}
-                max={10000}
-                value={priceRange}
+                defaultValue={1}
+                min={1}
+                max={3}
+                step={null}
+                valueLabelDisplay="off"
+                marks={[
+                  {
+                    value: 1,
+                  },
+                  {
+                    value: 2,
+                  },
+                  {
+                    value: 3,
+                  },
+                ]}
                 onChange={(e, newValue) => {
-                  if (Array.isArray(newValue) && newValue.length === 2) {
-                    setPriceRange([newValue[0], newValue[1]]);
+                  switch (newValue) {
+                    case 1:
+                      setPriceRange([0, 50]);
+                      break;
+                    case 2:
+                      setPriceRange([50, 200]);
+                      break;
+                    case 3:
+                      setPriceRange([200, 10000]);
+                      break;
+                    default:
+                      break;
                   }
                 }}
-                valueLabelDisplay="auto"
                 sx={{
                   color: "white",
+                  width: "100%",
                   "& .MuiSlider-thumb": { backgroundColor: "white" },
                 }}
               />
             </Box>
             {/* Price Selection Buttons */}
-            <Box className="flex justify-between items-center gap-3 my-4">
+            <Box className="flex justify-between items-center gap-10 my-4">
               {priceOptions.map(({ label, value }) => (
                 <Button
                   key={label}
                   onClick={() => handlePriceChange(value as [number, number])}
-                  className={`text-white text-xs rounded-full border-1 border-rgba(255,255,255,0.2) rounded-full px-3 py-1`}
                   sx={{
+                    color: "white",
+                    fontSize: 12,
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: "rgba(255,255,255,0.2)",
+                    paddingX: "0.75rem",
+                    paddingY: "0.25rem",
                     backgroundColor:
                       priceRange[0] === value[0] && priceRange[1] === value[1]
                         ? "rgba(255,255,255,0.2)"
@@ -400,7 +460,7 @@ const TableFilters = ({
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"
         >
-          <Delete />
+          <Delete sx={{ color: "white" }} />
         </Button>
       </Box>
     </Box>

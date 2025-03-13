@@ -16,7 +16,7 @@ export default function PressCard({ article }: PressCardProps) {
     classification,
     sentiment,
   } = article;
-  console.log(article);
+  // console.log(article);
   const date = new Date(datetime * 1000).toLocaleDateString();
   const thumbnail = image
     ? image
@@ -37,7 +37,7 @@ export default function PressCard({ article }: PressCardProps) {
   return (
     <Link
       href={url}
-      className="flex-shrink-0 w-64 h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
+      className="flex-shrink-0 w-64 h-96 border border-primaryGray rounded-lg shadow-lg overflow-hidden relative"
     >
       {/* Badge in the top-right corner */}
       <div
@@ -46,7 +46,7 @@ export default function PressCard({ article }: PressCardProps) {
         {classification} ({sentiment?.toFixed(2) ?? "N/A"})
       </div>
 
-      <div className="flex-shrink-0 h-96 border dark:border-primaryGray rounded-lg shadow-lg overflow-hidden">
+      <div className="flex-shrink-0 h-96 border border-primaryGray rounded-lg shadow-lg overflow-hidden">
         {/* Background Image with Gradient Overlay */}
         <div
           className="w-full aspect-[16/9] h-full bg-cover bg-center relative"

@@ -45,19 +45,11 @@ const FavouriteButton = ({
     <button onClick={handleOnClick}>
       {favourited ? (
         <StarRateRoundedIcon
-          sx={{
-            width: "2.5rem",
-            height: "2.5rem",
-            color: "var(--primaryWhite)",
-          }}
+          sx={{ width: "2.5rem", height: "2.5rem", color: "white" }}
         />
       ) : (
         <StarBorderRoundedIcon
-          sx={{
-            width: "2.5rem",
-            height: "2.5rem",
-            color: "var(--primaryGray)",
-          }}
+          sx={{ width: "2.5rem", height: "2.5rem", color: "white" }}
         />
       )}
     </button>

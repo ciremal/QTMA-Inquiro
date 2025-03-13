@@ -12,6 +12,12 @@ interface EarningsCallResult {
   error: string | null;
 }
 
+export interface Report {
+  date: string;
+  form: string;
+  cik: number;
+}
+
 // Function to analyze article with OpenAI
 
 export async function analyzeArticleWithOpenAI(
@@ -251,7 +257,7 @@ export const getTickerNews = async (ticker: string): Promise<any[]> => {
   }
 };
 
-export const getReports = async (cik: string) => {
+export const getReports = async (cik: string): Promise<Report[]> => {
   try {
     const res = await fetch(
       `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-reports?cik=${cik}`
