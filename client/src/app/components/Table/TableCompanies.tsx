@@ -85,7 +85,6 @@ const TableCompanies = ({
                   }
                 >
                   <TableSortLabel
-                    className="text-primaryWhite"
                     active={orderBy === column.id}
                     direction={
                       orderBy === column.id &&
@@ -95,6 +94,7 @@ const TableCompanies = ({
                     }
                     onClick={() => handleSort(column.id)}
                     sx={{
+                      color: "var(--primaryWhite)",
                       justifyContent: index === 0 ? "flex-start" : "center",
                       "&.Mui-active": {
                         color:
