@@ -19,3 +19,14 @@ export const getDifferences = (data: any[]) => {
   res.sort((a, b) => a.percentage - b.percentage);
   return res;
 };
+
+export const selectImage = (sector: string) => {
+  const randNum = Math.floor(Math.random() * 8) + 1;
+  if (sector === "consumer-cyclical" || sector === "consumer-defensive") {
+    return `url(/consumer-${randNum}.jpg)`;
+  } else if (sector === "energy" || sector === "utilities") {
+    return `url(/energy-${randNum}.jpg)`;
+  } else {
+    return `url(/${sector}-${randNum}.jpg)`;
+  }
+};

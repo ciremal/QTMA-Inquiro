@@ -1,6 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { getDifferences } from "../lib/carouselHelpers";
+import { getDifferences, selectImage } from "../lib/carouselHelpers";
 import { formatMarketCap } from "../lib/formattingFunctions";
 
 interface CarouselProps {
@@ -29,7 +29,7 @@ const Carousel = ({ data }: CarouselProps) => {
               className="text-center rounded-xl"
               key={item.symbol + "-slider"}
               style={{
-                backgroundImage: `url(/${item.sector}-card-background.jpg)`,
+                backgroundImage: selectImage(item.sector),
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundColor: "rgba(0,0,0,0.6)",
