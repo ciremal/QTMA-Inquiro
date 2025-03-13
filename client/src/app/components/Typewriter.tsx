@@ -46,7 +46,7 @@ const Typewriter = React.memo(({ prompts }: { prompts: string[] }) => {
       style={{ fontWeight: "bold" }}
     >
       <span className="text-primaryWhite">Ask me about </span>
-      <span className="text-primaryWhite">{typedPrompt}</span>
+      <span className="text-gray-400">{typedPrompt}</span>
     </p>
   );
 });
