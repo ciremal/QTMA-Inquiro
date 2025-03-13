@@ -1,16 +1,29 @@
+"use client";
+
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { getDifferences, selectImage } from "../lib/carouselHelpers";
 import { formatMarketCap } from "../lib/formattingFunctions";
+import { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 interface CarouselProps {
   data: any[];
 }
 
 const Carousel = ({ data }: CarouselProps) => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const [emblaRef] = useEmblaCarousel({ loop: true, align: "start" }, [
     AutoScroll({ playOnInit: true, stopOnInteraction: false, startDelay: 500 }),
   ]);
+
+  const handleLinkClick = (url: string) => {
+    setLoading(true);
+    router.push(url);
+  };
 
   const formattedData = getDifferences(data);
   const top5 = formattedData.slice(0, 10);
@@ -26,8 +39,9 @@ const Carousel = ({ data }: CarouselProps) => {
         <div className="flex px-2 gap-3">
           {slides.map((item) => (
             <div
-              className="text-center rounded-xl"
+              className="text-center rounded-xl cursor-pointer"
               key={item.symbol + "-slider"}
+              onClick={() => handleLinkClick(`/company/${item.symbol}`)}
               style={{
                 backgroundImage: selectImage(item.sector),
                 backgroundSize: "cover",
@@ -63,6 +77,11 @@ const Carousel = ({ data }: CarouselProps) => {
           ))}
         </div>
       </div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <CircularProgress />
+        </div>
+      )}
     </div>
   );
 };
