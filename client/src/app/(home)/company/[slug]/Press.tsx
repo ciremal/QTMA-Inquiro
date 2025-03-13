@@ -41,9 +41,9 @@ export default function Press({ company, filter = "All" }: PressProps) {
 
   const total =
     sentimentCounts.Bearish + sentimentCounts.Neutral + sentimentCounts.Bullish;
-  const bearPercentage = (sentimentCounts.Bearish / total) * 100;
-  const neutralPercentage = (sentimentCounts.Neutral / total) * 100;
-  const bullPercentage = (sentimentCounts.Bullish / total) * 100;
+  const bearPercentage = Math.floor((sentimentCounts.Bearish / total) * 100);
+  const neutralPercentage = Math.floor((sentimentCounts.Neutral / total) * 100);
+  const bullPercentage = Math.floor((sentimentCounts.Bullish / total) * 100);
 
   // Calculate majority sentiment (excluding neutral)
   const nonNeutralTotal = sentimentCounts.Bearish + sentimentCounts.Bullish;

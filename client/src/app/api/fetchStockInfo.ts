@@ -256,20 +256,34 @@ export const getTickerNews = async (ticker: string): Promise<News[]> => {
     const res = await fetch(url);
     const articles = await res.json();
 
+    const options = {
+      method: "GET",
+      headers: {
+        "X-Api-Key": `${process.env.NEXT_PUBLIC_API_NINJAS_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    };
+
     // Analyze each article for sentiment
     const analyzedArticles = await Promise.all(
       articles.map(async (article: any) => {
-        const analysis = await analyzeArticleWithOpenAI(
-          article.summary,
-          ticker
-        );
-        article.classification = analysis.classification;
-        article.sentiment = analysis.sentiment;
-        article.summary = analysis.summary;
-        return { ...article, ...analysis };
+        const sentimentURL = `https://api.api-ninjas.com/v1/sentiment?text=${encodeURIComponent(
+          article.summary
+        )}`;
+        const response = await fetch(sentimentURL, options);
+        const analysis = await response.json();
+        article.classification =
+          analysis.sentiment === "POSITIVE" ||
+          analysis.sentiment === "WEAK_POSITIVE"
+            ? "Bullish"
+            : analysis.sentiment === "NEGATIVE" ||
+              analysis.sentiment === "WEAK_NEGATIVE"
+            ? "Bearish"
+            : "Neutral";
+        article.sentiment = analysis.score;
+        return { ...article };
       })
     );
-    // console.log(analyzedArticles);
     return analyzedArticles;
   } catch (error) {
     console.error(error);

@@ -7,7 +7,6 @@ import Press from "./Press";
 import Reports from "./Reports";
 import Metrics from "./Metrics";
 import EarningsCall from "./EarningsCall";
-import CurrentPrice from "./CurrentPrice";
 import Chatbot from "./Chatbot";
 
 export default async function Page({
@@ -26,12 +25,12 @@ export default async function Page({
   return (
     <div className="flex flex-col gap-6 items-center justify-center md:mx-16 mx-4 font-sans">
       <Company company={company} logo={logo} />
-      <CurrentPrice
-        price={company.currentPrice}
-        previousClose={company.previousClose}
-      />
-      <div className="flex md:max-h-[600px] h-full w-full md:justify-between md:flex-row flex-col gap-10">
-        <Graph company={slug} />
+      <div className="flex md:max-h-[500px] h-full w-full md:justify-between md:flex-row flex-col gap-10">
+        <Graph
+          company={slug}
+          currentPrice={company.currentPrice}
+          previousClose={company.previousClose}
+        />
         <Metrics company={company} />
       </div>
       <div className="flex gap-12 w-full md:mt-8 flex-col md:flex-row">

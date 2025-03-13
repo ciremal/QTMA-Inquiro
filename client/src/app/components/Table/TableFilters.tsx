@@ -9,6 +9,7 @@ import {
   Checkbox,
   Typography,
   Slider,
+  Switch,
 } from "@mui/material";
 import { useState } from "react";
 import { KeyboardArrowDown, Delete } from "@mui/icons-material";
@@ -23,6 +24,7 @@ type TableFiltersProps = {
   setMarketCapRange: (range: string) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
+  setShowFavourites: (show: boolean) => void;
   handleReset: () => void;
 };
 
@@ -35,6 +37,7 @@ const TableFilters = ({
   setMarketCapRange,
   priceRange,
   setPriceRange,
+  setShowFavourites,
   handleReset,
 }: TableFiltersProps) => {
   // Popover state management
@@ -88,6 +91,11 @@ const TableFilters = ({
     handleClosePrice();
   };
 
+  const handleFavouritesToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowFavourites(e.target.checked);
+    setPage(0);
+  };
+
   return (
     <Box className="w-full flex justify-between items-center">
       <Box className="md:w-1/2 w-full flex md:flex-row gap-6 flex-col">
@@ -111,6 +119,7 @@ const TableFilters = ({
               justifyContent: "space-between",
               alignItems: "center",
               fontSize: "12px",
+              textTransform: "none", // Set textTransform to none
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -191,6 +200,7 @@ const TableFilters = ({
               justifyContent: "space-between",
               alignItems: "center",
               fontSize: "12px",
+              textTransform: "none", // Set textTransform to none
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               "&:hover": {
                 backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
@@ -217,7 +227,7 @@ const TableFilters = ({
           }}
         >
           <Box
-            className="p-4 w-100 bg-secondaryBlack text-white rounded-xl border border-primaryGray"
+            className="p-4 w-100 bg-secondaryBlack text-white rounded-2xl border border-primaryGray"
             sx={{
               overflowY: "auto", // Enable scrolling if there are too many options
             }}
@@ -232,11 +242,11 @@ const TableFilters = ({
               }}
             >
               {[
-                { label: "Micro Cap (Under $300M)", value: "micro" },
-                { label: "Small Cap ($300M - $2B)", value: "small" },
-                { label: "Mid Cap ($2B - $10B)", value: "mid" },
-                { label: "Large Cap ($10B - $200B)", value: "large" },
-                { label: "Mega Cap (Over $200B)", value: "mega" },
+                { label: "Micro Cap (Under $300M)", value: "Micro" },
+                { label: "Small Cap ($300M - $2B)", value: "Small" },
+                { label: "Mid Cap ($2B - $10B)", value: "Mid" },
+                { label: "Large Cap ($10B - $200B)", value: "Large" },
+                { label: "Mega Cap (Over $200B)", value: "Mega" },
               ].map(({ label, value }) => (
                 <FormControlLabel
                   key={value}
@@ -278,11 +288,11 @@ const TableFilters = ({
           >
             Stock Price
           </Typography>
-          <Button
+            <Button
             onClick={handleOpenPrice}
             endIcon={<KeyboardArrowDown />}
             sx={{
-              width: "100%",
+              width: "130px",
               backgroundColor: "var(--secondaryBlack)",
               borderRadius: 5,
               paddingX: "1rem",
@@ -293,21 +303,22 @@ const TableFilters = ({
               alignItems: "center",
               fontSize: "12px",
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
+              textTransform: "none", // Set textTransform to none
               "&:hover": {
-                backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
-                border: "1px solid rgba(255,255,255,0.3)", // More visible on hover
+              backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
+              border: "1px solid rgba(255,255,255,0.3)", // More visible on hover
               },
               "&:focus": {
-                border: "1px solid white",
+              border: "1px solid white",
               },
             }}
-          >
+            >
             {priceRange
               ? `$${priceRange[0]} - $${
-                  priceRange[1] === 10000 ? "∞" : priceRange[1]
-                }`
+                priceRange[1] === 10000 ? "∞" : priceRange[1]
+              }`
               : "Any"}
-          </Button>
+            </Button>
         </Box>
         <Popover
           open={openPrice}
@@ -322,14 +333,14 @@ const TableFilters = ({
           }}
         >
           <Box
-            className="p-4 w-90 bg-secondaryBlack text-white rounded-xl border border-gray-600 shadow-lg"
+            className="p-4 w-90 bg-secondaryBlack text-white rounded-2xl border border-gray-600 shadow-lg"
             sx={{
               height: "auto",
-              minHeight: "160px",
+              minHeight: "100px",
             }}
           >
             {/* Slider for Custom Price Selection */}
-            <Box className="flex flex-col items-center mt-6 mx-4">
+            <Box className="flex flex-col items-center mt-1 mx-4">
               <Slider
                 defaultValue={1}
                 min={1}
@@ -363,14 +374,18 @@ const TableFilters = ({
                   }
                 }}
                 sx={{
-                  color: "white",
+                  color: "#646464",
                   width: "100%",
-                  "& .MuiSlider-thumb": { backgroundColor: "white" },
+                  "& .MuiSlider-thumb": { 
+                    backgroundColor: "#646464",
+                    width: 12,    // smaller thumb width
+                    height: 12,   // smaller thumb height 
+                  },
                 }}
               />
             </Box>
             {/* Price Selection Buttons */}
-            <Box className="flex justify-between items-center gap-10 my-4">
+            <Box className="flex justify-between items-center gap-10 my-1 text-xs">
               {priceOptions.map(({ label, value }) => (
                 <Button
                   key={label}
@@ -395,18 +410,52 @@ const TableFilters = ({
                 </Button>
               ))}
             </Box>
-            <Typography
-              variant="body2"
-              className="mt-2 text-xs text-primaryGray mx-auto text-center"
-            >
-              Selected Price: ${priceRange[0]} - $
-              {priceRange[1] === 10000 ? "∞" : priceRange[1]}
-            </Typography>
           </Box>
         </Popover>
       </Box>
 
       <Box className={"px-5"}>
+        <Switch
+          onChange={handleFavouritesToggle}
+          sx={{
+            width: 64,
+            height: 32,
+            padding: 0,
+            "& .MuiSwitch-switchBase": {
+              padding: 0,
+              margin: "2px",
+              transitionDuration: "300ms",
+              "&.Mui-checked": {
+                transform: "translateX(32px)",
+                "& + .MuiSwitch-track": {
+                  backgroundColor: "transparent",
+                  opacity: 0.5,
+                  border: "1px solid #555",
+                },
+                "& .MuiSwitch-thumb": {
+                  backgroundImage: `url('/favourite-toggle-on.png')`,
+                },
+              },
+            },
+            "& .MuiSwitch-thumb": {
+              width: 28,
+              height: 28,
+              backgroundImage: `url('/favourite-toggle.svg')`,
+              backgroundSize: "100%",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "#1C1E12",
+            },
+            "& .MuiSwitch-track": {
+              borderRadius: 16,
+              backgroundColor: "transparent",
+              border: "1px solid #555",
+              opacity: 0.5,
+              boxSizing: "border-box",
+            },
+          }}
+        />
+
         <Button
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"

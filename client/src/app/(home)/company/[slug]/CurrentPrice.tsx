@@ -9,9 +9,11 @@ const CurrentPrice = ({ price, previousClose }: CurrentPriceProps) => {
 
   return (
     <div className="flex md:justify-start justify-center w-full items-center gap-5">
-      <p className="m-0 text-[40px] ml-8 font-[500] text-white">${price}</p>
+      <p className="m-0 text-[50px] ml-8 font-semibold text-white">
+        ${price.toFixed(2)}
+      </p>
       <p
-        className={`text-[16px] ${
+        className={`text-[24px] ${
           diff >= 0 ? "text-green-500" : "text-red-600"
         } italic`}
       >
