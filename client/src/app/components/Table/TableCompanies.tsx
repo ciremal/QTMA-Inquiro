@@ -100,6 +100,9 @@ const TableCompanies = ({
                       "&.Mui-active .MuiTableSortLabel-icon": {
                         color: "var(--primaryWhite)",
                       },
+                      "&:hover": {
+                        color: "var(--primaryWhite) !important", // Ensure it overrides other hover styles
+                      },
                     }}
                   >
                     {column.label}
