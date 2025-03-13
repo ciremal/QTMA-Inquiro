@@ -10,6 +10,7 @@ const Metrics = ({ company }: MetricsProps) => {
     <Box className="flex w-auto bg-secondaryBlack p-3 border rounded-md border-primaryGray text-white">
       <Box
         className="bg-secondaryBlack"
+        padding={2}
         sx={{
           overflow: "auto",
           "&::-webkit-scrollbar": {
@@ -28,30 +29,63 @@ const Metrics = ({ company }: MetricsProps) => {
           },
         }}
       >
+        <p className="text-[20px] font-semibold">Financial Snapshot</p>
         <List>
           <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="Revenue"
               value={company.totalRevenue}
-              status="neutral"
+              status="up"
+              type="value"
             />
-            <StatsCard title="EPS" value={company.forwardEps} status="up" />
+            <StatsCard
+              title="EPS"
+              value={company.forwardEps}
+              status="down"
+              type="value"
+            />
           </ListItem>
           <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="Gross"
               value={company.grossMargins}
-              status="neutral"
+              status="up"
+              type="multiple"
             />
-            <StatsCard title="P/E" value={company.forwardPE} status="down" />
+            <StatsCard
+              title="P/E"
+              value={company.forwardPE}
+              status="down"
+              type="multiple"
+            />
           </ListItem>
           <ListItem disablePadding className="md:flex md:flex-col">
             <StatsCard
               title="EV"
               value={company.enterpriseValue}
               status="down"
+              type="value"
             />
-            <StatsCard title="EBITDA" value={company.ebitda} status="up" />
+            <StatsCard
+              title="EBITDA"
+              value={company.ebitda}
+              status="up"
+              type="value"
+            />
+          </ListItem>
+          <ListItem disablePadding className="md:flex md:flex-col">
+            <StatsCard
+              title="EV/EBITDA"
+              value={company.enterpriseValue / company.ebitda}
+              status="up"
+              type="multiple"
+            />
+            <StatsCard
+              title="Market Cap"
+              value={company.marketCap}
+              status="up"
+              type="value"
+            />
           </ListItem>
         </List>
       </Box>

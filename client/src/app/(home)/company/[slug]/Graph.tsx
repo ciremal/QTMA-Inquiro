@@ -20,11 +20,8 @@ import Crosshair from "chartjs-plugin-crosshair";
 import GraphButton from "./GraphButton";
 import { useState, useMemo } from "react";
 import DropdownMenu from "@/app/components/DropdownMenu";
-import { InputLabel, Menu, MenuItem, Select } from "@mui/material";
-import {
-  filterInputLabelStyles,
-  filterInputSelectStyles,
-} from "@/app/lib/styles";
+import { MenuItem, Select } from "@mui/material";
+import CurrentPrice from "./CurrentPrice";
 
 ChartJS.register(
   CategoryScale,
@@ -130,9 +127,15 @@ const adjustLabels = (dataset1: any, dataset2: any) => {
 
 interface GraphProps {
   company: string;
+  currentPrice: number;
+  previousClose: number;
 }
 
-export default function Graph({ company }: GraphProps) {
+export default function Graph({
+  company,
+  currentPrice,
+  previousClose,
+}: GraphProps) {
   const [period, setPeriod] = useState("1y");
   const { cache, mutate } = useSWRConfig();
   const [comparisonCompany, setComparisonCompany] = useState<string | null>(
@@ -244,7 +247,7 @@ export default function Graph({ company }: GraphProps) {
         },
         ticks: {
           color: "white",
-          maxTicksLimit: 12,
+          maxTicksLimit: period === "5d" ? 5 : 12,
         },
         border: {
           color: "#757575",
@@ -309,12 +312,15 @@ export default function Graph({ company }: GraphProps) {
   };
 
   return (
-    <div className="md:w-[78%] w-full flex flex-col justify-center gap-2">
-      <div className="flex items-center justify-between md:pl-12 mb-3 md:flex-row flex-col gap-5">
+    <div className="md:w-[75%] w-full flex flex-col justify-center gap-4">
+      <div className="flex items-center justify-center text-center">
+        <CurrentPrice price={currentPrice} previousClose={previousClose} />
         <DropdownMenu
           comparisonCompany={comparisonCompany}
           setComparisonCompany={setComparisonCompany}
         />
+      </div>
+      <div className="flex items-center justify-end md:pl-12 mb-3 md:flex-row flex-col gap-5">
         <div className="justify-end gap-4 md:flex hidden">
           {periods.map((p) => {
             return (
