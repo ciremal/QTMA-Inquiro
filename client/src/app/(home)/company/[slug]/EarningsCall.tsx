@@ -46,7 +46,7 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
   }, [data]);
 
   return (
-    <Box className="flex w-auto dark:bg-secondaryBlack bg-background p-6 border rounded-md border-slate-300 dark:border-primaryGray">
+    <Box className="flex w-auto bg-secondaryBlack p-6 border rounded-md border-primaryGray text-white">
       <div className="w-full">
         <div className="font-semibold text-xl">Earnings Call</div>
         {error ? (

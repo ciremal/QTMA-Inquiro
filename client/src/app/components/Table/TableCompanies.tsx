@@ -18,7 +18,6 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
-import { useTheme } from "next-themes";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -43,14 +42,14 @@ const TableCompanies = ({
   startTransition,
   router,
 }: TableCompaniesProps) => {
-  const { theme } = useTheme();
   const [user] = useAuthState(auth);
 
   return (
-    <div className="bg-[rgba(255,255,255,0.3)] dark:bg-[rgba(31,31,31,0.4)] p-6 rounded-2xl border border-primaryGray">
+    <div className="bg-[rgba(31,31,31,0.4)] p-6 rounded-2xl border border-primaryGray">
       <TableContainer
         component={Paper}
         sx={{
+          color: "white",
           borderRadius: "14px",
           boxShadow: "none", // Remove default Paper shadow
           backgroundColor: "transparent", // Make Paper background transparent
@@ -84,7 +83,6 @@ const TableCompanies = ({
                   }
                 >
                   <TableSortLabel
-                    className="dark:text-primaryWhite"
                     active={orderBy === column.id}
                     direction={
                       orderBy === column.id &&
@@ -94,18 +92,13 @@ const TableCompanies = ({
                     }
                     onClick={() => handleSort(column.id)}
                     sx={{
+                      color: "white",
                       justifyContent: index === 0 ? "flex-start" : "center",
                       "&.Mui-active": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
+                        color: "var(--primaryWhite)",
                       },
                       "&.Mui-active .MuiTableSortLabel-icon": {
-                        color:
-                          theme === "dark"
-                            ? "var(--primaryWhite)"
-                            : "var(--primaryBlack)",
+                        color: "var(--primaryWhite)",
                       },
                     }}
                   >
@@ -150,7 +143,7 @@ const TableCompanies = ({
                     borderBottom: "2px solid #262626",
                   }} // Set bottom border color
                 >
-                  <Box className="flex items-center gap-2 dark:text-primaryWhite font-[500]">
+                  <Box className="flex items-center gap-2 text-primaryWhite font-[500]">
                     <img
                       src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
                       alt={`${item.symbol} logo`}
@@ -197,8 +190,9 @@ const TableCompanies = ({
                   sx={{
                     textAlign: "center",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="font-[500] dark:text-primaryWhite"
+                  className="font-[500]"
                 >
                   {item.longName}
                 </TableCell>
@@ -210,7 +204,7 @@ const TableCompanies = ({
                 >
                   <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
-                      className="dark:text-primaryWhite"
+                      className="text-primaryWhite"
                       key={item.industry}
                       label={item.industry}
                       sx={{
@@ -234,7 +228,7 @@ const TableCompanies = ({
                 >
                   <Box className="flex gap-2 flex-wrap justify-center">
                     <Chip
-                      className="dark:text-primaryWhite"
+                      className="text-primaryWhite"
                       key={item.sector}
                       label={item.sector}
                       sx={{
@@ -255,8 +249,8 @@ const TableCompanies = ({
                     textAlign: "center",
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="dark:text-primaryWhite"
                 >
                   {formatMarketCap(item.marketCap)}
                 </TableCell>
@@ -265,8 +259,9 @@ const TableCompanies = ({
                     textAlign: "center",
                     verticalAlign: "middle",
                     borderBottom: "2px solid #262626",
+                    color: "white",
                   }}
-                  className="dark:text-primaryWhite flex-col"
+                  className="flex-col"
                 >
                   <div>{formatPrice(item.currentPrice)}</div>
                   <div

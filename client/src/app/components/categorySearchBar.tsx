@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { InputAdornment, TextField } from "@mui/material";
 import Search from "@mui/icons-material/Search";
-import { useTheme } from "next-themes";
 
 type SearchBarProps = {
   searchTerm: string;
@@ -23,7 +22,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setIsLoadingAISearch,
   data,
 }) => {
-  const { theme } = useTheme();
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -87,8 +85,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                       <Search
                         className="w-5 h-5 cursor-pointer"
                         style={{
-                          color:
-                            theme === "dark" ? "var(--primaryWhite)" : "black",
+                          color: "var(--primaryWhite)",
                         }}
                       />
                     </button>
@@ -96,13 +93,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 ),
                 // Inside search bar styles
                 sx: {
-                  backgroundColor:
-                    theme === "dark" ? "dark:bg-[rgba(31,31,31,0.7)]" : "white",
+                  backgroundColor: "rgba(31,31,31,0.7)",
                   borderRadius: "3rem",
                   "& input::placeholder": {
                     color: "var(--primaryLightGray)",
                   },
-                  color: theme === "dark" ? "var(--primaryWhite)" : "black",
+                  color: "var(--primaryWhite)",
                   // Add glow effect
                   boxShadow: "0 4px 110.6px 0 rgba(110, 115, 121, 0.5)",
                   transition: "box-shadow 0.3s ease",
@@ -114,19 +110,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
               padding: "",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor:
-                    theme === "dark"
-                      ? "var(--primaryGray)"
-                      : "var(--primaryLightGray)",
+                  borderColor: "var(--primaryGray)",
                 },
                 "&:hover fieldset": {
-                  borderColor:
-                    theme === "dark" ? "var(--primaryLightGray)" : "black",
+                  borderColor: "var(--primaryLightGray)",
                 },
               },
             }}
           />
-
         </form>
       </div>
     </div>

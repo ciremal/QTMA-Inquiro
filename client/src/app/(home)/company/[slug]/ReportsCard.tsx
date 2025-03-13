@@ -15,7 +15,7 @@ export const ReportsCard = ({ reports }: any) => {
         return (
           <div
             key={item.date || index}
-            className="flex justify-between items-center w-[90%] py-3 border-solid border-black dark:border-primaryGray border-b-[1px] "
+            className="flex justify-between items-center w-[90%] py-3 border-solid border-primaryGray border-b-[1px] "
           >
             <p className={`text-[15px] ${inter.className}`}>{`${item.date}, ${
               item.form === "10-Q" ? "Quarterly Report" : "Annual Report"

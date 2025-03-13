@@ -37,11 +37,11 @@ export default async function Page({
       <div className="flex gap-12 w-full md:mt-8 flex-col md:flex-row">
         <div className="flex md:max-w-[60%] w-full flex-col justify-center items-center h-full gap-6">
           <Description company={company} />
-          <Press company={slug} />
+          {/* <Press company={slug} /> */}
         </div>
         <div className="flex md:max-w-[40%] w-full flex-col h-full gap-6">
           <Reports cik={company["CIK"].toString()} />
-          <EarningsCall ticker={company.symbol} />
+          {/* <EarningsCall ticker={company.symbol} /> */}
         </div>
       </div>
       <Chatbot slug={slug} />

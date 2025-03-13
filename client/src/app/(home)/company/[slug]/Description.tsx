@@ -15,7 +15,7 @@ export default function Description({ company }: DescriptionProps) {
   );
 
   return (
-    <div className="px-6 no-scrollbar">
+    <div className="px-6 no-scrollbar text-white">
       <p className="text-[14px]">{description}</p>
       <br></br>
       <p className="text-[14px]">{ownershipDesc}</p>
