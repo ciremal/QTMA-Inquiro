@@ -292,7 +292,7 @@ const TableFilters = ({
             onClick={handleOpenPrice}
             endIcon={<KeyboardArrowDown />}
             sx={{
-              width: "100%",
+              width: "130px",
               backgroundColor: "var(--secondaryBlack)",
               borderRadius: 5,
               paddingX: "1rem",
@@ -374,9 +374,13 @@ const TableFilters = ({
                   }
                 }}
                 sx={{
-                  color: "white",
+                  color: "#646464",
                   width: "100%",
-                  "& .MuiSlider-thumb": { backgroundColor: "white" },
+                  "& .MuiSlider-thumb": { 
+                    backgroundColor: "#646464",
+                    width: 12,    // smaller thumb width
+                    height: 12,   // smaller thumb height 
+                  },
                 }}
               />
             </Box>
