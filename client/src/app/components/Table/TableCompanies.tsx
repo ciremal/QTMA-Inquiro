@@ -108,6 +108,9 @@ const TableCompanies = ({
                             ? "var(--primaryWhite)"
                             : "var(--primaryBlack)",
                       },
+                      "&:hover": {
+                        color: "var(--primaryWhite)",
+                      },
                     }}
                   >
                     {column.label}
