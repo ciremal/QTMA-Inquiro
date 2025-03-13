@@ -12,7 +12,6 @@ import { interBold, robotoSemibold } from "../../ui/fonts";
 import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
-import { useTheme } from "next-themes";
 import Logo from "../Logo";
 import ProfilePic from "../ProfilePic";
 import getIndustryColor from "@/app/lib/industryColors";
@@ -135,7 +134,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [isLoadingAISearch, setIsLoadingAISearch] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const { theme } = useTheme();
   const searchParams = useSearchParams();
 
   const industries = useMemo(() => {
@@ -318,7 +316,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               </div>
             )}
             <div>
-              <p className={`pb-3 ${interBold.className}`}>Filter By:</p>
+              <p className={`pb-3 ${interBold.className} text-white`}>
+                Filter By:
+              </p>
             </div>
             {/* Dropdown Filters */}
             <TableFilters
@@ -352,17 +352,14 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           {/* Pagination */}
           <TablePagination
             style={{
-              color:
-                theme === "dark"
-                  ? "var(--primaryWhite)"
-                  : "var(--primaryBlack)",
+              color: "var(--primaryWhite)",
             }}
             sx={{
               "& .MuiTablePagination-selectIcon": {
-                color: theme === "dark" ? "var(--primaryWhite)" : "black",
+                color: "var(--primaryWhite)",
               },
               "& .MuiTablePagination-actions button.Mui-disabled": {
-                color: theme === "dark" ? "gray" : "black",
+                color: "gray",
               },
             }}
             rowsPerPageOptions={[25, 50, 100, 200]}

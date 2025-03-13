@@ -7,26 +7,25 @@ export const filterInputLabelStyles = () => ({
   },
 });
 
-export const filterInputSelectStyles = (theme: string | undefined) => ({
+export const filterInputSelectStyles = () => ({
   height: "2.5rem",
   // Styling the border
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "2rem",
-    borderColor:
-      theme === "dark" ? "var(--primaryGray)" : "var(--primaryLightGray)",
+    borderColor: "var(--primaryGray)",
   },
   // Styling the border on hover
   "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: theme === "dark" ? "white" : "#1976D2",
+    borderColor: "white",
   },
   // Styling the inside of the component
   "& .MuiSelect-select": {
     paddingTop: "0.5rem",
     paddingBottom: "0.5rem",
-    color: theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
+    color: "var(--primaryLightGray)",
   },
   // Styling the dropdown icon
   "& .MuiSelect-icon": {
-    color: theme === "dark" ? "var(--primaryLightGray)" : "var(--primaryGray)",
+    color: "var(--primaryLightGray)",
   },
 });

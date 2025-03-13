@@ -6,7 +6,6 @@ import { interBold, robotoSemibold } from "../../ui/fonts";
 import TableFilters from "./TableFilters";
 import TableNoData from "./TableNoData";
 import TableCompanies from "./TableCompanies";
-import { useTheme } from "next-themes";
 import Carousel from "../Carousel";
 
 // Sort function for different data types
@@ -60,7 +59,6 @@ const filterData = (
       const matchesPriceRange =
         !priceRange ||
         (() => {
-          console.log(priceRange);
           const price = Number(item.currentPrice);
           return price >= priceRange[0] && price <= priceRange[1];
         })();
@@ -116,7 +114,6 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [isLoadingAISearch, setIsLoadingAISearch] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const { theme } = useTheme();
 
   const industries: string[] = useMemo(() => {
     if (!data) return [];
@@ -242,7 +239,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           </div>
         )}
         <div>
-          <p className={`pt-8 ${interBold.className}`}>Filter By:</p>
+          <p className={`pt-8 ${interBold.className} text-white`}>Filter By:</p>
         </div>
         {/* Dropdown Filters */}
         <TableFilters
@@ -273,15 +270,14 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
       {/* Pagination */}
       <TablePagination
         style={{
-          color:
-            theme === "dark" ? "var(--primaryWhite)" : "var(--primaryBlack)",
+          color: "var(--primaryWhite)",
         }}
         sx={{
           "& .MuiTablePagination-selectIcon": {
-            color: theme === "dark" ? "var(--primaryWhite)" : "black",
+            color: "var(--primaryWhite)",
           },
           "& .MuiTablePagination-actions button.Mui-disabled": {
-            color: theme === "dark" ? "gray" : "black",
+            color: "gray",
           },
         }}
         rowsPerPageOptions={[25, 50, 100, 200]}

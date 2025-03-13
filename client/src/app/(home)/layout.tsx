@@ -53,8 +53,7 @@ export default function RootLayout({
         ${dmSans.variable} 
         ${inter.variable} 
         antialiased 
-        bg-background
-        dark:bg-foreground
+        bg-foreground
         bg-radial-gradient
         flex flex-col min-h-screen
         `}

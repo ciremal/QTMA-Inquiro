@@ -11,7 +11,6 @@ import {
   Slider,
 } from "@mui/material";
 import { useState } from "react";
-import { useTheme } from "next-themes";
 import { KeyboardArrowDown, Delete } from "@mui/icons-material";
 import getIndustryColor from "@/app/lib/industryColors";
 
@@ -38,8 +37,6 @@ const TableFilters = ({
   setPriceRange,
   handleReset,
 }: TableFiltersProps) => {
-  const { theme } = useTheme();
-
   // Popover state management
   const [anchorElIndustry, setAnchorElIndustry] = useState<null | HTMLElement>(
     null

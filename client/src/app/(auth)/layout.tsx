@@ -15,10 +15,7 @@ export default function AuthLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className="bg-background
-        dark:bg-foreground"
-      >
+      <body className="bg-foreground">
         <Providers>
           {children}
           <Analytics />

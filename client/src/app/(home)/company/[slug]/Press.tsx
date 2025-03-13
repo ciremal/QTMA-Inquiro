@@ -108,8 +108,8 @@ export default function Press({ company, filter = "All" }: PressProps) {
   ) => {
     if (icons.size === 0) {
       return (
-        <div className="relative w-16 h-64 flex flex-col items-center border-2 border-dashed border-gray-100 dark:border-gray-600 rounded-full">
-          <div className="absolute top-0 left-0 w-full h-full bg-grey dark:bg-[rgba(38,38,38,1)] rounded-full"></div>
+        <div className="relative w-16 h-64 flex flex-col items-center border-2 border-dashed border-gray-600 rounded-full">
+          <div className="absolute top-0 left-0 w-full h-full bg-[rgba(38,38,38,1)] rounded-full"></div>
         </div>
       );
     }
@@ -158,7 +158,7 @@ export default function Press({ company, filter = "All" }: PressProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-secondaryBlack border-2 border-slate-300 dark:border-primaryGray rounded-md p-8 w-full box-border max-h-full">
+    <div className="bg-secondaryBlack border-2 border-primaryGray rounded-md p-8 w-full box-border max-h-full text-white">
       <div className="flex items-center justify-between mb-4">
         {/* Client-Side Filter Buttons */}
         {isLoading && <div>Loading...</div>}

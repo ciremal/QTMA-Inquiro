@@ -56,3 +56,31 @@ export const letterColorMap = {
   Y: "#228B22", // Forest Green
   Z: "#FF00FF", // Magenta
 };
+
+export const TYPE_WRITER_PROMPTS = [
+  // Industry-specific queries
+  "which companies produce semiconductors",
+  "the biggest music software companies",
+  "which companies focus on green energy",
+  "the largest retail warehouse stores",
+  "leading electric vehicle manufacturers",
+  "the most popular biotech companies",
+  "companies in the oil pipeline industry",
+  "the top cloud computing providers",
+  "largest social media platforms",
+  "leading aerospace and defense companies",
+
+  // General stock questions
+  "the best performing stocks in the S&P 500",
+  "LULU's change in stock price",
+  "the most volatile tech stocks",
+  "the highest dividend-paying companies",
+  "companies with the largest market capitalization",
+
+  // Thematic or trending topics
+  "which companies are exploring artificial intelligence",
+  "emerging 3D printing companies to watch",
+  "the best cybersecurity stocks",
+  "top gaming and esports companies",
+  "leading streaming media services",
+];

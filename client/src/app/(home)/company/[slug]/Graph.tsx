@@ -19,7 +19,6 @@ import useSWR, { useSWRConfig } from "swr";
 import Crosshair from "chartjs-plugin-crosshair";
 import GraphButton from "./GraphButton";
 import { useState, useMemo } from "react";
-import { useTheme } from "next-themes";
 import DropdownMenu from "@/app/components/DropdownMenu";
 import { InputLabel, Menu, MenuItem, Select } from "@mui/material";
 import {
@@ -134,7 +133,6 @@ interface GraphProps {
 }
 
 export default function Graph({ company }: GraphProps) {
-  const { theme } = useTheme();
   const [period, setPeriod] = useState("1y");
   const { cache, mutate } = useSWRConfig();
   const [comparisonCompany, setComparisonCompany] = useState<string | null>(
@@ -245,11 +243,11 @@ export default function Graph({ company }: GraphProps) {
           display: false,
         },
         ticks: {
-          color: theme === "dark" ? "white" : "black",
+          color: "white",
           maxTicksLimit: 12,
         },
         border: {
-          color: theme === "dark" ? "#757575" : "#a6a6a6",
+          color: "#757575",
         },
       },
       y: {
@@ -257,7 +255,7 @@ export default function Graph({ company }: GraphProps) {
           callback: function (value) {
             return `$${value}`;
           },
-          color: theme === "dark" ? "white" : "black",
+          color: "white",
         },
         grid: {
           display: false,
@@ -364,13 +362,17 @@ export default function Graph({ company }: GraphProps) {
         </div>
       </div>
       <div
-        className={`${!isLoadingCompareCompany ? "hidden" : ""} animate-pulse`}
+        className={`${
+          !isLoadingCompareCompany ? "hidden" : ""
+        } animate-pulse text-white`}
       >
         Fetching {comparisonCompany} data...
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-60">
-          <p className="text-center animate-pulse">Fetching data...</p>
+          <p className="text-center animate-pulse text-white">
+            Fetching data...
+          </p>
         </div>
       ) : error ? (
         <p className="text-center text-red-500">Failed to load data.</p>

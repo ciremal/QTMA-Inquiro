@@ -7,9 +7,9 @@ interface MetricsProps {
 
 const Metrics = ({ company }: MetricsProps) => {
   return (
-    <Box className="flex w-auto dark:bg-secondaryBlack bg-background p-3 border rounded-md border-slate-300 dark:border-primaryGray">
+    <Box className="flex w-auto bg-secondaryBlack p-3 border rounded-md border-primaryGray text-white">
       <Box
-        className="dark:bg-secondaryBlack bg-background"
+        className="bg-secondaryBlack"
         sx={{
           overflow: "auto",
           "&::-webkit-scrollbar": {

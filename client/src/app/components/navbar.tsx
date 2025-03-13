@@ -1,6 +1,5 @@
 import React from "react";
 import Logo from "./Logo";
-import { ThemeSwitcher } from "./ThemeSwitcher";
 import ProfilePic from "./ProfilePic";
 
 const Navbar = () => {
@@ -12,7 +11,6 @@ const Navbar = () => {
       </div>
 
       <ul className="flex items-center space-x-4 pr-8">
-        <ThemeSwitcher />
         <ProfilePic />
       </ul>
     </nav>

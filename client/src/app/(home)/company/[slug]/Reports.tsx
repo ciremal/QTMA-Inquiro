@@ -7,7 +7,7 @@ interface ReportsProps {
 
 const Reports = async ({ cik }: ReportsProps) => {
   return (
-    <Box className="border border-slate-300 dark:border-primaryGray rounded-md p-6 bg-background dark:bg-secondaryBlack">
+    <Box className="border border-primaryGray rounded-md p-6 bg-secondaryBlack text-white">
       <Box
         sx={{
           overflow: "auto",
@@ -26,7 +26,7 @@ const Reports = async ({ cik }: ReportsProps) => {
             borderRadius: "4px",
           },
         }}
-        className="bg-background dark:bg-secondaryBlack max-h-[420px] overflow-auto"
+        className="bg-secondaryBlack max-h-[420px] overflow-auto"
       >
         <ReportsCard cik={cik} />
       </Box>

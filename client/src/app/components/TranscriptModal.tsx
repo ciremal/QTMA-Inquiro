@@ -34,13 +34,13 @@ const TranscriptModal = ({
           maxHeight: "90%",
         }}
       >
-        <div className={`text-4xl mb-5 ${inter.className}`}>
+        <div className={`text-4xl mb-5 ${inter.className} text-white`}>
           {ticker} 2024 Q4 Earnings Call Transcript
         </div>
         {transcript.map((item: any, index: number) => {
           return (
             <div key={index}>
-              <p className={`${inter.className} text-lg`}>
+              <p className={`${inter.className} text-lg text-white`}>
                 <span className="font-semibold">{item.name}:</span>{" "}
                 <span className="font-light">{item.sentence}</span>
               </p>
