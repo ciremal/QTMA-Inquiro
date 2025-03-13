@@ -18,7 +18,10 @@ const TableNoData = ({ columns }: TableNoDataProps) => {
   return (
     <Box className="w-full max-w-7xl">
       <Skeleton height={56} />
-      <TableContainer className="bg-secondaryBlack" component={Paper}>
+      <TableContainer
+        component={Paper}
+        style={{ backgroundColor: "var(--secondaryBlack, #000)" }}
+      >
         <Table>
           <TableHead>
             <TableRow>

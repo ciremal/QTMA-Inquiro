@@ -9,6 +9,7 @@ import {
   Checkbox,
   Typography,
   Slider,
+  Switch,
 } from "@mui/material";
 import { useState } from "react";
 import { KeyboardArrowDown, Delete } from "@mui/icons-material";
@@ -23,6 +24,7 @@ type TableFiltersProps = {
   setMarketCapRange: (range: string) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
+  setShowFavourites: (show: boolean) => void;
   handleReset: () => void;
 };
 
@@ -35,6 +37,7 @@ const TableFilters = ({
   setMarketCapRange,
   priceRange,
   setPriceRange,
+  setShowFavourites,
   handleReset,
 }: TableFiltersProps) => {
   // Popover state management
@@ -86,6 +89,11 @@ const TableFilters = ({
     setPriceRange(price);
     setPage(0);
     handleClosePrice();
+  };
+
+  const handleFavouritesToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowFavourites(e.target.checked);
+    setPage(0);
   };
 
   return (
@@ -407,6 +415,47 @@ const TableFilters = ({
       </Box>
 
       <Box className={"px-5"}>
+        <Switch
+          onChange={handleFavouritesToggle}
+          sx={{
+            width: 64,
+            height: 32,
+            padding: 0,
+            "& .MuiSwitch-switchBase": {
+              padding: 0,
+              margin: "2px",
+              transitionDuration: "300ms",
+              "&.Mui-checked": {
+                transform: "translateX(32px)",
+                "& + .MuiSwitch-track": {
+                  backgroundColor: "transparent",
+                  opacity: 0.5,
+                  border: "1px solid #555",
+                },
+                "& .MuiSwitch-thumb": {
+                  backgroundImage: `url('/favourite-toggle-on.png')`,
+                },
+              },
+            },
+            "& .MuiSwitch-thumb": {
+              width: 28,
+              height: 28,
+              backgroundImage: `url('/favourite-toggle.svg')`,
+              backgroundSize: "100%",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "#1C1E12",
+            },
+            "& .MuiSwitch-track": {
+              borderRadius: 16,
+              backgroundColor: "transparent",
+              border: "1px solid #555",
+              opacity: 0.5,
+              boxSizing: "border-box",
+            },
+          }}
+        />
+
         <Button
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"

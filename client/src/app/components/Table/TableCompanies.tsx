@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useAuthState } from "react-firebase-hooks/auth";
+import FavouriteButton from "../favouriteButton";
 
 type TableCompaniesProps = {
   columns: any[];
@@ -99,6 +100,9 @@ const TableCompanies = ({
                       },
                       "&.Mui-active .MuiTableSortLabel-icon": {
                         color: "var(--primaryWhite)",
+                      },
+                      "&:hover": {
+                        color: "var(--primaryWhite) !important", // Ensure it overrides other hover styles
                       },
                     }}
                   >
@@ -279,6 +283,19 @@ const TableCompanies = ({
                       ).formattedDifference
                     }
                   </div>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    verticalAlign: "middle",
+                    borderBottom: "2px solid #262626",
+                  }}
+                  className="dark:text-primaryWhite"
+                >
+                  <FavouriteButton
+                    initialState={false}
+                    company={item.symbol}
+                  ></FavouriteButton>
                 </TableCell>
               </TableRow>
             ))}

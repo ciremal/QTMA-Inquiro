@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../components/Table/TableTemplate";
 import { getTickerInfoBulk } from "../api/fetchStockInfo";
 import useSWR from "swr";
 import Typewriter from "../components/Typewriter";
 import { TYPE_WRITER_PROMPTS } from "../lib/constants";
+import { UserProvider } from "./useUserData";
 
 const fetcher = async () => {
   const data = await getTickerInfoBulk();
@@ -24,13 +25,15 @@ function Home() {
   }
 
   return (
-    <div className="flex flex-col flex-grow">
-      <div className="flex flex-col items-center justify-center font-sans mt-8">
-        <Typewriter prompts={TYPE_WRITER_PROMPTS} />
-        {/* @ts-expect-error */}
-        <Table data={data} />
+    <UserProvider>
+      <div className="flex flex-col flex-grow">
+        <div className="flex flex-col items-center justify-center font-sans mt-8">
+          <Typewriter prompts={TYPE_WRITER_PROMPTS} />
+          {/* @ts-expect-error */}
+          <Table data={data} />
+        </div>
       </div>
-    </div>
+    </UserProvider>
   );
 }
 
