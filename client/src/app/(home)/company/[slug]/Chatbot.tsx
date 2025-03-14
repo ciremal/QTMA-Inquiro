@@ -333,7 +333,7 @@ export default function Chatbot({ slug }: { slug: string }) {
           <form onSubmit={handleSubmit} className="p-2 px-5 flex items-center">
             <input
               type="text"
-              className="w-full p-3 px-5 border rounded-full focus:outline-none text-black border-gray-600"
+              className="w-full p-3 px-5 border rounded-full focus:outline-none text-white border-gray-600"
               placeholder={`Ask me anything about ${slug.toUpperCase()}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
