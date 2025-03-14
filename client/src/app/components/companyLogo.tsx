@@ -10,7 +10,7 @@ export const CompanyLogo = ({ company, logoUrl }: CompanyLogoProps) => {
     <img
       src={logoUrl}
       alt={`${company} logo`}
-      className="rounded h-full aspect-square max-h-32"
+      className="rounded h-full aspect-square max-h-32 max-w-32"
     />
   );
 };
