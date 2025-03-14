@@ -15,6 +15,8 @@ import TableCompanies from "./TableCompanies";
 import Logo from "../Logo";
 import ProfilePic from "../ProfilePic";
 import getIndustryColor from "@/app/lib/industryColors";
+import { useUser } from "@/app/(home)/useUserData";
+
 
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
@@ -33,6 +35,8 @@ const sortData = (data: any, orderBy: any, order: any) => {
   });
 };
 
+
+
 // Filter function
 const filterData = (
   data: any,
@@ -41,7 +45,9 @@ const filterData = (
   filterType: "industry" | "sector" | null,
   priceRange: any,
   marketCapRange: any,
-  blurbResult: { blurb: string } | null,
+  showFavourites: boolean,
+  favourites: string[],
+  blurb: { blurb: string } | null,
   companyResult: { companies: any[] } | null
 ) => {
   if (!data) return [];
@@ -61,9 +67,10 @@ const filterData = (
         item.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesFilter =
-        !industryFilter ||
+      
+      // Apply industry or sector filter based on filterType
+      const matchesFilter = 
+        !industryFilter || 
         (filterType === "industry" && item.industry === industryFilter) ||
         (filterType === "sector" && item.sector === industryFilter);
 
@@ -103,8 +110,13 @@ const filterData = (
           }
         })();
 
+      const matchesFavourites = showFavourites
+        ? favourites.includes(item.symbol)
+        : true;
+
       return (
-        matchesSearch && matchesFilter && matchesPriceRange && matchesMarketCap
+        matchesSearch && matchesFilter && matchesPriceRange && 
+        matchesMarketCap && matchesFavourites
       );
     });
   }
@@ -125,6 +137,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
   const [industryFilter, setIndustryFilter] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [marketCapRange, setMarketCapRange] = useState("");
+  const [showFavourites, setShowFavourites] = useState(false);
+  const { userData } = useUser();
+  const favourites = userData?.favourites || [];
   const [filterType, setFilterType] = useState<"industry" | "sector" | null>(
     null
   );
@@ -166,6 +181,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     { id: "symbol", label: "Ticker", numeric: false },
     { id: "longName", label: "Company Name", numeric: false },
     { id: "industry", label: "Industry", numeric: false },
+    { id: "sector", label: "Sector", numeric: false },
     { id: "marketCap", label: "Market Cap", numeric: true },
     { id: "currentPrice", label: "Current Price", numeric: true },
   ];
@@ -188,6 +204,35 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     setPage(0);
   };
 
+  // Add this function to your component
+  const handleIndustryFilterChange = (industry: string) => {
+    setIndustryFilter(industry);
+    setFilterType("industry");
+    setPage(0);
+    
+    if (industry) {
+      // Update URL with the industry filter
+      router.push(`/categoryPage?industry=${encodeURIComponent(industry)}`);
+    } else {
+      // Clear filter from URL
+      router.push('/categoryPage');
+    }
+  };
+  
+  // Similar function for sector if needed
+  const handleSectorFilterChange = (sector: string) => {
+    setIndustryFilter(sector);
+    setFilterType("sector");
+    setPage(0);
+    
+    if (sector) {
+      router.push(`/categoryPage?sector=${encodeURIComponent(sector)}`);
+    } else {
+      router.push('/categoryPage');
+    }
+  };
+  
+  // Modify your reset function
   const handleReset = () => {
     setIndustryFilter("");
     setMarketCapRange("");
@@ -195,9 +240,11 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     setSearchTerm("");
     setBlurb(null);
     setCompanies(null);
+    setFilterType(null);
+    
+    // Clear URL parameters
+    router.push('/categoryPage');
   };
-
-  // Process data with sort, filter, and pagination
   const processedData = useMemo(() => {
     if (!data) return [];
     return sortData(
@@ -208,8 +255,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         filterType,
         priceRange,
         marketCapRange,
+        showFavourites,
+        favourites,
         blurb,
-        companies // Added for ai search
+        companies
       ),
       orderBy,
       order
@@ -223,8 +272,10 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     filterType,
     priceRange,
     marketCapRange,
+    showFavourites,
+    favourites,
     blurb,
-    companies, // Added for ai search
+    companies,
   ]);
 
   // Calculate paginated data
@@ -257,11 +308,11 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
           <ProfilePic />
         </div>
       </div>
-      <Box className="flex">
-        <Typography className="ml-20 mb-10 mt-10 text-4xl font-bold">
+      <Box className="flex items-center mt-20 mb-8">
+        <Typography className="ml-36 text-4xl font-bold">
           Companies in:
         </Typography>
-        <Box className="mt-11 ml-2">
+        <Box className="ml-2">
           {industryFilter && (
             <Chip
               label={`${
@@ -290,7 +341,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         </Box>
       </Box>
       <Box className="md:px-36 px-8 ">
-        <Box className="border-2 border-gray-300 rounded-lg p-6 bg- gray-700">
+        <Box className="border-2 border-gray-700 rounded-lg p-6 bg- gray-700">
           <Box className="mb-4 ">
             <Box className="flex w-full flex-col justify-center items-center">
               {isLoadingAISearch && <CircularProgress />}
@@ -323,7 +374,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             {/* Dropdown Filters */}
             <TableFilters
               industryFilter={industryFilter}
-              setIndustryFilter={setIndustryFilter}
+              setIndustryFilter={handleIndustryFilterChange}  // Use the new handler
               setPage={setPage}
               // @ts-ignore
               industries={industries}
@@ -333,6 +384,8 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
               priceRange={priceRange}
               // @ts-ignore
               setPriceRange={setPriceRange}
+              // @ts-ignore
+              setShowFavourites={setShowFavourites}
               handleReset={handleReset}
             />
           </Box>
