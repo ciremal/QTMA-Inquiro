@@ -41,7 +41,7 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
   const [open, setOpen] = useState(false);
   const transcriptData = useMemo(() => {
     if (data) {
-      return data.data.transcriptData;
+      return data.data;
     }
   }, [data]);
 
@@ -102,6 +102,7 @@ const EarningsCall = ({ ticker }: EarningsCallProps) => {
           open={open}
           setOpen={setOpen}
           ticker={ticker}
+          quarter={transcriptData.quarter}
         />
       )}
     </Box>

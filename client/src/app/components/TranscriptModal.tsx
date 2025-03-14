@@ -6,6 +6,7 @@ interface TranscriptModalProps {
   open: boolean;
   setOpen: any;
   ticker: string;
+  quarter: string;
 }
 
 const TranscriptModal = ({
@@ -13,6 +14,7 @@ const TranscriptModal = ({
   open,
   setOpen,
   ticker,
+  quarter,
 }: TranscriptModalProps) => {
   const handleClose = () => setOpen(false);
 
@@ -35,7 +37,7 @@ const TranscriptModal = ({
         }}
       >
         <div className={`text-4xl mb-5 ${inter.className} text-white`}>
-          {ticker} 2024 Q4 Earnings Call Transcript
+          {`${ticker} 2024 Q${quarter} Earnings Call Transcript`}
         </div>
         {transcript.map((item: any, index: number) => {
           return (

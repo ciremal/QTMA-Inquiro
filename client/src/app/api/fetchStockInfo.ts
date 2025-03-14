@@ -1,6 +1,12 @@
 import { CompanyData, HistoricalData } from "./models";
 import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 
 interface AnalysisResult {
@@ -213,6 +219,46 @@ export const getTickerInfoBulk = async () => {
   }
 };
 
+export const getEarningsCallTranscript = async (ticker: string) => {
+  try {
+    const docRef = doc(db, "transcripts", ticker);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const transcriptData = docSnap.data();
+      if (!transcriptData.takeaways) {
+        const takeawaysPromise = getEarningsCallHighlights(
+          transcriptData.summarized,
+          transcriptData.ticker
+        );
+        const { takeaways } = await takeawaysPromise;
+        await updateDoc(docRef, {
+          takeaways: takeaways,
+        });
+        return {
+          transcript: transcriptData.transcript,
+          takeaways: takeaways,
+          quarter: transcriptData.quarter,
+        };
+      } else {
+        return {
+          transcript: transcriptData.transcript,
+          takeaways: transcriptData.takeaways,
+          quarter: transcriptData.quarter,
+        };
+      }
+    }
+
+    return {
+      transcript: null,
+      takeaways: null,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch earnings call data.");
+  }
+};
+
 export const getTickerHistoricalData = async (
   ticker: string,
   period: string,
@@ -250,7 +296,6 @@ export const getTickerNews = async (ticker: string): Promise<News[]> => {
   const dateFrom = formatDateToYYYYMMDD(dateToday);
 
   const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
-  console.log(url);
 
   try {
     const res = await fetch(url);
@@ -300,36 +345,5 @@ export const getReports = async (cik: string): Promise<Report[]> => {
   } catch (error) {
     console.error(error);
     throw new Error("Field to fetch reports");
-  }
-};
-
-export const getEarningsCallTranscript = async (ticker: string) => {
-  try {
-    const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-transcript?ticker=${ticker}`
-    );
-
-    const data = await res.json();
-    if (!data || !data.transcript || res.status === 404) {
-      return {
-        transcriptData: null,
-        takeaways: null,
-      };
-    }
-
-    const takeawaysPromise = getEarningsCallHighlights(
-      data.summarized,
-      data.ticker
-    );
-
-    const takeaways = await takeawaysPromise;
-    data["takeaways"] = takeaways.takeaways;
-
-    return {
-      transcriptData: data,
-    };
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to fetch earnings call data.");
   }
 };
