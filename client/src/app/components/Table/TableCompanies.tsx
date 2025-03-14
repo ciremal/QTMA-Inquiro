@@ -149,42 +149,13 @@ const TableCompanies = ({
                 >
                   <Box className="flex items-center gap-2 text-primaryWhite font-[500]">
                     <img
-                      src={`https://assets.parqet.com/logos/symbol/${item.symbol.toUpperCase()}?format=svg`}
+                      src={`/logos/${item.symbol.toUpperCase()}.jpg`}
                       alt={`${item.symbol} logo`}
                       style={{
                         width: 48,
                         height: 48,
                         borderRadius: "20%",
                         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                      }}
-                      onError={(e) => {
-                        // console.log(item.website);
-                        const icon = `https://www.google.com/s2/favicons?domain=${item.website}&sz=256`;
-                        const img = new Image();
-                        img.src = icon;
-                        img.onload = () => {
-                          // @ts-ignore
-                          e.target.src = icon;
-                        };
-                        img.onerror = () => {
-                          const firstLetter = item.symbol
-                            .charAt(0)
-                            .toUpperCase();
-                          const fallbackColor =
-                            (letterColorMap as Record<string, string>)[
-                              firstLetter
-                            ] || "#000000";
-                          const svg = `
-                          <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="${fallbackColor}" />
-                            <text x="50%" y="50%" dy=".1em" alignment-baseline="middle" text-anchor="middle" font-size="24" fill="#fff" font-family="Helvetica, Arial, sans-serif">${firstLetter}</text>
-                          </svg>`;
-                          const encodedSVG = `data:image/svg+xml;base64,${btoa(
-                            svg
-                          )}`;
-                          // @ts-ignore
-                          e.target.src = encodedSVG;
-                        };
                       }}
                     />
                     {item.symbol}
