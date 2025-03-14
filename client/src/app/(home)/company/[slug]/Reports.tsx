@@ -1,4 +1,3 @@
-import { getReports } from "@/app/api/fetchStockInfo";
 import { ReportsCard } from "./ReportsCard";
 import { Box } from "@mui/material";
 
@@ -7,8 +6,6 @@ interface ReportsProps {
 }
 
 const Reports = async ({ cik }: ReportsProps) => {
-  const reports = await getReports(cik);
-
   return (
     <Box className="border border-primaryGray rounded-md p-6 bg-secondaryBlack text-white">
       <Box
@@ -31,7 +28,7 @@ const Reports = async ({ cik }: ReportsProps) => {
         }}
         className="bg-secondaryBlack max-h-[420px] overflow-auto"
       >
-        <ReportsCard reports={reports} />
+        <ReportsCard cik={cik} />
       </Box>
     </Box>
   );

@@ -1,5 +1,7 @@
 import { CompanyData, HistoricalData } from "./models";
 import { formatDateToYYYYMMDD } from "../lib/formatDateToYYYYMMDD";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 interface AnalysisResult {
   summary: string;
@@ -16,6 +18,18 @@ export interface Report {
   date: string;
   form: string;
   cik: number;
+}
+
+export interface News {
+  category: string;
+  datetime: number;
+  headline: string;
+  id: number;
+  image: string;
+  related: string;
+  source: string;
+  summary: string;
+  url: string;
 }
 
 // Function to analyze article with OpenAI
@@ -172,10 +186,14 @@ export async function getEarningsCallHighlights(
 
 export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
   try {
-    const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev?ticker=${ticker}`
-    );
-    return await res.json();
+    const docRef = doc(db, "companies", ticker);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as CompanyData;
+    } else {
+      throw new Error(`No data found for ticker: ${ticker}`);
+    }
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data.");
@@ -184,10 +202,11 @@ export const getTickerInfo = async (ticker: string): Promise<CompanyData> => {
 
 export const getTickerInfoBulk = async () => {
   try {
-    const res = await fetch(
-      `https://h5o5bfmm0c.execute-api.us-east-2.amazonaws.com/dev/get-list-of-companies`
-    );
-    return await res.json();
+    const querySnapshot = await getDocs(collection(db, "companies"));
+    const companies = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    return companies;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data.");
@@ -223,7 +242,7 @@ export const getTickerHistoricalDataBulk = async (ticker: string) => {
   }
 };
 
-export const getTickerNews = async (ticker: string): Promise<any[]> => {
+export const getTickerNews = async (ticker: string): Promise<News[]> => {
   const dateToday = new Date();
   const dateTo = formatDateToYYYYMMDD(dateToday);
 
@@ -231,6 +250,7 @@ export const getTickerNews = async (ticker: string): Promise<any[]> => {
   const dateFrom = formatDateToYYYYMMDD(dateToday);
 
   const url = `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${dateFrom}&to=${dateTo}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`;
+  console.log(url);
 
   try {
     const res = await fetch(url);

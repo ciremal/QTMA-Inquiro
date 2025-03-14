@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import PressCard from "./PressCard";
 import { inter, interBold } from "@/app/ui/fonts";
+import { News } from "@/app/api/fetchStockInfo";
 
 interface PressClientProps {
-  news: any[];
+  news: News[];
   filters: string[];
   initialFilter: string;
 }

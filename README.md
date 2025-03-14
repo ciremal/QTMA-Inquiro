@@ -1,1 +1,0 @@
-# QTMA-Inquiro

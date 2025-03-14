@@ -1,14 +1,28 @@
+"use client";
+
 import React from "react";
 import { getTickerNews } from "@/app/api/fetchStockInfo";
 import PressClient from "./PressClient";
+import useSWR from "swr";
 
 interface PressProps {
   company: string;
   filter?: string;
 }
 
-export default async function Press({ company, filter = "All" }: PressProps) {
-  const news = (await getTickerNews(company)).slice(0, 10);
+async function getNews(company: string) {
+  const res = await getTickerNews(company);
+  return res.slice(0, 10);
+}
+
+export default function Press({ company, filter = "All" }: PressProps) {
+  const {
+    data: news,
+    error,
+    isLoading,
+  } = useSWR(`https://finnhub.io/api/v1/company-news?symbol=${company}`, () =>
+    getNews(company)
+  );
 
   // Limit to the first 10 articles
   // Count sentiments
@@ -18,7 +32,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
     Bullish: 0,
   };
 
-  news.forEach((article: any) => {
+  news?.forEach((article: any) => {
     const classification = article.classification;
     if (classification === "Bearish") sentimentCounts.Bearish++;
     else if (classification === "Neutral") sentimentCounts.Neutral++;
@@ -72,7 +86,7 @@ export default async function Press({ company, filter = "All" }: PressProps) {
     return knownDomains[source] || source + ".com"; // fallback
   };
 
-  news.forEach((article: any) => {
+  news?.forEach((article: any) => {
     const sentiment = article.sentiment;
     const domain = getDomainFromSource(article.source);
     const icon = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
@@ -147,7 +161,11 @@ export default async function Press({ company, filter = "All" }: PressProps) {
     <div className="bg-secondaryBlack border-2 border-primaryGray rounded-md p-8 w-full box-border max-h-full text-white">
       <div className="flex items-center justify-between mb-4">
         {/* Client-Side Filter Buttons */}
-        <PressClient news={news} filters={filters} initialFilter={filter} />
+        {isLoading && <div>Loading...</div>}
+        {error && <div className="text-red-500">Error fetching news</div>}
+        {news && (
+          <PressClient news={news} filters={filters} initialFilter={filter} />
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
