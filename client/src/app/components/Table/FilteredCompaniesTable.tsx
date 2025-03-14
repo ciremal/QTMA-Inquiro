@@ -17,7 +17,6 @@ import ProfilePic from "../ProfilePic";
 import getIndustryColor from "@/app/lib/industryColors";
 import { useUser } from "@/app/(home)/useUserData";
 
-
 // Sort function for different data types
 const sortData = (data: any, orderBy: any, order: any) => {
   return [...data].sort((a, b) => {
@@ -34,8 +33,6 @@ const sortData = (data: any, orderBy: any, order: any) => {
     return 0;
   });
 };
-
-
 
 // Filter function
 const filterData = (
@@ -67,10 +64,10 @@ const filterData = (
         item.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.longName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.industry?.toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       // Apply industry or sector filter based on filterType
-      const matchesFilter = 
-        !industryFilter || 
+      const matchesFilter =
+        !industryFilter ||
         (filterType === "industry" && item.industry === industryFilter) ||
         (filterType === "sector" && item.sector === industryFilter);
 
@@ -115,8 +112,11 @@ const filterData = (
         : true;
 
       return (
-        matchesSearch && matchesFilter && matchesPriceRange && 
-        matchesMarketCap && matchesFavourites
+        matchesSearch &&
+        matchesFilter &&
+        matchesPriceRange &&
+        matchesMarketCap &&
+        matchesFavourites
       );
     });
   }
@@ -184,6 +184,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     { id: "sector", label: "Sector", numeric: false },
     { id: "marketCap", label: "Market Cap", numeric: true },
     { id: "currentPrice", label: "Current Price", numeric: true },
+    { id: "favourite", label: "", numeric: false },
   ];
 
   // Handle sort request
@@ -209,29 +210,29 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     setIndustryFilter(industry);
     setFilterType("industry");
     setPage(0);
-    
+
     if (industry) {
       // Update URL with the industry filter
       router.push(`/categoryPage?industry=${encodeURIComponent(industry)}`);
     } else {
       // Clear filter from URL
-      router.push('/categoryPage');
+      router.push("/categoryPage");
     }
   };
-  
+
   // Similar function for sector if needed
   const handleSectorFilterChange = (sector: string) => {
     setIndustryFilter(sector);
     setFilterType("sector");
     setPage(0);
-    
+
     if (sector) {
       router.push(`/categoryPage?sector=${encodeURIComponent(sector)}`);
     } else {
-      router.push('/categoryPage');
+      router.push("/categoryPage");
     }
   };
-  
+
   // Modify your reset function
   const handleReset = () => {
     setIndustryFilter("");
@@ -241,9 +242,9 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
     setBlurb(null);
     setCompanies(null);
     setFilterType(null);
-    
+
     // Clear URL parameters
-    router.push('/categoryPage');
+    router.push("/categoryPage");
   };
   const processedData = useMemo(() => {
     if (!data) return [];
@@ -309,7 +310,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
         </div>
       </div>
       <Box className="flex items-center mt-20 mb-8">
-        <Typography className="ml-36 text-4xl font-bold">
+        <Typography className="text-4xl font-bold text-white pl-36">
           Companies in:
         </Typography>
         <Box className="ml-2">
@@ -374,7 +375,7 @@ function StockTable({ data, isLoading, error }: StockTableProps) {
             {/* Dropdown Filters */}
             <TableFilters
               industryFilter={industryFilter}
-              setIndustryFilter={handleIndustryFilterChange}  // Use the new handler
+              setIndustryFilter={handleIndustryFilterChange} // Use the new handler
               setPage={setPage}
               // @ts-ignore
               industries={industries}
