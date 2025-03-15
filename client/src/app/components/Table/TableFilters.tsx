@@ -460,7 +460,7 @@ const TableFilters = ({
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"
         >
-          <Delete sx={{ color: "#1C1E12" }} />
+          <Delete sx={{ color: "#3F3F3F" }} />
         </Button>
       </Box>
     </Box>
