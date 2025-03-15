@@ -288,7 +288,7 @@ const TableFilters = ({
           >
             Stock Price
           </Typography>
-            <Button
+          <Button
             onClick={handleOpenPrice}
             endIcon={<KeyboardArrowDown />}
             sx={{
@@ -305,20 +305,20 @@ const TableFilters = ({
               border: "1px solid rgba(255,255,255,0.2)", // Light gray border
               textTransform: "none", // Set textTransform to none
               "&:hover": {
-              backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
-              border: "1px solid rgba(255,255,255,0.3)", // More visible on hover
+                backgroundColor: "rgba(50,50,50,0.5)", // Slightly lighter on hover
+                border: "1px solid rgba(255,255,255,0.3)", // More visible on hover
               },
               "&:focus": {
-              border: "1px solid white",
+                border: "1px solid white",
               },
             }}
-            >
+          >
             {priceRange
               ? `$${priceRange[0]} - $${
-                priceRange[1] === 10000 ? "∞" : priceRange[1]
-              }`
+                  priceRange[1] === 10000 ? "∞" : priceRange[1]
+                }`
               : "Any"}
-            </Button>
+          </Button>
         </Box>
         <Popover
           open={openPrice}
@@ -376,10 +376,10 @@ const TableFilters = ({
                 sx={{
                   color: "#646464",
                   width: "100%",
-                  "& .MuiSlider-thumb": { 
+                  "& .MuiSlider-thumb": {
                     backgroundColor: "#646464",
-                    width: 12,    // smaller thumb width
-                    height: 12,   // smaller thumb height 
+                    width: 12, // smaller thumb width
+                    height: 12, // smaller thumb height
                   },
                 }}
               />
@@ -460,7 +460,7 @@ const TableFilters = ({
           onClick={handleReset}
           className="text-white bg-transparent rounded-lg px-2 py-2"
         >
-          <Delete sx={{ color: "white" }} />
+          <Delete sx={{ color: "#1C1E12" }} />
         </Button>
       </Box>
     </Box>
